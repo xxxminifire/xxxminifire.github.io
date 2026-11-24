@@ -57,9 +57,11 @@
   .dot.on::after { background: #6d5a8a; width: 26px; }
   .dot:focus-visible { outline: 2px dashed rgba(90,143,90,.55); outline-offset: 1px; }
   .deck-next { border: none; background: #6d5a8a; color: var(--cloth);
-    font-family: inherit; font-size: 15px; font-weight: 600; letter-spacing: .06em;
-    padding: 10px 18px; border-radius: 999px; cursor: pointer; white-space: nowrap;
+    font-family: inherit; font-size: 16px; font-weight: 600; font-style: italic;
+    letter-spacing: .30em; text-transform: uppercase;
+    padding: 9px 12px; border-radius: 999px; cursor: pointer; white-space: nowrap;
     transition: opacity .3s, transform .5s ease-in-out; }
+  .deck-next .sprig-ico { width: 17px; height: 17px; margin-right: 7px; vertical-align: -3px; }
   .deck-next:hover { transform: translateY(-2px) rotate(.8deg); }
   .deck-next:focus-visible { outline: 2px dashed rgba(90,143,90,.55); outline-offset: 3px; }
   .deck-next[disabled] { opacity: 0; pointer-events: none; }
@@ -682,7 +684,7 @@
 
 <nav class="deck-nav" aria-label="分页导航">
   <div class="dots" id="dots"></div>
-  <button class="deck-next" id="deckNext" type="button">下一页 ↓</button>
+  <button class="deck-next" id="deckNext" type="button" aria-label="下一页"><svg class="sprig-ico" viewBox="-14 -14 28 28" aria-hidden="true"><use href="#leaf3d"/></svg>NEXT</button>
 </nav>
 <script>
 (function () {
