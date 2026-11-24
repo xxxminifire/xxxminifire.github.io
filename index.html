@@ -23,7 +23,7 @@
   .wrap { position: relative; z-index: 1; max-width: 640px; margin: 0 auto; padding: 0 20px; }
   header { position: relative; text-align: center; }
   /* PPT 式分页:一屏一节,纵向吸附 */
-  .slide { min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column;
+  .slide { position: relative; min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column;
     justify-content: center; scroll-snap-align: start; padding: 48px 0 96px; }
   /* 每屏进入:像纸片轻轻落定 */
   @keyframes slide-in { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
@@ -34,6 +34,18 @@
   .slide-likes.in > .likes { animation: none; }
   .slide-likes.in .likes h2 { animation: slide-in .55s cubic-bezier(0.16,1,0.3,1) backwards; }
   .slide-likes.in .chip { animation: slide-in .5s cubic-bezier(0.16,1,0.3,1) backwards; }
+  /* 背景花园:页角花草,进入视野才轻轻摆动 */
+  .bloom { position: absolute; width: 48px; height: 48px; opacity: .62; pointer-events: none;
+    transform: rotate(var(--r, 0deg)); }
+  .bloom.tl { left: 14px; top: 20px; }
+  .bloom.tr { right: 16px; top: 26px; width: 40px; height: 40px; }
+  .bloom.bl { left: 18px; bottom: 112px; width: 42px; height: 42px; }
+  .bloom.br { right: 16px; bottom: 120px; width: 40px; height: 40px; }
+  .slide.in .bloom { animation: sway 7s ease-in-out infinite alternate; animation-delay: var(--d, 0s); }
+  @keyframes sway {
+    from { transform: rotate(calc(var(--r, 0deg) - 3deg)); }
+    to { transform: rotate(calc(var(--r, 0deg) + 3deg)); }
+  }
   /* 底部分页点 + 下一页 */
   .deck-nav { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); z-index: 9;
     display: flex; align-items: center; gap: 14px; padding: 9px 16px;
@@ -169,6 +181,7 @@
     .dot::after, .deck-next { transition: none; }
     .deck-next:hover { transform: none; }
     .slide.in > *, .slide-likes.in .likes h2, .slide-likes.in .chip { animation: none; }
+    .slide.in .bloom { animation: none; }
     .story, .story-btn { transition: none; }
     .story-btn:hover, .story-btn:active { transform: none; }
   }
@@ -231,9 +244,42 @@
   <circle cx="320" cy="870" r="160" fill="url(#softPurple)"/>
 </svg>
 
+<!-- 背景花园:可复用的手绘花草 -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <g id="daisy">
+      <g fill="#fffdf8" stroke="rgba(139,115,85,.35)" stroke-width="1">
+        <ellipse cx="0" cy="-10" rx="5" ry="9"/>
+        <ellipse cx="0" cy="-10" rx="5" ry="9" transform="rotate(45)"/>
+        <ellipse cx="0" cy="-10" rx="5" ry="9" transform="rotate(90)"/>
+        <ellipse cx="0" cy="-10" rx="5" ry="9" transform="rotate(135)"/>
+        <ellipse cx="0" cy="-10" rx="5" ry="9" transform="rotate(180)"/>
+        <ellipse cx="0" cy="-10" rx="5" ry="9" transform="rotate(225)"/>
+        <ellipse cx="0" cy="-10" rx="5" ry="9" transform="rotate(270)"/>
+        <ellipse cx="0" cy="-10" rx="5" ry="9" transform="rotate(315)"/>
+      </g>
+      <circle r="4.5" fill="#e0b840"/>
+    </g>
+    <g id="mushroom">
+      <path d="M-14,2 Q-14,-14 0,-14 Q14,-14 14,2 Q0,7 -14,2 Z" fill="#d4a0a0" stroke="#a57070" stroke-width="1"/>
+      <circle cx="-6" cy="-6" r="1.8" fill="#fffdf8"/><circle cx="4" cy="-9" r="1.5" fill="#fffdf8"/><circle cx="8" cy="-3" r="1.4" fill="#fffdf8"/>
+      <path d="M-5,4 Q-4,14 -2,17 L2,17 Q4,14 5,4 Z" fill="#f2ede2" stroke="rgba(139,115,85,.35)" stroke-width="1"/>
+    </g>
+    <g id="sprig">
+      <path d="M0,18 Q-2,0 0,-14" stroke="#5a8f5a" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M0,10 Q-8,4 -12,6 Q-8,12 0,10 Z" fill="#a8c8a8"/>
+      <path d="M0,2 Q8,-2 12,0 Q8,6 0,2 Z" fill="#a8c8a8"/>
+      <circle cx="0" cy="-16" r="4" fill="#d4a0a0"/><circle cx="0" cy="-16" r="1.5" fill="#e0b840"/>
+    </g>
+  </defs>
+</svg>
+
 <div class="wrap">
 
   <div class="slide">
+  <svg class="bloom tl" style="--r:-8deg;--d:-2s" viewBox="-20 -22 40 44" aria-hidden="true"><use href="#daisy"/></svg>
+  <svg class="bloom tr" style="--r:7deg;--d:-4.5s" viewBox="-20 -22 40 44" aria-hidden="true"><use href="#pinwheel"/></svg>
+  <svg class="bloom br" style="--r:5deg;--d:-3s" viewBox="-20 -22 40 44" aria-hidden="true"><use href="#mushroom"/></svg>
   <header>
     <div class="heart">💗</div>
     <h1>生日快乐，老婆</h1>
@@ -411,6 +457,8 @@
   </div>
 
   <div class="slide slide-likes">
+  <svg class="bloom tl" style="--r:-6deg;--d:-1s" viewBox="-20 -22 40 44" aria-hidden="true"><use href="#yellow"/></svg>
+  <svg class="bloom tr" style="--r:8deg;--d:-3.5s" viewBox="-20 -22 40 44" aria-hidden="true"><use href="#daisy"/></svg>
   <!-- 她喜欢的小世界 -->
   <div class="likes">
     <h2>她喜欢的小世界</h2>
@@ -434,6 +482,8 @@
   </div>
 
   <div class="slide">
+  <svg class="bloom tl" style="--r:5deg;--d:-2.5s" viewBox="-20 -22 40 44" aria-hidden="true"><use href="#sprig"/></svg>
+  <svg class="bloom br" style="--r:-6deg;--d:-1.5s" viewBox="-20 -22 40 44" aria-hidden="true"><use href="#daisy"/></svg>
   <section class="lavender">
     <svg class="corner" viewBox="0 0 78 56" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <g transform="translate(52,8) rotate(-8)">
@@ -470,6 +520,8 @@
   </div>
 
   <div class="slide">
+  <svg class="bloom tl" style="--r:-5deg;--d:-3s" viewBox="-20 -22 40 44" aria-hidden="true"><use href="#pinwheel"/></svg>
+  <svg class="bloom tr" style="--r:6deg;--d:-1s" viewBox="-20 -22 40 44" aria-hidden="true"><use href="#mushroom"/></svg>
   <section>
     <svg class="corner" viewBox="0 0 78 56" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <use href="#bunny" transform="translate(52,26) scale(.42)"/>
@@ -483,6 +535,9 @@
   </div>
 
   <div class="slide">
+  <svg class="bloom tl" style="--r:-7deg;--d:-2s" viewBox="-20 -22 40 44" aria-hidden="true"><use href="#daisy"/></svg>
+  <svg class="bloom tr" style="--r:5deg;--d:-4s" viewBox="-20 -22 40 44" aria-hidden="true"><use href="#yellow"/></svg>
+  <svg class="bloom bl" style="--r:-4deg;--d:-1.5s" viewBox="-20 -22 40 44" aria-hidden="true"><use href="#sprig"/></svg>
   <section>
     <svg class="corner" viewBox="0 0 78 56" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <use href="#durian" transform="translate(56,30) scale(.8)"/>
@@ -496,6 +551,8 @@
   </div>
 
   <div class="slide">
+  <svg class="bloom tr" style="--r:-6deg;--d:-2.5s" viewBox="-20 -22 40 44" aria-hidden="true"><use href="#sprig"/></svg>
+  <svg class="bloom br" style="--r:8deg;--d:-1s" viewBox="-20 -22 40 44" aria-hidden="true"><use href="#pinwheel"/></svg>
   <section class="letter">
     <svg class="corner" viewBox="0 0 78 56" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <use href="#soup" transform="translate(54,34) scale(.9)"/>
@@ -511,6 +568,8 @@
   </div>
 
   <div class="slide">
+  <svg class="bloom bl" style="--r:6deg;--d:-3s" viewBox="-20 -22 40 44" aria-hidden="true"><use href="#mushroom"/></svg>
+  <svg class="bloom br" style="--r:-7deg;--d:-1.5s" viewBox="-20 -22 40 44" aria-hidden="true"><use href="#daisy"/></svg>
   <section class="wish" onclick="this.classList.toggle('open')">
     <svg class="corner" viewBox="0 0 78 56" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <use href="#dumpling" transform="translate(54,36) scale(.9)"/>
