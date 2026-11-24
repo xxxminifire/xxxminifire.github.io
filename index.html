@@ -3,16 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#f8ecca">
 <title>给老婆的生日礼物</title>
 <style>
   :root {
-    --meadow: #5a8f5a; --meadow-deep: #477547; --cloth: #faf6f0; --lighter-cloth: #fffdf8;
+    color-scheme: light; /* 声明仅浅色,阻止浏览器/微信自动反转为深色 */
+    --warm-yellow: #f8ecca; --meadow: #5a8f5a; --meadow-deep: #477547; --cloth: #faf6f0; --lighter-cloth: #fffdf8;
     --timber: #8b7355; --rose-deep: #b07575; --ink: #3d3a34; --muted: #6b655c;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { scroll-snap-type: y mandatory; }
   body { font-family: Georgia, 'Songti SC', 'STSong', 'SimSun', serif;
-    background: var(--cloth);
+    background: var(--warm-yellow);
     background-image: radial-gradient(rgba(90,143,90,.035) 1px, transparent 1px); /* 亚麻纹理 */
     background-size: 22px 22px;
     color: var(--ink); line-height: 1.8; overflow-x: hidden; }
@@ -100,7 +103,7 @@
   .intro { position: fixed; inset: 0; z-index: 10; display: flex; flex-direction: column;
     align-items: center; justify-content: center; gap: 8px;
     background: radial-gradient(circle at 50% 44%, rgba(245,215,95,.10), transparent 42%),
-      var(--cloth);
+      var(--warm-yellow);
     background-image: radial-gradient(circle at 50% 44%, rgba(245,215,95,.10), transparent 42%),
       radial-gradient(rgba(90,143,90,.035) 1px, transparent 1px);
     background-size: 100% 100%, 22px 22px; }
@@ -126,6 +129,11 @@
     transition: transform .55s cubic-bezier(0.16,1,0.3,1) .62s; }
   /* 揭幕由遮罩淡出承担,抬头内容不再单独入场 */
   @keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+  /* 深色模式:保持同一套暖黄,不做反转(显式浅色样式可阻止强制深色) */
+  @media (prefers-color-scheme: dark) {
+    html, body { background-color: var(--warm-yellow); color: var(--ink); }
+    .intro { background-color: var(--warm-yellow); }
+  }
   @media (prefers-reduced-motion: reduce) {
     .chip, .palm, section { transition: none; }
     .chip:hover, .palm:hover, section:hover, .palm:active { transform: none; }
