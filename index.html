@@ -47,16 +47,16 @@
   /* 底部分页点 + 下一页 */
   .deck-nav { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); z-index: 9;
     display: flex; align-items: center; gap: 14px; padding: 9px 16px;
-    background: rgba(255,253,248,.94); border: 1px solid rgba(90,143,90,.25);
-    border-radius: 999px; box-shadow: 0 4px 10px rgba(90,143,90,.20); }
+    background: rgba(255,253,248,.94); border: 1px solid rgba(143,122,168,.30);
+    border-radius: 999px; box-shadow: 0 4px 10px rgba(109,90,138,.18); }
   .dots { display: flex; }
   .dot { width: 26px; height: 30px; padding: 11px 6px; border: none; border-radius: 999px;
     background: transparent; cursor: pointer; }
   .dot::after { content: ""; display: block; width: 14px; height: 8px; border-radius: 999px;
-    background: rgba(90,143,90,.45); transition: background .3s, width .3s; }
-  .dot.on::after { background: var(--meadow-deep); width: 26px; }
+    background: rgba(109,90,138,.45); transition: background .3s, width .3s; }
+  .dot.on::after { background: #6d5a8a; width: 26px; }
   .dot:focus-visible { outline: 2px dashed rgba(90,143,90,.55); outline-offset: 1px; }
-  .deck-next { border: none; background: var(--meadow-deep); color: var(--cloth);
+  .deck-next { border: none; background: #6d5a8a; color: var(--cloth);
     font-family: inherit; font-size: 15px; font-weight: 600; letter-spacing: .06em;
     padding: 10px 18px; border-radius: 999px; cursor: pointer; white-space: nowrap;
     transition: opacity .3s, transform .5s ease-in-out; }
@@ -71,32 +71,28 @@
   .wave { width: 100%; height: 26px; display: block; margin: 2px 0 14px; }
   /* 她喜欢的小世界 */
   .likes { text-align: center; }
-  .likes h2 { font-size: 15px; color: var(--meadow-deep); letter-spacing: 4px; margin-bottom: 12px; font-weight: 600; }
+  .likes h2 { font-size: 15px; color: #6d5a8a; letter-spacing: 4px; margin-bottom: 12px; font-weight: 600; }
   .chips { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
-  .chip { background: var(--lighter-cloth); border: 1px solid rgba(90,143,90,.18); border-radius: 999px;
-    padding: 8px 16px; font-size: 15px; line-height: 1.5; color: #5a524a; box-shadow: 0 2px 6px rgba(90,143,90,.12);
+  .chip { background: #f1ecf7; border: 1px solid rgba(143,122,168,.28); border-radius: 999px;
+    padding: 8px 16px; font-size: 15px; line-height: 1.5; color: #453d38; box-shadow: 0 2px 6px rgba(109,90,138,.14);
     transition: transform .5s ease-in-out, box-shadow .5s ease-in-out; }
-  .chip:hover { transform: translateY(-2px) rotate(.8deg); box-shadow: 0 8px 20px rgba(90,143,90,.30); }
-  .chip b { color: var(--meadow-deep); font-weight: 600; }
-  section { position: relative; background: var(--lighter-cloth); border: 1px solid rgba(90,143,90,.12);
+  .chip:hover { transform: translateY(-2px) rotate(.8deg); box-shadow: 0 8px 20px rgba(109,90,138,.28); }
+  .chip b { color: #6d5a8a; font-weight: 600; }
+  section { position: relative; background: #f1ecf7; border: 1px solid rgba(143,122,168,.25);
     border-radius: 24px; padding: 32px 28px;
-    box-shadow: 0 4px 10px rgba(90,143,90,.20); overflow: hidden;
+    box-shadow: 0 4px 10px rgba(109,90,138,.18); overflow: hidden;
     transition: transform .5s ease-in-out, box-shadow .5s ease-in-out; }
-  section:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(90,143,90,.30); }
+  section:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(109,90,138,.28); }
   section::before { content: ""; position: absolute; left: 32px; right: 32px; top: 14px;
-    border-top: 2px dashed rgba(90,143,90,.28); } /* 手缝的边 */
-  section h2 { font-size: 19px; color: var(--meadow-deep); margin-bottom: 8px; font-weight: 600;
+    border-top: 2px dashed rgba(143,122,168,.35); } /* 手缝的边 */
+  section h2 { font-size: 19px; color: #6d5a8a; margin-bottom: 8px; font-weight: 600;
     padding-right: 68px; } /* 给右上角花饰让位,避免标题撞装饰 */
   section h2 span { display: block; font-size: 15px; color: var(--muted); margin: 3px 0 0; font-weight: 400; }
+  .date { font-size: 22px; font-weight: 700; color: #4f4066; letter-spacing: 1px; }
   .corner { position: absolute; top: 14px; right: 16px; width: 78px; height: 56px; opacity: .96; pointer-events: none; }
-  .date { font-size: 22px; font-weight: 700; color: var(--ink); letter-spacing: 1px; }
-  .note { color: var(--muted); font-size: 14px; margin-top: 4px; }
+    .note { color: var(--muted); font-size: 14px; margin-top: 4px; }
   /* 认识的那一天:薰衣草色信笺 */
-  section.lavender { background: #f1ecf7; border-color: rgba(143,122,168,.28); }
-  section.lavender::before { border-top-color: rgba(143,122,168,.35); } /* 缝线随信笺变紫 */
-  section.lavender h2 { color: #6d5a8a; }
-  section.lavender .date { color: #4f4066; }
-  .story-btn { display: inline-block; margin-top: 10px; border: none; background: #6d5a8a; color: var(--cloth);
+    .story-btn { display: inline-block; margin-top: 10px; border: none; background: #6d5a8a; color: var(--cloth);
     border-radius: 999px; padding: 10px 24px; font-size: 15px; font-weight: 600; cursor: pointer;
     font-family: inherit; -webkit-tap-highlight-color: transparent;
     box-shadow: 0 4px 10px rgba(109,90,138,.25);
@@ -111,21 +107,21 @@
   .letter p { text-indent: 2em; margin-bottom: 12px; }
   .placeholder { color: var(--muted); }
   /* 挠手掌心：草甸绿按钮 */
-  .palm { display: inline-block; margin-top: 6px; border: none; background: var(--meadow-deep); color: var(--cloth);
+  .palm { display: inline-block; margin-top: 6px; border: none; background: #6d5a8a; color: var(--cloth);
     border-radius: 999px; padding: 12px 32px; font-size: 15px; font-weight: 600; cursor: pointer;
     font-family: inherit; -webkit-tap-highlight-color: transparent;
-    box-shadow: 0 4px 10px rgba(90,143,90,.20);
+    box-shadow: 0 4px 10px rgba(109,90,138,.25);
     transition: transform .5s ease-in-out, box-shadow .5s ease-in-out; }
-  .palm:hover { transform: translateY(-2px) rotate(.8deg); box-shadow: 0 8px 20px rgba(90,143,90,.30); }
-  .palm:active { transform: rotate(0) scale(.97); box-shadow: 0 2px 6px rgba(90,143,90,.20); }
+  .palm:hover { transform: translateY(-2px) rotate(.8deg); box-shadow: 0 8px 20px rgba(109,90,138,.30); }
+  .palm:active { transform: rotate(0) scale(.97); box-shadow: 0 2px 6px rgba(109,90,138,.20); }
   .palm-msg { display: none; margin-top: 10px; color: var(--timber); font-size: 15px; }
   .palm-msg.show { display: block; }
   /* 愿望卡：点一下翻开 */
   .wish { text-align: center; cursor: pointer; -webkit-tap-highlight-color: transparent; }
-  .wish .card { background: linear-gradient(135deg, #4d7a4d, #3e663e); color: var(--cloth);
+  .wish .card { background: linear-gradient(135deg, #7a63a0, #54407a); color: var(--cloth);
     border-radius: 24px; padding: 40px 24px; min-height: 180px;
     display: flex; flex-direction: column; justify-content: center;
-    box-shadow: 0 4px 10px rgba(90,143,90,.30); }
+    box-shadow: 0 4px 10px rgba(109,90,138,.30); }
   .wish .card .front { font-size: 20px; font-weight: 600; }
   .wish .card .back { display: none; font-size: 17px; }
   .wish.open .card .front { display: none; }
@@ -276,6 +272,47 @@
         <ellipse cx="0" cy="-19" rx="4" ry="7.5"/>
       </g>
     </g>
+    <!-- 立体花束:渐变花瓣 + 高光 + 落影 -->
+    <radialGradient id="petalRoseG" cx="35%" cy="30%" r="85%">
+      <stop offset="0%" stop-color="#f6d9d9"/><stop offset="100%" stop-color="#c9798f"/>
+    </radialGradient>
+    <radialGradient id="petalPurpleG" cx="35%" cy="30%" r="85%">
+      <stop offset="0%" stop-color="#e9dcf5"/><stop offset="100%" stop-color="#9d7fc4"/>
+    </radialGradient>
+    <radialGradient id="coreGoldG" cx="40%" cy="35%" r="80%">
+      <stop offset="0%" stop-color="#fbe6a0"/><stop offset="100%" stop-color="#cf9c2f"/>
+    </radialGradient>
+    <linearGradient id="leaf3dG" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#bfe0bf"/><stop offset="100%" stop-color="#639a63"/>
+    </linearGradient>
+    <g id="fleurR">
+      <g stroke="rgba(122,74,90,.30)" stroke-width=".9">
+        <ellipse cx="0" cy="-8" rx="5.5" ry="8.5" fill="url(#petalRoseG)"/>
+        <ellipse cx="0" cy="-8" rx="5.5" ry="8.5" fill="url(#petalRoseG)" transform="rotate(72)"/>
+        <ellipse cx="0" cy="-8" rx="5.5" ry="8.5" fill="url(#petalRoseG)" transform="rotate(144)"/>
+        <ellipse cx="0" cy="-8" rx="5.5" ry="8.5" fill="url(#petalRoseG)" transform="rotate(216)"/>
+        <ellipse cx="0" cy="-8" rx="5.5" ry="8.5" fill="url(#petalRoseG)" transform="rotate(288)"/>
+      </g>
+      <circle r="4.6" fill="url(#coreGoldG)"/>
+      <ellipse cx="-1.6" cy="-1.8" rx="1.5" ry="1" fill="#fff" opacity=".85"/>
+    </g>
+    <g id="fleurP">
+      <g stroke="rgba(90,70,120,.30)" stroke-width=".9">
+        <ellipse cx="0" cy="-8" rx="5.5" ry="8.5" fill="url(#petalPurpleG)"/>
+        <ellipse cx="0" cy="-8" rx="5.5" ry="8.5" fill="url(#petalPurpleG)" transform="rotate(72)"/>
+        <ellipse cx="0" cy="-8" rx="5.5" ry="8.5" fill="url(#petalPurpleG)" transform="rotate(144)"/>
+        <ellipse cx="0" cy="-8" rx="5.5" ry="8.5" fill="url(#petalPurpleG)" transform="rotate(216)"/>
+        <ellipse cx="0" cy="-8" rx="5.5" ry="8.5" fill="url(#petalPurpleG)" transform="rotate(288)"/>
+      </g>
+      <circle r="4.6" fill="url(#coreGoldG)"/>
+      <ellipse cx="-1.6" cy="-1.8" rx="1.5" ry="1" fill="#fff" opacity=".85"/>
+    </g>
+    <g id="leaf3d">
+      <path d="M0,12 C-2,2 2,-6 0,-12" stroke="#5a8f5a" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M0,6 Q-9,0 -13,3 Q-9,9 0,6 Z" fill="url(#leaf3dG)"/>
+      <path d="M0,-2 Q9,-6 13,-3 Q9,3 0,-2 Z" fill="url(#leaf3dG)"/>
+      <ellipse cx="-6" cy="3" rx="2.5" ry="1" fill="#fff" opacity=".35" transform="rotate(-20 -6 3)"/>
+    </g>
   </defs>
 </svg>
 
@@ -314,24 +351,7 @@
           <stop offset="0%" stop-color="#fef08a"/><stop offset="100%" stop-color="#f59e0b"/>
         </linearGradient>
         <!-- 玩偶小兔 -->
-        <g id="bunny">
-          <ellipse cx="-15" cy="-58" rx="9" ry="26" fill="#fff7ed" stroke="#fbcfe8" stroke-width="1.5" transform="rotate(-8 -15 -58)"/>
-          <ellipse cx="15" cy="-58" rx="9" ry="26" fill="#fff7ed" stroke="#fbcfe8" stroke-width="1.5" transform="rotate(8 15 -58)"/>
-          <ellipse cx="-15" cy="-58" rx="4.5" ry="17" fill="#f9a8d4" transform="rotate(-8 -15 -58)"/>
-          <ellipse cx="15" cy="-58" rx="4.5" ry="17" fill="#f9a8d4" transform="rotate(8 15 -58)"/>
-          <ellipse cx="0" cy="16" rx="30" ry="24" fill="#fff7ed" stroke="#fbcfe8" stroke-width="1.5"/>
-          <circle cx="0" cy="-20" r="27" fill="#fff7ed" stroke="#fbcfe8" stroke-width="1.5"/>
-          <path d="M-12,-22 q4,-4 8,0" stroke="#44403c" stroke-width="2" fill="none" stroke-linecap="round"/>
-          <path d="M4,-22 q4,-4 8,0" stroke="#44403c" stroke-width="2" fill="none" stroke-linecap="round"/>
-          <path d="M-2,-12 L2,-12 L0,-9 Z" fill="#fb7185"/>
-          <path d="M0,-9 q0,5 -6,5 M0,-9 q0,5 6,5" stroke="#44403c" stroke-width="1.6" fill="none" stroke-linecap="round"/>
-          <circle cx="-17" cy="-12" r="4.5" fill="#fbcfe8" opacity=".8"/>
-          <circle cx="17" cy="-12" r="4.5" fill="#fbcfe8" opacity=".8"/>
-          <ellipse cx="-26" cy="18" rx="8" ry="6" fill="#fff7ed" stroke="#fbcfe8" stroke-width="1.2" transform="rotate(20 -26 18)"/>
-          <ellipse cx="26" cy="18" rx="8" ry="6" fill="#fff7ed" stroke="#fbcfe8" stroke-width="1.2" transform="rotate(-20 26 18)"/>
-          <ellipse cx="-13" cy="38" rx="9" ry="5" fill="#fbcfe8" opacity=".7"/>
-          <ellipse cx="13" cy="38" rx="9" ry="5" fill="#fbcfe8" opacity=".7"/>
-        </g>
+        
         <!-- 桃子 -->
         <g id="peach">
           <circle r="19" fill="url(#peachG)"/>
@@ -507,9 +527,12 @@
   <svg class="bloom" style="left:14px;bottom:170px;width:34px;height:34px;--r:-5deg;--d:-2.5s" viewBox="-22 -26 44 52" aria-hidden="true"><use href="#pinwheel"/></svg>
   <svg class="bloom" style="left:58px;bottom:230px;width:28px;height:28px;opacity:.5;--r:8deg;--d:-1.5s" viewBox="-22 -26 44 52" aria-hidden="true"><use href="#lavsp"/></svg>
   <svg class="bloom" style="right:56px;bottom:130px;width:26px;height:26px;opacity:.5;--r:-4deg;--d:-3s" viewBox="-22 -26 44 52" aria-hidden="true"><use href="#daisy"/></svg>
-  <section class="lavender">
+  <section>
     <svg class="corner" viewBox="0 0 78 56" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <g transform="translate(52,8) rotate(-8)">
+      <ellipse cx="50" cy="50" rx="20" ry="4.5" fill="rgba(88,60,40,.14)"/>
+      <use href="#leaf3d" transform="translate(38,30) scale(.8)"/>
+      <use href="#fleurP" transform="translate(48,22)"/>
+      <g transform="translate(64,10) rotate(-8)">
         <line x1="0" y1="0" x2="0" y2="40" stroke="#8f7aa8" stroke-width="2.5"/>
         <g fill="#b9a3cf">
           <ellipse cx="-6" cy="6" rx="4" ry="7" transform="rotate(-25 -6 6)"/>
@@ -553,9 +576,10 @@
   <svg class="bloom" style="left:58px;bottom:230px;width:28px;height:28px;opacity:.5;--r:-7deg;--d:-3.5s" viewBox="-22 -26 44 52" aria-hidden="true"><use href="#pinwheel"/></svg>
   <section>
     <svg class="corner" viewBox="0 0 78 56" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <use href="#bunny" transform="translate(52,26) scale(.42)"/>
-      <use href="#pinwheel" transform="translate(22,34) scale(.7)"/>
-      <use href="#yellow" transform="translate(38,42) scale(.55)"/>
+      <ellipse cx="50" cy="50" rx="20" ry="4.5" fill="rgba(88,60,40,.14)"/>
+      <use href="#leaf3d" transform="translate(38,30) scale(.8)"/>
+      <use href="#fleurR" transform="translate(48,22)"/>
+      <use href="#fleurP" transform="translate(65,32) scale(.62)"/>
     </svg>
     <h2>💍 在一起的纪念日 <span>纪念日</span></h2>
     <div class="date">____年____月____日</div>
@@ -574,9 +598,10 @@
   <svg class="bloom" style="left:58px;bottom:230px;width:28px;height:28px;opacity:.5;--r:-8deg;--d:-1s" viewBox="-22 -26 44 52" aria-hidden="true"><use href="#lavsp"/></svg>
   <section>
     <svg class="corner" viewBox="0 0 78 56" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <use href="#durian" transform="translate(56,30) scale(.8)"/>
-      <use href="#tanghulu" transform="translate(24,6) scale(.7)"/>
-      <use href="#yellow" transform="translate(40,42) scale(.55)"/>
+      <ellipse cx="50" cy="50" rx="20" ry="4.5" fill="rgba(88,60,40,.14)"/>
+      <use href="#leaf3d" transform="translate(36,30) scale(.8)"/>
+      <use href="#fleurR" transform="translate(50,20) scale(1.05)"/>
+      <use href="#daisy" transform="translate(66,33) scale(.55)"/>
     </svg>
     <h2>🎂 她的生日 <span>今天</span></h2>
     <div class="date">____月____日</div>
@@ -595,9 +620,10 @@
   <svg class="bloom" style="left:60px;bottom:150px;width:26px;height:26px;opacity:.5;--r:-7deg;--d:-1.5s" viewBox="-22 -26 44 52" aria-hidden="true"><use href="#daisy"/></svg>
   <section class="letter">
     <svg class="corner" viewBox="0 0 78 56" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <use href="#soup" transform="translate(54,34) scale(.9)"/>
-      <use href="#lavender" transform="translate(22,4) scale(.6) rotate(-10)"/>
-      <use href="#pinwheel" transform="translate(36,40) scale(.6)"/>
+      <ellipse cx="50" cy="50" rx="20" ry="4.5" fill="rgba(88,60,40,.14)"/>
+      <use href="#leaf3d" transform="translate(37,30) scale(.8)"/>
+      <use href="#fleurP" transform="translate(48,22)"/>
+      <use href="#fleurR" transform="translate(65,32) scale(.62)"/>
     </svg>
     <h2>💌 我写给你的长信</h2>
     <p><span class="placeholder">（Hana 待填：告诉 Muse 几个想对她说的话，就能帮你写成信。
@@ -618,9 +644,10 @@
   <svg class="bloom" style="left:14px;bottom:110px;width:30px;height:30px;--r:8deg;--d:-2s" viewBox="-22 -26 44 52" aria-hidden="true"><use href="#mushroom"/></svg>
   <section class="wish" onclick="this.classList.toggle('open')">
     <svg class="corner" viewBox="0 0 78 56" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <use href="#dumpling" transform="translate(54,36) scale(.9)"/>
-      <use href="#melon" transform="translate(22,34) scale(.7)"/>
-      <use href="#yellow" transform="translate(38,42) scale(.55)"/>
+      <ellipse cx="50" cy="50" rx="20" ry="4.5" fill="rgba(88,60,40,.14)"/>
+      <use href="#leaf3d" transform="translate(39,30) scale(.8)"/>
+      <use href="#fleurR" transform="translate(48,22)"/>
+      <use href="#daisy" transform="translate(66,33) scale(.55)"/>
     </svg>
     <h2>🎁 最后，一张愿望卡 <span>点一下翻开</span></h2>
     <div class="card">
@@ -642,7 +669,7 @@
     <use href="#peach" transform="translate(230,58) scale(.9)"/>
     <use href="#mango" transform="translate(320,62) scale(.9)"/>
     <use href="#melon" transform="translate(410,60) scale(.85)"/>
-    <use href="#bunny" transform="translate(320,20) scale(.28)"/>
+    <use href="#fleurP" transform="translate(320,22) scale(.9)"/>
     <use href="#leaf" transform="translate(110,62) rotate(-25)"/>
     <use href="#leaf" transform="translate(540,60) scale(-1,1) rotate(-25)"/>
     <defs>
