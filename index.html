@@ -77,10 +77,27 @@
     border-top: 2px dashed rgba(90,143,90,.28); } /* 手缝的边 */
   section h2 { font-size: 19px; color: var(--meadow-deep); margin-bottom: 8px; font-weight: 600;
     padding-right: 68px; } /* 给右上角花饰让位,避免标题撞装饰 */
-  section h2 span { font-size: 14px; color: var(--muted); margin-left: 6px; font-weight: 400; }
+  section h2 span { display: block; font-size: 14px; color: var(--muted); margin: 2px 0 0; font-weight: 400; }
   .corner { position: absolute; top: 14px; right: 16px; width: 78px; height: 56px; opacity: .96; pointer-events: none; }
   .date { font-size: 22px; font-weight: 700; color: var(--ink); letter-spacing: 1px; }
   .note { color: var(--muted); font-size: 14px; margin-top: 4px; }
+  /* 认识的那一天:薰衣草色信笺 */
+  section.lavender { background: #f1ecf7; border-color: rgba(143,122,168,.28); }
+  section.lavender::before { border-top-color: rgba(143,122,168,.35); } /* 缝线随信笺变紫 */
+  section.lavender h2 { color: #6d5a8a; }
+  section.lavender .date { color: #4f4066; }
+  .story-btn { display: inline-block; margin-top: 10px; border: none; background: #6d5a8a; color: var(--cloth);
+    border-radius: 999px; padding: 10px 24px; font-size: 15px; font-weight: 600; cursor: pointer;
+    font-family: inherit; -webkit-tap-highlight-color: transparent;
+    box-shadow: 0 4px 10px rgba(109,90,138,.25);
+    transition: transform .5s ease-in-out, box-shadow .5s ease-in-out; }
+  .story-btn:hover { transform: translateY(-2px) rotate(.8deg); box-shadow: 0 8px 20px rgba(109,90,138,.30); }
+  .story-btn:active { transform: scale(.97); }
+  .story-btn:focus-visible { outline: 2px dashed rgba(109,90,138,.55); outline-offset: 3px; }
+  .story { max-height: 0; opacity: 0; transform: translateY(8px); overflow: hidden;
+    transition: max-height .6s cubic-bezier(0.16,1,0.3,1), opacity .5s ease .1s, transform .5s cubic-bezier(0.16,1,0.3,1); }
+  .story.show { max-height: 200px; opacity: 1; transform: none; }
+  .story p { margin-top: 14px; font-size: 17px; line-height: 1.9; color: var(--ink); }
   .letter p { text-indent: 2em; margin-bottom: 12px; }
   .placeholder { color: var(--muted); }
   /* 挠手掌心：草甸绿按钮 */
@@ -95,7 +112,6 @@
   .palm-msg.show { display: block; }
   /* 愿望卡：点一下翻开 */
   .wish { text-align: center; cursor: pointer; -webkit-tap-highlight-color: transparent; }
-  .wish h2 span { display: block; margin: 4px 0 0; }
   .wish .card { background: linear-gradient(135deg, #4d7a4d, #3e663e); color: var(--cloth);
     border-radius: 24px; padding: 40px 24px; min-height: 180px;
     display: flex; flex-direction: column; justify-content: center;
@@ -153,6 +169,8 @@
     .dot::after, .deck-next { transition: none; }
     .deck-next:hover { transform: none; }
     .slide.in > *, .slide-likes.in .likes h2, .slide-likes.in .chip { animation: none; }
+    .story, .story-btn { transition: none; }
+    .story-btn:hover, .story-btn:active { transform: none; }
   }
 </style>
 </head>
@@ -416,15 +434,38 @@
   </div>
 
   <div class="slide">
-  <section>
+  <section class="lavender">
     <svg class="corner" viewBox="0 0 78 56" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <use href="#peach" transform="translate(56,28) scale(.8)"/>
-      <use href="#lavender" transform="translate(24,4) scale(.6) rotate(-10)"/>
-      <use href="#yellow" transform="translate(38,40) scale(.6)"/>
+      <g transform="translate(52,8) rotate(-8)">
+        <line x1="0" y1="0" x2="0" y2="40" stroke="#8f7aa8" stroke-width="2.5"/>
+        <g fill="#b9a3cf">
+          <ellipse cx="-6" cy="6" rx="4" ry="7" transform="rotate(-25 -6 6)"/>
+          <ellipse cx="6" cy="6" rx="4" ry="7" transform="rotate(25 6 6)"/>
+          <ellipse cx="-6" cy="15" rx="4" ry="7" transform="rotate(-25 -6 15)"/>
+          <ellipse cx="6" cy="15" rx="4" ry="7" transform="rotate(25 6 15)"/>
+          <ellipse cx="0" cy="-2" rx="4" ry="7"/>
+        </g>
+        <g fill="#d8cbe8">
+          <ellipse cx="-5" cy="24" rx="3.5" ry="6" transform="rotate(-25 -5 24)"/>
+          <ellipse cx="5" cy="24" rx="3.5" ry="6" transform="rotate(25 5 24)"/>
+        </g>
+      </g>
+      <g transform="translate(22,30) rotate(6)">
+        <line x1="0" y1="0" x2="0" y2="22" stroke="#8f7aa8" stroke-width="2"/>
+        <g fill="#c7b3db">
+          <ellipse cx="-4.5" cy="4" rx="3" ry="5" transform="rotate(-25 -4.5 4)"/>
+          <ellipse cx="4.5" cy="4" rx="3" ry="5" transform="rotate(25 4.5 4)"/>
+          <ellipse cx="0" cy="-2.5" rx="3" ry="5"/>
+        </g>
+      </g>
     </svg>
     <h2>🌱 我们认识的那一天 <span>认识时间</span></h2>
-    <div class="date">____年____月____日</div>
-    <p class="note">那一天的故事，写在这里：<span class="placeholder">（Hana 待填：你们怎么认识的，一句话就好）</span></p>
+    <div class="date">2026年9月7日</div>
+    <button class="story-btn" type="button" aria-expanded="false"
+      onclick="var m=this.nextElementSibling; var o=m.classList.toggle('show'); this.setAttribute('aria-expanded', o);">🕯️ 点开那一天的故事</button>
+    <div class="story">
+      <p>那一天我们都是守夜人，在同一个时间不同空间下奇妙的相遇。</p>
+    </div>
   </section>
   </div>
 
