@@ -25,6 +25,15 @@
   /* PPT 式分页:一屏一节,纵向吸附 */
   .slide { min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column;
     justify-content: center; scroll-snap-align: start; padding: 48px 0 96px; }
+  /* 每屏进入:像纸片轻轻落定 */
+  @keyframes slide-in { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+  .slide.in > * { animation: slide-in .65s cubic-bezier(0.16,1,0.3,1) backwards; }
+  .slide.in > *:nth-child(2) { animation-delay: .09s; }
+  .slide.in > *:nth-child(3) { animation-delay: .18s; }
+  /* 她喜欢的小世界:标题先落,标签逐个飘起(延迟由 JS 设置) */
+  .slide-likes.in > .likes { animation: none; }
+  .slide-likes.in .likes h2 { animation: slide-in .55s cubic-bezier(0.16,1,0.3,1) backwards; }
+  .slide-likes.in .chip { animation: slide-in .5s cubic-bezier(0.16,1,0.3,1) backwards; }
   /* 底部分页点 + 下一页 */
   .deck-nav { position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); z-index: 9;
     display: flex; align-items: center; gap: 12px; padding: 8px 14px;
@@ -143,6 +152,7 @@
     .intro.opening .flap, .intro.opening .letter, .intro.opening .seal { transition: none; }
     .dot::after, .deck-next { transition: none; }
     .deck-next:hover { transform: none; }
+    .slide.in > *, .slide-likes.in .likes h2, .slide-likes.in .chip { animation: none; }
   }
 </style>
 </head>
@@ -382,7 +392,7 @@
   </header>
   </div>
 
-  <div class="slide">
+  <div class="slide slide-likes">
   <!-- 她喜欢的小世界 -->
   <div class="likes">
     <h2>她喜欢的小世界</h2>
@@ -510,6 +520,7 @@
   intro.hidden = false;
   var open = function () {
     intro.classList.add('opening');
+    document.dispatchEvent(new Event('intro-open')); /* 通知分页动效:可以开始揭示 */
     document.body.style.overflow = '';
     intro.addEventListener('transitionend', function (e) {
       if (e.target === intro && e.propertyName === 'opacity') intro.remove(); /* 淡出结束当场移除,不留隐形窗口 */
@@ -544,11 +555,26 @@
     dotsBox.appendChild(d);
     dots.push(d);
   });
+  document.querySelectorAll('.chip').forEach(function (c, i) {
+    c.style.animationDelay = Math.min(i * 30, 360) + 'ms';
+  });
   sync(0);
   nextBtn.addEventListener('click', function () { go(cur + 1); });
+  var locked = !!document.getElementById('intro'); /* 拆信期间不揭示,避免动效藏在遮罩后播完 */
+  document.addEventListener('intro-open', function () {
+    locked = false;
+    slides[cur].classList.add('in');
+  });
   var io = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) { if (e.isIntersecting) sync(+e.target.dataset.i); });
-  }, { threshold: 0.55 });
+    entries.forEach(function (e) {
+      if (e.isIntersecting) {
+        sync(+e.target.dataset.i);
+        if (!locked) e.target.classList.add('in');
+      } else {
+        e.target.classList.remove('in');
+      }
+    });
+  }, { threshold: 0.35 });
   slides.forEach(function (s) { io.observe(s); });
   document.addEventListener('keydown', function (e) {
     if (document.getElementById('intro')) return; /* 拆信期间不翻页 */
