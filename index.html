@@ -129,8 +129,10 @@
   @media (prefers-reduced-motion: reduce) {
     .chip, .palm, section { transition: none; }
     .chip:hover, .palm:hover, section:hover, .palm:active { transform: none; }
-    .intro { display: none; }
     .envelope, .intro-hint, .seal { animation: none; }
+    /* 减弱动效:保留信封,点开后瞬时切换,只做 200ms 透明度过渡 */
+    .intro.opening { transition: opacity .2s ease; }
+    .intro.opening .flap, .intro.opening .letter, .intro.opening .seal { transition: none; }
     .dot::after, .deck-next { transition: none; }
     .deck-next:hover { transform: none; }
   }
@@ -494,8 +496,8 @@
 <script>
 (function () {
   var intro = document.getElementById('intro');
-  // 减弱动效或无 JS 时:不演拆信,直接看到页面
-  if (!intro || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  // 无 JS 时页面照常可见;减弱动效时保留信封,切换交给 CSS 瞬时完成
+  if (!intro) return;
   document.body.style.overflow = 'hidden'; /* 开场期间锁滚动 */
   intro.hidden = false;
   var open = function () {
