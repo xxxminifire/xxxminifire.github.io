@@ -5,78 +5,547 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>给老婆的生日礼物</title>
 <style>
+  :root {
+    --meadow: #5a8f5a; --meadow-deep: #477547; --cloth: #faf6f0; --lighter-cloth: #fffdf8;
+    --timber: #8b7355; --rose-deep: #b07575; --ink: #3d3a34; --muted: #6b655c;
+  }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-    background: linear-gradient(180deg, #fff1f2 0%, #ffe4e6 45%, #fff7ed 100%);
-    color: #44403c; line-height: 1.8; }
-  .wrap { max-width: 640px; margin: 0 auto; padding: 0 20px 64px; }
-  header { text-align: center; padding: 72px 0 32px; }
-  header .heart { font-size: 44px; }
-  h1 { font-size: 28px; color: #be123c; margin: 12px 0 8px; letter-spacing: 2px; }
-  header p { color: #78716c; font-size: 15px; }
-  section { background: rgba(255,255,255,.85); border-radius: 20px; padding: 24px 22px;
-    margin-bottom: 20px; box-shadow: 0 4px 20px rgba(190,18,60,.08); }
-  section h2 { font-size: 19px; color: #be123c; margin-bottom: 6px; }
-  section h2 span { font-size: 14px; color: #a8a29e; margin-left: 6px; }
-  .date { font-size: 22px; font-weight: 700; color: #292524; letter-spacing: 1px; }
-  .note { color: #78716c; font-size: 14px; margin-top: 4px; }
+  html, body { scroll-snap-type: y mandatory; }
+  body { font-family: Georgia, 'Songti SC', 'STSong', 'SimSun', serif;
+    background: var(--cloth);
+    background-image: radial-gradient(rgba(90,143,90,.035) 1px, transparent 1px); /* 亚麻纹理 */
+    background-size: 22px 22px;
+    color: var(--ink); line-height: 1.8; overflow-x: hidden; }
+  .bg-blooms { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: .5; }
+  .wrap { position: relative; z-index: 1; max-width: 640px; margin: 0 auto; padding: 0 20px; }
+  header { position: relative; text-align: center; }
+  /* PPT 式分页:一屏一节,纵向吸附 */
+  .slide { min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column;
+    justify-content: center; scroll-snap-align: start; padding: 48px 0 96px; }
+  /* 底部分页点 + 下一页 */
+  .deck-nav { position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); z-index: 9;
+    display: flex; align-items: center; gap: 12px; padding: 8px 14px;
+    background: rgba(255,253,248,.94); border: 1px solid rgba(90,143,90,.25);
+    border-radius: 999px; box-shadow: 0 4px 10px rgba(90,143,90,.20); }
+  .dots { display: flex; }
+  .dot { width: 20px; height: 20px; padding: 6px; border: none; border-radius: 999px;
+    background: transparent; cursor: pointer; }
+  .dot::after { content: ""; display: block; width: 8px; height: 8px; border-radius: 999px;
+    background: rgba(90,143,90,.45); transition: background .3s, transform .3s; }
+  .dot.on::after { background: var(--meadow-deep); transform: scale(1.3); }
+  .dot:focus-visible { outline: 2px dashed rgba(90,143,90,.55); outline-offset: 1px; }
+  .deck-next { border: none; background: var(--meadow-deep); color: var(--cloth);
+    font-family: inherit; font-size: 14px; font-weight: 600; letter-spacing: .06em;
+    padding: 7px 16px; border-radius: 999px; cursor: pointer; white-space: nowrap;
+    transition: opacity .3s, transform .5s ease-in-out; }
+  .deck-next:hover { transform: translateY(-2px) rotate(.8deg); }
+  .deck-next:focus-visible { outline: 2px dashed rgba(90,143,90,.55); outline-offset: 3px; }
+  .deck-next[disabled] { opacity: 0; pointer-events: none; }
+  header .heart { font-size: 40px; position: relative; z-index: 2; }
+  h1 { font-size: 32px; font-weight: 600; color: var(--rose-deep); margin: 8px 0 6px; letter-spacing: 2px; position: relative; z-index: 2;
+    text-shadow: 0 2px 14px rgba(250,246,240,.95); }
+  header p { color: var(--muted); font-size: 15px; position: relative; z-index: 2; }
+  .scene { width: 100%; height: 168px; margin-top: 6px; position: relative; z-index: 2; }
+  .wave { width: 100%; height: 26px; display: block; margin: 2px 0 14px; }
+  /* 她喜欢的小世界 */
+  .likes { text-align: center; }
+  .likes h2 { font-size: 15px; color: var(--meadow-deep); letter-spacing: 4px; margin-bottom: 12px; font-weight: 600; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .chip { background: var(--lighter-cloth); border: 1px solid rgba(90,143,90,.18); border-radius: 999px;
+    padding: 5px 14px; font-size: 14px; color: #5a524a; box-shadow: 0 2px 6px rgba(90,143,90,.12);
+    transition: transform .5s ease-in-out, box-shadow .5s ease-in-out; }
+  .chip:hover { transform: translateY(-2px) rotate(.8deg); box-shadow: 0 8px 20px rgba(90,143,90,.30); }
+  .chip b { color: var(--meadow-deep); font-weight: 600; }
+  section { position: relative; background: var(--lighter-cloth); border: 1px solid rgba(90,143,90,.12);
+    border-radius: 24px; padding: 32px 28px;
+    box-shadow: 0 4px 10px rgba(90,143,90,.20); overflow: hidden;
+    transition: transform .5s ease-in-out, box-shadow .5s ease-in-out; }
+  section:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(90,143,90,.30); }
+  section::before { content: ""; position: absolute; left: 32px; right: 32px; top: 14px;
+    border-top: 2px dashed rgba(90,143,90,.28); } /* 手缝的边 */
+  section h2 { font-size: 19px; color: var(--meadow-deep); margin-bottom: 8px; font-weight: 600;
+    padding-right: 68px; } /* 给右上角花饰让位,避免标题撞装饰 */
+  section h2 span { font-size: 14px; color: var(--muted); margin-left: 6px; font-weight: 400; }
+  .corner { position: absolute; top: 14px; right: 16px; width: 78px; height: 56px; opacity: .96; pointer-events: none; }
+  .date { font-size: 22px; font-weight: 700; color: var(--ink); letter-spacing: 1px; }
+  .note { color: var(--muted); font-size: 14px; margin-top: 4px; }
   .letter p { text-indent: 2em; margin-bottom: 12px; }
-  .placeholder { color: #a8a29e; }
+  .placeholder { color: var(--muted); }
+  /* 挠手掌心：草甸绿按钮 */
+  .palm { display: inline-block; margin-top: 6px; border: none; background: var(--meadow-deep); color: var(--cloth);
+    border-radius: 999px; padding: 12px 32px; font-size: 15px; font-weight: 600; cursor: pointer;
+    font-family: inherit; -webkit-tap-highlight-color: transparent;
+    box-shadow: 0 4px 10px rgba(90,143,90,.20);
+    transition: transform .5s ease-in-out, box-shadow .5s ease-in-out; }
+  .palm:hover { transform: translateY(-2px) rotate(.8deg); box-shadow: 0 8px 20px rgba(90,143,90,.30); }
+  .palm:active { transform: rotate(0) scale(.97); box-shadow: 0 2px 6px rgba(90,143,90,.20); }
+  .palm-msg { display: none; margin-top: 10px; color: var(--timber); font-size: 15px; }
+  .palm-msg.show { display: block; }
   /* 愿望卡：点一下翻开 */
   .wish { text-align: center; cursor: pointer; -webkit-tap-highlight-color: transparent; }
-  .wish .card { background: linear-gradient(135deg, #fb7185, #f59e0b); color: #fff;
-    border-radius: 16px; padding: 36px 20px; min-height: 180px;
-    display: flex; flex-direction: column; justify-content: center; }
-  .wish .card .front { font-size: 20px; font-weight: 700; }
+  .wish h2 span { display: block; margin: 4px 0 0; }
+  .wish .card { background: linear-gradient(135deg, #4d7a4d, #3e663e); color: var(--cloth);
+    border-radius: 24px; padding: 40px 24px; min-height: 180px;
+    display: flex; flex-direction: column; justify-content: center;
+    box-shadow: 0 4px 10px rgba(90,143,90,.30); }
+  .wish .card .front { font-size: 20px; font-weight: 600; }
   .wish .card .back { display: none; font-size: 17px; }
   .wish.open .card .front { display: none; }
   .wish.open .card .back { display: block; }
-  .wish .hint { margin-top: 10px; font-size: 13px; color: #78716c; }
-  footer { text-align: center; color: #a8a29e; font-size: 13px; padding-top: 8px; }
+  .wish .hint { margin-top: 10px; font-size: 13px; color: var(--muted); }
+  .footband { width: 100%; height: 104px; margin-top: 6px; }
+  footer { text-align: center; color: var(--muted); font-size: 13px; padding-top: 8px; }
+  footer .qd { color: var(--meadow-deep); }
+  /* 开场:拆信 */
+  .intro { position: fixed; inset: 0; z-index: 10; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 8px;
+    background: radial-gradient(circle at 50% 44%, rgba(245,215,95,.10), transparent 42%),
+      var(--cloth);
+    background-image: radial-gradient(circle at 50% 44%, rgba(245,215,95,.10), transparent 42%),
+      radial-gradient(rgba(90,143,90,.035) 1px, transparent 1px);
+    background-size: 100% 100%, 22px 22px; }
+  .intro[hidden] { display: none; }
+  .intro-open { background: none; border: none; padding: 24px; cursor: pointer;
+    font-family: inherit; -webkit-tap-highlight-color: transparent; border-radius: 24px; }
+  .intro-open:focus-visible { outline: 2px dashed rgba(90,143,90,.55); outline-offset: 8px; }
+  .envelope { width: min(78vw, 300px); display: block; overflow: visible;
+    filter: drop-shadow(0 8px 20px rgba(90,143,90,.25));
+    animation: rise .55s cubic-bezier(0.16,1,0.3,1) both; }
+  .intro-hint { font-size: 15px; font-weight: 600; letter-spacing: .12em; color: var(--meadow-deep);
+    margin: 0 0 64px; animation: rise .5s cubic-bezier(0.16,1,0.3,1) .22s both; }
+  .flap, .letter, .seal { transform-box: view-box; }
+  .flap { transform-origin: 150px 62px; }
+  .seal { transform-origin: 150px 150px; animation: breathe 2.2s ease-in-out 1s 4 alternate; }
+  @keyframes breathe { from { transform: scale(1); } to { transform: scale(1.06); } }
+  .intro.opening { pointer-events: none; opacity: 0; transition: opacity .6s ease .95s; }
+  .intro.opening .envelope, .intro.opening .intro-hint, .intro.opening .seal { animation: none; }
+  .intro.opening .seal { opacity: 0; transform: scale(.75); transition: opacity .25s ease, transform .25s ease; }
+  .intro.opening .flap { transform: rotateX(180deg); opacity: 0; /* 翻起后淡出,让信纸穿过 */
+    transition: transform .7s cubic-bezier(0.16,1,0.3,1) .15s, opacity .25s ease .6s; }
+  .intro.opening .letter { transform: translateY(-100px);
+    transition: transform .55s cubic-bezier(0.16,1,0.3,1) .62s; }
+  /* 揭幕由遮罩淡出承担,抬头内容不再单独入场 */
+  @keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) {
+    .chip, .palm, section { transition: none; }
+    .chip:hover, .palm:hover, section:hover, .palm:active { transform: none; }
+    .intro { display: none; }
+    .envelope, .intro-hint, .seal { animation: none; }
+    .dot::after, .deck-next { transition: none; }
+    .deck-next:hover { transform: none; }
+  }
 </style>
 </head>
 <body>
+<!-- 开场:拆信 -->
+<div class="intro" id="intro" hidden>
+  <button class="intro-open" type="button" aria-label="拆开给老婆的生日信">
+    <svg class="envelope" viewBox="0 0 300 250" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <!-- 信纸(藏在信封里,拆开时升起) -->
+      <g class="letter">
+        <rect x="60" y="100" width="180" height="128" rx="8" fill="#f8f0dd" stroke="rgba(139,115,85,.4)" stroke-width="2" stroke-dasharray="5 3"/>
+        <path d="M150,112 c-4.5,-6 -12,-2 -12,4 c0,6 7,8.5 12,12.5 c5,-4 12,-6.5 12,-12.5 c0,-6 -7.5,-10 -12,-4 Z" fill="#d4a0a0"/>
+        <text x="150" y="152" text-anchor="middle" font-size="15" fill="#6b655c" letter-spacing="6" font-family="Georgia, 'Songti SC', 'SimSun', serif">老婆亲启</text>
+        <path d="M78,170 h144 M78,188 h144" stroke="rgba(139,115,85,.35)" stroke-width="2" stroke-dasharray="7 5" stroke-linecap="round" fill="none"/>
+      </g>
+      <!-- 信封身:布色 + 手缝虚线 -->
+      <g class="env-body">
+        <rect x="18" y="62" width="264" height="170" rx="14" fill="#fffdf8"/>
+        <rect x="18" y="62" width="264" height="170" rx="14" fill="none" stroke="rgba(90,143,90,.4)" stroke-width="2" stroke-dasharray="6 4"/>
+        <path d="M18,232 L118,168 M282,232 L182,168" stroke="rgba(90,143,90,.2)" stroke-width="1.5" stroke-dasharray="4 4" fill="none"/>
+        <g fill="#f5d75f"><circle cx="40" cy="220" r="5"/><circle cx="48" cy="214" r="5"/><circle cx="56" cy="220" r="5"/></g>
+        <circle cx="48" cy="217" r="3.5" fill="#e0b840"/>
+        <path d="M246,226 c10,-9 24,-9 32,0 c-9,9 -23,9 -32,0 Z" fill="#a8c8a8"/>
+      </g>
+      <!-- 封口:拆信时向上翻起 -->
+      <g class="flap">
+        <path d="M18,62 L150,175 L282,62 Z" fill="#f2ede2"/>
+        <path d="M18,62 L150,175 M282,62 L150,175" stroke="rgba(90,143,90,.35)" stroke-width="2" stroke-dasharray="6 4" fill="none" stroke-linecap="round"/>
+      </g>
+      <!-- 火漆印章 -->
+      <g class="seal">
+        <circle cx="150" cy="150" r="22" fill="#d4a0a0" stroke="#a57070" stroke-width="1.5"/>
+        <circle cx="150" cy="150" r="17" fill="none" stroke="rgba(255,253,248,.55)" stroke-width="1.5" stroke-dasharray="3 3"/>
+        <path d="M150,143 c-4.5,-6 -12,-2 -12,4 c0,6 7,8.5 12,12.5 c5,-4 12,-6.5 12,-12.5 c0,-6 -7.5,-10 -12,-4 Z" fill="#fffdf8"/>
+      </g>
+    </svg>
+    <p class="intro-hint">点一下 · 拆开这封信</p>
+  </button>
+</div>
+
+<!-- 底层虚化光晕 -->
+<svg class="bg-blooms" viewBox="0 0 640 900" preserveAspectRatio="xMidYMin slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <defs>
+    <radialGradient id="softWhite" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity=".9"/><stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="softPurple" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#a8c8a8" stop-opacity=".6"/><stop offset="100%" stop-color="#a8c8a8" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="softYellow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fde68a" stop-opacity=".65"/><stop offset="100%" stop-color="#fde68a" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <circle cx="70" cy="130" r="140" fill="url(#softWhite)"/>
+  <circle cx="590" cy="230" r="150" fill="url(#softPurple)"/>
+  <circle cx="90" cy="520" r="140" fill="url(#softYellow)"/>
+  <circle cx="580" cy="650" r="150" fill="url(#softWhite)"/>
+  <circle cx="320" cy="870" r="160" fill="url(#softPurple)"/>
+</svg>
+
 <div class="wrap">
+
+  <div class="slide">
   <header>
     <div class="heart">💗</div>
     <h1>生日快乐，老婆</h1>
     <p>不用寄东西，这份心意，点开就能看到。</p>
-  </header>
 
+    <!-- 玩偶 + 水果 + 汤碗小场景 -->
+    <svg class="scene" viewBox="0 0 640 168" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <linearGradient id="peachG" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#fecdd3"/><stop offset="100%" stop-color="#fb7185"/>
+        </linearGradient>
+        <linearGradient id="mangoG" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#fde68a"/><stop offset="100%" stop-color="#f97316"/>
+        </linearGradient>
+        <linearGradient id="durianG" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#dcecc8"/><stop offset="100%" stop-color="#93bd76"/>
+        </linearGradient>
+        <linearGradient id="lavG" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#d4a0a0"/><stop offset="100%" stop-color="#a57070"/>
+        </linearGradient>
+        <linearGradient id="flowY" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#fef08a"/><stop offset="100%" stop-color="#f59e0b"/>
+        </linearGradient>
+        <!-- 玩偶小兔 -->
+        <g id="bunny">
+          <ellipse cx="-15" cy="-58" rx="9" ry="26" fill="#fff7ed" stroke="#fbcfe8" stroke-width="1.5" transform="rotate(-8 -15 -58)"/>
+          <ellipse cx="15" cy="-58" rx="9" ry="26" fill="#fff7ed" stroke="#fbcfe8" stroke-width="1.5" transform="rotate(8 15 -58)"/>
+          <ellipse cx="-15" cy="-58" rx="4.5" ry="17" fill="#f9a8d4" transform="rotate(-8 -15 -58)"/>
+          <ellipse cx="15" cy="-58" rx="4.5" ry="17" fill="#f9a8d4" transform="rotate(8 15 -58)"/>
+          <ellipse cx="0" cy="16" rx="30" ry="24" fill="#fff7ed" stroke="#fbcfe8" stroke-width="1.5"/>
+          <circle cx="0" cy="-20" r="27" fill="#fff7ed" stroke="#fbcfe8" stroke-width="1.5"/>
+          <path d="M-12,-22 q4,-4 8,0" stroke="#44403c" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <path d="M4,-22 q4,-4 8,0" stroke="#44403c" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <path d="M-2,-12 L2,-12 L0,-9 Z" fill="#fb7185"/>
+          <path d="M0,-9 q0,5 -6,5 M0,-9 q0,5 6,5" stroke="#44403c" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+          <circle cx="-17" cy="-12" r="4.5" fill="#fbcfe8" opacity=".8"/>
+          <circle cx="17" cy="-12" r="4.5" fill="#fbcfe8" opacity=".8"/>
+          <ellipse cx="-26" cy="18" rx="8" ry="6" fill="#fff7ed" stroke="#fbcfe8" stroke-width="1.2" transform="rotate(20 -26 18)"/>
+          <ellipse cx="26" cy="18" rx="8" ry="6" fill="#fff7ed" stroke="#fbcfe8" stroke-width="1.2" transform="rotate(-20 26 18)"/>
+          <ellipse cx="-13" cy="38" rx="9" ry="5" fill="#fbcfe8" opacity=".7"/>
+          <ellipse cx="13" cy="38" rx="9" ry="5" fill="#fbcfe8" opacity=".7"/>
+        </g>
+        <!-- 桃子 -->
+        <g id="peach">
+          <circle r="19" fill="url(#peachG)"/>
+          <path d="M0,-19 q3,10 0,19" stroke="#e11d48" stroke-width="1.6" fill="none" opacity=".55"/>
+          <path d="M0,-19 q6,-10 14,-10 q-2,10 -14,10" fill="#a8c8a8"/>
+        </g>
+        <!-- 西瓜片 -->
+        <g id="melon">
+          <path d="M-22,0 A22,22 0 0 0 22,0 Z" fill="#16a34a"/>
+          <path d="M-18,0 A18,18 0 0 0 18,0 Z" fill="#f0fdf4"/>
+          <path d="M-15,0 A15,15 0 0 0 15,0 Z" fill="#f87171"/>
+          <circle cx="-7" cy="-7" r="1.6" fill="#44403c"/><circle cx="6" cy="-9" r="1.6" fill="#44403c"/>
+          <circle cx="0" cy="-4" r="1.6" fill="#44403c"/><circle cx="10" cy="-4" r="1.6" fill="#44403c"/>
+        </g>
+        <!-- 芒果 -->
+        <g id="mango">
+          <ellipse rx="15" ry="20" fill="url(#mangoG)" transform="rotate(-18)"/>
+          <path d="M4,-20 q8,-8 14,-6 q-4,8 -14,6" fill="#a8c8a8"/>
+        </g>
+        <!-- 榴莲 -->
+        <g id="durian">
+          <ellipse rx="18" ry="22" fill="url(#durianG)" stroke="#5a8f5a" stroke-width="1.4"/>
+          <g fill="#5a8f5a">
+            <path d="M-12,-16 l4,-8 4,8 Z"/><path d="M0,-20 l4,-8 4,8 Z"/><path d="M11,-15 l4,-8 4,8 Z"/>
+            <path d="M-16,-2 l-8,1 6,5 Z"/><path d="M16,-2 l8,1 -6,5 Z"/>
+            <path d="M-10,14 l-3,8 8,-2 Z"/><path d="M2,18 l1,8 6,-5 Z"/><path d="M12,12 l5,7 3,-8 Z"/>
+          </g>
+        </g>
+        <!-- 菠萝 -->
+        <g id="pineapple">
+          <ellipse rx="16" ry="21" fill="#facc15" stroke="#eab308" stroke-width="1"/>
+          <g stroke="#eab308" stroke-width="1.2">
+            <path d="M-10,-12 L10,12 M10,-12 L-10,12 M-14,0 L14,0 M0,-18 L0,18"/>
+          </g>
+          <g fill="#22c55e">
+            <path d="M-8,-20 q-4,-12 2,-18 q2,10 4,16 Z"/>
+            <path d="M0,-21 q0,-13 6,-17 q1,11 -2,17 Z"/>
+            <path d="M8,-20 q5,-11 11,-13 q-1,10 -7,15 Z"/>
+          </g>
+        </g>
+        <!-- 龙眼 -->
+        <g id="longan">
+          <circle cx="-9" cy="4" r="8" fill="#b45309"/><circle cx="9" cy="4" r="8" fill="#92400e"/>
+          <circle cx="0" cy="-7" r="8" fill="#a16207"/>
+          <circle cx="-9" cy="2" r="2.5" fill="#fde68a" opacity=".8"/><circle cx="9" cy="2" r="2.5" fill="#fde68a" opacity=".8"/>
+        </g>
+        <!-- 鸡汤碗 -->
+        <g id="soup">
+          <path d="M-20,0 h40 a4,4 0 0 1 -4,6 h-32 a4,4 0 0 1 -4,-6 Z" fill="#fff7ed" stroke="#f59e0b" stroke-width="1.6"/>
+          <path d="M-20,0 q20,7 40,0" stroke="#fbbf24" stroke-width="2" fill="none"/>
+          <path d="M-8,-8 q-3,-6 0,-11 q3,-5 0,-10" stroke="#b0d0b0" stroke-width="2" fill="none" stroke-linecap="round" opacity=".8"/>
+          <path d="M6,-8 q-3,-6 0,-11 q3,-5 0,-10" stroke="#b0d0b0" stroke-width="2" fill="none" stroke-linecap="round" opacity=".8"/>
+        </g>
+        <!-- 饺子 -->
+        <g id="dumpling">
+          <path d="M-18,4 A18,14 0 0 0 18,4 Z" fill="#fff7ed" stroke="#e7e5e4" stroke-width="1.4"/>
+          <g stroke="#e7e5e4" stroke-width="1.2">
+            <path d="M-9,3 q-2,-7 -5,-8 M0,3 q0,-8 0,-9 M9,3 q2,-7 5,-8"/>
+          </g>
+        </g>
+        <!-- 糖葫芦 -->
+        <g id="tanghulu">
+          <line x1="0" y1="-26" x2="0" y2="22" stroke="#a16207" stroke-width="2.4" stroke-linecap="round"/>
+          <circle cy="-18" r="8" fill="#ef4444"/><circle cy="-2" r="8" fill="#ef4444"/><circle cy="14" r="8" fill="#ef4444"/>
+          <circle cx="-2.5" cy="-20.5" r="2.4" fill="#fff" opacity=".85"/><circle cx="-2.5" cy="-4.5" r="2.4" fill="#fff" opacity=".85"/><circle cx="-2.5" cy="11.5" r="2.4" fill="#fff" opacity=".85"/>
+        </g>
+        <!-- 薰衣草穗 -->
+        <g id="lavender">
+          <line x1="0" y1="0" x2="0" y2="48" stroke="#5a8f5a" stroke-width="2.5"/>
+          <g fill="url(#lavG)">
+            <ellipse cx="-6" cy="6" rx="4" ry="7" transform="rotate(-25 -6 6)"/>
+            <ellipse cx="6" cy="6" rx="4" ry="7" transform="rotate(25 6 6)"/>
+            <ellipse cx="-6" cy="16" rx="4" ry="7" transform="rotate(-25 -6 16)"/>
+            <ellipse cx="6" cy="16" rx="4" ry="7" transform="rotate(25 6 16)"/>
+            <ellipse cx="-5" cy="25" rx="3.5" ry="6" transform="rotate(-25 -5 25)"/>
+            <ellipse cx="5" cy="25" rx="3.5" ry="6" transform="rotate(25 5 25)"/>
+            <ellipse cx="0" cy="-2" rx="4" ry="7"/>
+          </g>
+          <g fill="#ecd9d9">
+            <ellipse cx="-6" cy="11" rx="3" ry="5" transform="rotate(-25 -6 11)"/>
+            <ellipse cx="6" cy="11" rx="3" ry="5" transform="rotate(25 6 11)"/>
+            <ellipse cx="0" cy="21" rx="3" ry="5"/>
+          </g>
+        </g>
+        <!-- 狗牙花 -->
+        <g id="pinwheel">
+          <g fill="#ffffff" stroke="#e7e5e4" stroke-width="0.8">
+            <ellipse cx="0" cy="-13" rx="6.5" ry="12"/>
+            <ellipse cx="0" cy="-13" rx="6.5" ry="12" transform="rotate(72)"/>
+            <ellipse cx="0" cy="-13" rx="6.5" ry="12" transform="rotate(144)"/>
+            <ellipse cx="0" cy="-13" rx="6.5" ry="12" transform="rotate(216)"/>
+            <ellipse cx="0" cy="-13" rx="6.5" ry="12" transform="rotate(288)"/>
+          </g>
+          <circle r="4.5" fill="#e0b840"/><circle r="2" fill="#fff7ed"/>
+        </g>
+        <!-- 暖黄小花 -->
+        <g id="yellow">
+          <g fill="url(#flowY)" stroke="#f59e0b" stroke-width="0.7">
+            <ellipse cx="0" cy="-11" rx="5.5" ry="10"/>
+            <ellipse cx="0" cy="-11" rx="5.5" ry="10" transform="rotate(60)"/>
+            <ellipse cx="0" cy="-11" rx="5.5" ry="10" transform="rotate(120)"/>
+            <ellipse cx="0" cy="-11" rx="5.5" ry="10" transform="rotate(180)"/>
+            <ellipse cx="0" cy="-11" rx="5.5" ry="10" transform="rotate(240)"/>
+            <ellipse cx="0" cy="-11" rx="5.5" ry="10" transform="rotate(300)"/>
+          </g>
+          <circle r="4" fill="#ea580c"/><circle r="1.8" fill="#fff7ed"/>
+        </g>
+      </defs>
+      <!-- 地面软影 -->
+      <ellipse cx="320" cy="156" rx="290" ry="10" fill="#fde68a" opacity=".5"/>
+      <!-- 花草打底 -->
+      <use href="#lavender" transform="translate(48,72) rotate(-10)"/>
+      <use href="#lavender" transform="translate(596,70) rotate(10)"/>
+      <use href="#pinwheel" transform="translate(96,128) scale(.9)"/>
+      <use href="#yellow" transform="translate(548,126) scale(.9)"/>
+      <!-- 水果 + 玩偶 + 汤碗 -->
+      <use href="#durian" transform="translate(140,128)"/>
+      <use href="#peach" transform="translate(205,132)"/>
+      <use href="#bunny" transform="translate(320,92)"/>
+      <use href="#melon" transform="translate(430,136)"/>
+      <use href="#mango" transform="translate(492,130)"/>
+      <use href="#pineapple" transform="translate(560,124) scale(.9)"/>
+      <use href="#longan" transform="translate(255,142) scale(.85)"/>
+      <use href="#soup" transform="translate(378,142) scale(.9)"/>
+    </svg>
+
+    <!-- 青岛的海浪线 -->
+    <svg class="wave" viewBox="0 0 640 26" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M0,14 q20,-10 40,0 t40,0 t40,0 t40,0 t40,0 t40,0 t40,0 t40,0 t40,0 t40,0 t40,0 t40,0 t40,0 t40,0 t40,0 t40,0" fill="none" stroke="#8fb48f" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M0,22 q20,-8 40,0 t40,0 t40,0 t40,0 t40,0 t40,0 t40,0 t40,0 t40,0 t40,0 t40,0 t40,0 t40,0 t40,0 t40,0 t40,0" fill="none" stroke="#b0d0b0" stroke-width="2" stroke-linecap="round" opacity=".7"/>
+    </svg>
+  </header>
+  </div>
+
+  <div class="slide">
+  <!-- 她喜欢的小世界 -->
+  <div class="likes">
+    <h2>她喜欢的小世界</h2>
+    <div class="chips">
+      <span class="chip">🧸 玩偶</span>
+      <span class="chip">🍑 桃子</span>
+      <span class="chip">🍉 西瓜</span>
+      <span class="chip">🥭 芒果</span>
+      <span class="chip"><b>榴莲</b> 超级爱</span>
+      <span class="chip">🍍 菠萝</span>
+      <span class="chip">龙眼</span>
+      <span class="chip">🍲 鸡汤</span>
+      <span class="chip">🥟 船歌饺子</span>
+      <span class="chip">🍓 糖葫芦</span>
+      <span class="chip">🍜 酸辣粉 · 细米线</span>
+      <span class="chip">🥟 抄手</span>
+      <span class="chip">🌊 青岛</span>
+      <span class="chip">💛 暖黄 + 💜 紫</span>
+    </div>
+  </div>
+  </div>
+
+  <div class="slide">
   <section>
+    <svg class="corner" viewBox="0 0 78 56" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <use href="#peach" transform="translate(56,28) scale(.8)"/>
+      <use href="#lavender" transform="translate(24,4) scale(.6) rotate(-10)"/>
+      <use href="#yellow" transform="translate(38,40) scale(.6)"/>
+    </svg>
     <h2>🌱 我们认识的那一天 <span>认识时间</span></h2>
     <div class="date">____年____月____日</div>
     <p class="note">那一天的故事，写在这里：<span class="placeholder">（Hana 待填：你们怎么认识的，一句话就好）</span></p>
   </section>
+  </div>
 
+  <div class="slide">
   <section>
+    <svg class="corner" viewBox="0 0 78 56" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <use href="#bunny" transform="translate(52,26) scale(.42)"/>
+      <use href="#pinwheel" transform="translate(22,34) scale(.7)"/>
+      <use href="#yellow" transform="translate(38,42) scale(.55)"/>
+    </svg>
     <h2>💍 在一起的纪念日 <span>纪念日</span></h2>
     <div class="date">____年____月____日</div>
     <p class="note">从那天起，到今天已经 <span class="placeholder">____</span> 天啦。</p>
   </section>
+  </div>
 
+  <div class="slide">
   <section>
+    <svg class="corner" viewBox="0 0 78 56" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <use href="#durian" transform="translate(56,30) scale(.8)"/>
+      <use href="#tanghulu" transform="translate(24,6) scale(.7)"/>
+      <use href="#yellow" transform="translate(40,42) scale(.55)"/>
+    </svg>
     <h2>🎂 她的生日 <span>今天</span></h2>
     <div class="date">____月____日</div>
     <p class="note">异地也没关系，0 点的祝福准时到，生日这一天，分三次想你：早上、中午、睡前。</p>
   </section>
+  </div>
 
+  <div class="slide">
   <section class="letter">
+    <svg class="corner" viewBox="0 0 78 56" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <use href="#soup" transform="translate(54,34) scale(.9)"/>
+      <use href="#lavender" transform="translate(22,4) scale(.6) rotate(-10)"/>
+      <use href="#pinwheel" transform="translate(36,40) scale(.6)"/>
+    </svg>
     <h2>💌 我写给你的长信</h2>
     <p><span class="placeholder">（Hana 待填：告诉 Muse 几个想对她说的话，就能帮你写成信。
     比如：异地这一年最想她的时刻、距离教会了你什么、下次见面最想一起做的事。）</span></p>
+    <button class="palm" onclick="var m=this.nextElementSibling; m.classList.toggle('show'); this.textContent = m.classList.contains('show') ? '🤲 再挠一下' : '🤲 挠挠手掌心';">🤲 挠挠手掌心</button>
+    <p class="palm-msg">痒痒的……最想你了。下次见面，先挠手掌心，再抱抱。</p>
   </section>
+  </div>
 
+  <div class="slide">
   <section class="wish" onclick="this.classList.toggle('open')">
+    <svg class="corner" viewBox="0 0 78 56" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <use href="#dumpling" transform="translate(54,36) scale(.9)"/>
+      <use href="#melon" transform="translate(22,34) scale(.7)"/>
+      <use href="#yellow" transform="translate(38,42) scale(.55)"/>
+    </svg>
     <h2>🎁 最后，一张愿望卡 <span>点一下翻开</span></h2>
     <div class="card">
       <div class="front">点我，打开你的愿望 ✨</div>
-      <div class="back">____<br><span style="font-size:14px;opacity:.9">（Hana 待填：写一个能兑现的愿望，比如“下次见面陪你去____”）<br>这张卡，下次见面就能兑现。</span></div>
+      <div class="back">____<br><span style="font-size:14px">（Hana 待填：写一个能兑现的愿望，比如“下次见面陪你去____”）<br>这张卡，下次见面就能兑现。</span></div>
     </div>
     <p class="hint">这张愿望卡是真的，不是客套话。</p>
   </section>
 
-  <footer>—— 爱你的 Hana ——</footer>
+  <!-- 底部花果带 -->
+  <svg class="footband" viewBox="0 0 640 104" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M0,66 C110,44 210,80 320,60 C430,40 530,78 640,58" fill="none" stroke="#a8c8a8" stroke-width="3" stroke-linecap="round"/>
+    <g opacity=".45">
+      <use href="#pinwheel" transform="translate(150,48) scale(1.6)"/>
+      <use href="#yellow" transform="translate(490,46) scale(1.6)"/>
+    </g>
+    <use href="#lavender" transform="translate(60,26) rotate(-10)"/>
+    <use href="#lavender" transform="translate(580,24) rotate(10)"/>
+    <use href="#peach" transform="translate(230,58) scale(.9)"/>
+    <use href="#mango" transform="translate(320,62) scale(.9)"/>
+    <use href="#melon" transform="translate(410,60) scale(.85)"/>
+    <use href="#bunny" transform="translate(320,20) scale(.28)"/>
+    <use href="#leaf" transform="translate(110,62) rotate(-25)"/>
+    <use href="#leaf" transform="translate(540,60) scale(-1,1) rotate(-25)"/>
+    <defs>
+      <g id="leaf" fill="#a8c8a8"><path d="M0,0 C14,-8 26,-6 30,2 C18,10 6,8 0,0 Z"/></g>
+    </defs>
+  </svg>
+  <footer>—— 爱你的 Hana ——<br><span class="qd">像青岛的海一样干净、温柔</span></footer>
+  </div>
 </div>
+
+<nav class="deck-nav" aria-label="分页导航">
+  <div class="dots" id="dots"></div>
+  <button class="deck-next" id="deckNext" type="button">下一页 ↓</button>
+</nav>
+<script>
+(function () {
+  var intro = document.getElementById('intro');
+  // 减弱动效或无 JS 时:不演拆信,直接看到页面
+  if (!intro || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  document.body.style.overflow = 'hidden'; /* 开场期间锁滚动 */
+  intro.hidden = false;
+  var open = function () {
+    intro.classList.add('opening');
+    document.body.style.overflow = '';
+    intro.addEventListener('transitionend', function (e) {
+      if (e.target === intro && e.propertyName === 'opacity') intro.remove(); /* 淡出结束当场移除,不留隐形窗口 */
+    });
+    setTimeout(function () { if (intro.parentNode) intro.remove(); }, 2600); /* 兜底:transitionend 未触发时 */
+  };
+  intro.addEventListener('click', open, { once: true });
+  /* 不自动聚焦:避免开场就显示 focus-visible 轮廓;键盘用户 Tab 可达 */
+})();
+(function () {
+  var slides = document.querySelectorAll('.slide');
+  var dotsBox = document.getElementById('dots');
+  var nextBtn = document.getElementById('deckNext');
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var cur = 0, dots = [];
+  var sync = function (i) {
+    cur = i;
+    dots.forEach(function (d, k) { d.classList.toggle('on', k === i); });
+    nextBtn.disabled = i >= slides.length - 1;
+  };
+  var go = function (i) {
+    i = Math.max(0, Math.min(slides.length - 1, i));
+    slides[i].scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+  };
+  slides.forEach(function (s, i) {
+    s.dataset.i = i;
+    var d = document.createElement('button');
+    d.type = 'button';
+    d.className = 'dot';
+    d.setAttribute('aria-label', '第 ' + (i + 1) + ' 页');
+    d.addEventListener('click', function () { go(i); });
+    dotsBox.appendChild(d);
+    dots.push(d);
+  });
+  sync(0);
+  nextBtn.addEventListener('click', function () { go(cur + 1); });
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (e.isIntersecting) sync(+e.target.dataset.i); });
+  }, { threshold: 0.55 });
+  slides.forEach(function (s) { io.observe(s); });
+  document.addEventListener('keydown', function (e) {
+    if (document.getElementById('intro')) return; /* 拆信期间不翻页 */
+    if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === 'PageDown') { e.preventDefault(); go(cur + 1); }
+    else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); go(cur - 1); }
+  });
+})();
+</script>
 </body>
 </html>
