@@ -10,16 +10,18 @@
   :root {
     color-scheme: light; /* 声明仅浅色,阻止浏览器/微信自动反转为深色 */
     --warm-yellow: #f8ecca; --meadow: #5a8f5a; --meadow-deep: #477547; --cloth: #faf6f0; --lighter-cloth: #fffdf8;
-    --timber: #8b7355; --rose-deep: #b07575; --ink: #3d3a34; --muted: #6b655c;
+    --timber: #8b7355; --rose-deep: #b07575; --ink: #3d3a34; --muted: #645f55;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { background: #f8ecca; }
   html, body { scroll-snap-type: y mandatory; }
   body { font-family: Georgia, 'Songti SC', 'STSong', 'SimSun', serif;
-    background: var(--warm-yellow);
-    background-image: radial-gradient(rgba(90,143,90,.035) 1px, transparent 1px); /* 亚麻纹理 */
-    background-size: 22px 22px;
+    /* 整页纵向渐变:浅黄 → 暖黄,跨全部 7 屏 */
+    background-image: linear-gradient(180deg, #fdf4d7 0%, #f8ecca 45%, #f1d9a0 100%),
+      radial-gradient(rgba(90,143,90,.035) 1px, transparent 1px); /* 亚麻纹理 */
+    background-size: 100% 100%, 22px 22px;
+    background-color: #f8ecca;
     color: var(--ink); line-height: 1.8; overflow-x: hidden; }
-  .bg-blooms { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: .5; }
   .wrap { position: relative; z-index: 1; max-width: 640px; margin: 0 auto; padding: 0 20px; }
   header { position: relative; text-align: center; }
   /* PPT 式分页:一屏一节,纵向吸附 */
@@ -135,11 +137,10 @@
   /* 开场:拆信 */
   .intro { position: fixed; inset: 0; z-index: 10; display: flex; flex-direction: column;
     align-items: center; justify-content: center; gap: 8px;
-    background: radial-gradient(circle at 50% 44%, rgba(245,215,95,.10), transparent 42%),
-      var(--warm-yellow);
-    background-image: radial-gradient(circle at 50% 44%, rgba(245,215,95,.10), transparent 42%),
+    background-image: linear-gradient(180deg, #fdf4d7, #f8ecca),
       radial-gradient(rgba(90,143,90,.035) 1px, transparent 1px);
-    background-size: 100% 100%, 22px 22px; }
+    background-size: 100% 100%, 22px 22px;
+    background-color: #f8ecca; }
   .intro[hidden] { display: none; }
   .intro-open { background: none; border: none; padding: 24px; cursor: pointer;
     font-family: inherit; -webkit-tap-highlight-color: transparent; border-radius: 24px; }
@@ -220,25 +221,7 @@
   </button>
 </div>
 
-<!-- 底层虚化光晕 -->
-<svg class="bg-blooms" viewBox="0 0 640 900" preserveAspectRatio="xMidYMin slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-  <defs>
-    <radialGradient id="softWhite" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#ffffff" stop-opacity=".9"/><stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
-    </radialGradient>
-    <radialGradient id="softPurple" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#a8c8a8" stop-opacity=".6"/><stop offset="100%" stop-color="#a8c8a8" stop-opacity="0"/>
-    </radialGradient>
-    <radialGradient id="softYellow" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#fde68a" stop-opacity=".65"/><stop offset="100%" stop-color="#fde68a" stop-opacity="0"/>
-    </radialGradient>
-  </defs>
-  <circle cx="70" cy="130" r="140" fill="url(#softWhite)"/>
-  <circle cx="590" cy="230" r="150" fill="url(#softPurple)"/>
-  <circle cx="90" cy="520" r="140" fill="url(#softYellow)"/>
-  <circle cx="580" cy="650" r="150" fill="url(#softWhite)"/>
-  <circle cx="320" cy="870" r="160" fill="url(#softPurple)"/>
-</svg>
+
 
 <!-- 背景花园:可复用的手绘花草 -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
