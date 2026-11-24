@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>给老婆的生日礼物</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: linear-gradient(180deg, #fff1f2 0%, #ffe4e6 45%, #fff7ed 100%);
+    color: #44403c; line-height: 1.8; }
+  .wrap { max-width: 640px; margin: 0 auto; padding: 0 20px 64px; }
+  header { text-align: center; padding: 72px 0 32px; }
+  header .heart { font-size: 44px; }
+  h1 { font-size: 28px; color: #be123c; margin: 12px 0 8px; letter-spacing: 2px; }
+  header p { color: #78716c; font-size: 15px; }
+  section { background: rgba(255,255,255,.85); border-radius: 20px; padding: 24px 22px;
+    margin-bottom: 20px; box-shadow: 0 4px 20px rgba(190,18,60,.08); }
+  section h2 { font-size: 19px; color: #be123c; margin-bottom: 6px; }
+  section h2 span { font-size: 14px; color: #a8a29e; margin-left: 6px; }
+  .date { font-size: 22px; font-weight: 700; color: #292524; letter-spacing: 1px; }
+  .note { color: #78716c; font-size: 14px; margin-top: 4px; }
+  .letter p { text-indent: 2em; margin-bottom: 12px; }
+  .placeholder { color: #a8a29e; }
+  /* 愿望卡：点一下翻开 */
+  .wish { text-align: center; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .wish .card { background: linear-gradient(135deg, #fb7185, #f59e0b); color: #fff;
+    border-radius: 16px; padding: 36px 20px; min-height: 180px;
+    display: flex; flex-direction: column; justify-content: center; }
+  .wish .card .front { font-size: 20px; font-weight: 700; }
+  .wish .card .back { display: none; font-size: 17px; }
+  .wish.open .card .front { display: none; }
+  .wish.open .card .back { display: block; }
+  .wish .hint { margin-top: 10px; font-size: 13px; color: #78716c; }
+  footer { text-align: center; color: #a8a29e; font-size: 13px; padding-top: 8px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="heart">💗</div>
+    <h1>生日快乐，老婆</h1>
+    <p>不用寄东西，这份心意，点开就能看到。</p>
+  </header>
+
+  <section>
+    <h2>🌱 我们认识的那一天 <span>认识时间</span></h2>
+    <div class="date">____年____月____日</div>
+    <p class="note">那一天的故事，写在这里：<span class="placeholder">（Hana 待填：你们怎么认识的，一句话就好）</span></p>
+  </section>
+
+  <section>
+    <h2>💍 在一起的纪念日 <span>纪念日</span></h2>
+    <div class="date">____年____月____日</div>
+    <p class="note">从那天起，到今天已经 <span class="placeholder">____</span> 天啦。</p>
+  </section>
+
+  <section>
+    <h2>🎂 她的生日 <span>今天</span></h2>
+    <div class="date">____月____日</div>
+    <p class="note">异地也没关系，0 点的祝福准时到，生日这一天，分三次想你：早上、中午、睡前。</p>
+  </section>
+
+  <section class="letter">
+    <h2>💌 我写给你的长信</h2>
+    <p><span class="placeholder">（Hana 待填：告诉 Muse 几个想对她说的话，就能帮你写成信。
+    比如：异地这一年最想她的时刻、距离教会了你什么、下次见面最想一起做的事。）</span></p>
+  </section>
+
+  <section class="wish" onclick="this.classList.toggle('open')">
+    <h2>🎁 最后，一张愿望卡 <span>点一下翻开</span></h2>
+    <div class="card">
+      <div class="front">点我，打开你的愿望 ✨</div>
+      <div class="back">____<br><span style="font-size:14px;opacity:.9">（Hana 待填：写一个能兑现的愿望，比如“下次见面陪你去____”）<br>这张卡，下次见面就能兑现。</span></div>
+    </div>
+    <p class="hint">这张愿望卡是真的，不是客套话。</p>
+  </section>
+
+  <footer>—— 爱你的 Hana ——</footer>
+</div>
+</body>
+</html>
