@@ -35,20 +35,20 @@
   .slide-likes.in .likes h2 { animation: slide-in .55s cubic-bezier(0.16,1,0.3,1) backwards; }
   .slide-likes.in .chip { animation: slide-in .5s cubic-bezier(0.16,1,0.3,1) backwards; }
   /* 底部分页点 + 下一页 */
-  .deck-nav { position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); z-index: 9;
-    display: flex; align-items: center; gap: 12px; padding: 8px 14px;
+  .deck-nav { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); z-index: 9;
+    display: flex; align-items: center; gap: 14px; padding: 9px 16px;
     background: rgba(255,253,248,.94); border: 1px solid rgba(90,143,90,.25);
     border-radius: 999px; box-shadow: 0 4px 10px rgba(90,143,90,.20); }
   .dots { display: flex; }
-  .dot { width: 20px; height: 20px; padding: 6px; border: none; border-radius: 999px;
+  .dot { width: 26px; height: 30px; padding: 11px 6px; border: none; border-radius: 999px;
     background: transparent; cursor: pointer; }
-  .dot::after { content: ""; display: block; width: 8px; height: 8px; border-radius: 999px;
-    background: rgba(90,143,90,.45); transition: background .3s, transform .3s; }
-  .dot.on::after { background: var(--meadow-deep); transform: scale(1.3); }
+  .dot::after { content: ""; display: block; width: 14px; height: 8px; border-radius: 999px;
+    background: rgba(90,143,90,.45); transition: background .3s, width .3s; }
+  .dot.on::after { background: var(--meadow-deep); width: 26px; }
   .dot:focus-visible { outline: 2px dashed rgba(90,143,90,.55); outline-offset: 1px; }
   .deck-next { border: none; background: var(--meadow-deep); color: var(--cloth);
-    font-family: inherit; font-size: 14px; font-weight: 600; letter-spacing: .06em;
-    padding: 7px 16px; border-radius: 999px; cursor: pointer; white-space: nowrap;
+    font-family: inherit; font-size: 15px; font-weight: 600; letter-spacing: .06em;
+    padding: 10px 18px; border-radius: 999px; cursor: pointer; white-space: nowrap;
     transition: opacity .3s, transform .5s ease-in-out; }
   .deck-next:hover { transform: translateY(-2px) rotate(.8deg); }
   .deck-next:focus-visible { outline: 2px dashed rgba(90,143,90,.55); outline-offset: 3px; }
@@ -62,9 +62,9 @@
   /* 她喜欢的小世界 */
   .likes { text-align: center; }
   .likes h2 { font-size: 15px; color: var(--meadow-deep); letter-spacing: 4px; margin-bottom: 12px; font-weight: 600; }
-  .chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .chips { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
   .chip { background: var(--lighter-cloth); border: 1px solid rgba(90,143,90,.18); border-radius: 999px;
-    padding: 5px 14px; font-size: 14px; color: #5a524a; box-shadow: 0 2px 6px rgba(90,143,90,.12);
+    padding: 8px 16px; font-size: 15px; line-height: 1.5; color: #5a524a; box-shadow: 0 2px 6px rgba(90,143,90,.12);
     transition: transform .5s ease-in-out, box-shadow .5s ease-in-out; }
   .chip:hover { transform: translateY(-2px) rotate(.8deg); box-shadow: 0 8px 20px rgba(90,143,90,.30); }
   .chip b { color: var(--meadow-deep); font-weight: 600; }
@@ -77,7 +77,7 @@
     border-top: 2px dashed rgba(90,143,90,.28); } /* 手缝的边 */
   section h2 { font-size: 19px; color: var(--meadow-deep); margin-bottom: 8px; font-weight: 600;
     padding-right: 68px; } /* 给右上角花饰让位,避免标题撞装饰 */
-  section h2 span { display: block; font-size: 14px; color: var(--muted); margin: 2px 0 0; font-weight: 400; }
+  section h2 span { display: block; font-size: 15px; color: var(--muted); margin: 3px 0 0; font-weight: 400; }
   .corner { position: absolute; top: 14px; right: 16px; width: 78px; height: 56px; opacity: .96; pointer-events: none; }
   .date { font-size: 22px; font-weight: 700; color: var(--ink); letter-spacing: 1px; }
   .note { color: var(--muted); font-size: 14px; margin-top: 4px; }
