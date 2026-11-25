@@ -36,11 +36,13 @@
   .slide-likes.in > .likes { animation: none; }
   .slide-likes.in .likes h2 { animation: slide-in .55s cubic-bezier(0.16,1,0.3,1) backwards; }
   .slide-likes.in .chip { animation: slide-in .5s cubic-bezier(0.16,1,0.3,1) backwards; }
-  /* 她喜欢的小世界:两角的小动图(引用仓库文件) */
-  .world-gif { position: absolute; top: 14px; width: 110px; height: 110px; opacity: .95;
-    border-radius: 22px; box-shadow: 0 4px 12px rgba(109,90,138,.18); }
-  .gif-tl { left: 12px; }
-  .gif-tr { right: 12px; }
+  /* 她喜欢的小世界:两角的小照片(拍立得相框,手放的轻微倾斜) */
+  .world-gif { position: absolute; top: 18px; width: 104px; height: 104px;
+    padding: 7px; background: #fffdf8; border-radius: 14px;
+    box-shadow: 0 6px 16px rgba(109,90,138,.20); opacity: .96;
+    filter: sepia(.12) saturate(.95); }
+  .gif-tl { left: 8px; transform: rotate(-4deg); }
+  .gif-tr { right: 8px; transform: rotate(4deg); }
   /* 背景花园:页角花草,进入视野才轻轻摆动 */
   .bloom { position: absolute; width: 44px; height: 44px; opacity: .62; pointer-events: none;
     transform: rotate(var(--r, 0deg)); }
