@@ -80,12 +80,23 @@
   .wave { width: 100%; height: 26px; display: block; margin: 2px 0 14px; }
   /* 她喜欢的小世界 */
   .likes { text-align: center; }
-  .likes h2 { font-size: 17px; font-style: italic; color: #6d5a8a; letter-spacing: .14em; margin-bottom: 14px; font-weight: 600; }
+  .likes h2 { font-size: 26px; font-family: 'Kaiti SC', 'STKaiti', 'KaiTi', '楷体', Georgia, serif;
+    color: #4f4066; letter-spacing: .12em; margin-bottom: 16px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; gap: 10px; }
+  .likes h2 .fx { width: 22px; height: 24px; flex: none; }
   .chips { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
   .chip { background: #f1ecf7; border: 1px solid rgba(143,122,168,.28); border-radius: 999px;
-    padding: 8px 16px; font-size: 15px; font-style: italic; letter-spacing: .04em;
-    line-height: 1.5; color: #453d38; box-shadow: 0 2px 6px rgba(109,90,138,.14);
+    padding: 8px 16px; font-size: 16px; letter-spacing: .06em; line-height: 1.5; color: #453d38;
+    font-family: 'Kaiti SC', 'STKaiti', 'KaiTi', '楷体', Georgia, serif;
+    box-shadow: 0 2px 6px rgba(109,90,138,.14); cursor: pointer;
     transition: transform .5s ease-in-out, box-shadow .5s ease-in-out; }
+  .chip-add { background: transparent; border: 1.5px dashed rgba(109,90,138,.45); color: #6d5a8a;
+    font-size: 18px; line-height: 1; padding: 9px 14px; }
+  .chip-input { font: inherit; font-family: inherit; font-size: 15px; color: #453d38;
+    background: #fffdf8; border: 1.5px solid #6d5a8a; border-radius: 999px;
+    padding: 7px 14px; width: 8.5em; outline: none; }
+  .chip-del { background: rgba(109,90,138,.15); border: none; border-radius: 999px; color: #6d5a8a;
+    font-size: 13px; width: 30px; height: 30px; cursor: pointer; }
   .chip:hover { transform: translateY(-2px) rotate(.8deg); box-shadow: 0 8px 20px rgba(109,90,138,.28); }
   .chip b { color: #6d5a8a; font-weight: 600; }
   section { position: relative; background: #f1ecf7; border: 1px solid rgba(143,122,168,.25);
@@ -520,7 +531,7 @@
   <svg class="bloom" style="left:56px;bottom:240px;width:26px;height:26px;opacity:.5;--r:8deg;--d:-1s" viewBox="-22 -26 44 52" aria-hidden="true"><use href="#lavsp"/></svg>
   <!-- 她喜欢的小世界 -->
   <div class="likes">
-    <h2>老婆喜欢的小世界</h2>
+    <h2><svg class="fx" viewBox="-16 -18 32 36" aria-hidden="true"><use href="#fleurP"/></svg>老婆喜欢的小世界<svg class="fx" viewBox="-16 -18 32 36" aria-hidden="true"><use href="#fleurR"/></svg></h2>
     <div class="chips">
       <span class="chip">🧸 玩偶</span>
       <span class="chip">🍑 桃子</span>
@@ -812,6 +823,77 @@
   };
   tick();
   setInterval(tick, 1000);
+})();
+(function () {
+  /* 小标签在线增删改:＋ 添加,点标签改字(回车保存),✕ 删除;保存在本机浏览器(localStorage) */
+  var box = document.querySelector('.chips');
+  if (!box) return;
+  var KEY = 'likes-chips-v1';
+  var esc = function (s) { return s.replace(/[<>&]/g, function (c) { return { '<': '&lt;', '>': '&gt;', '&': '&amp;' }[c]; }); };
+  var makeChip = function (html) {
+    var s = document.createElement('span');
+    s.className = 'chip';
+    s.innerHTML = html;
+    return s;
+  };
+  var setDelays = function () {
+    var i = 0;
+    box.querySelectorAll('.chip').forEach(function (c) { c.style.animationDelay = Math.min(i++ * 30, 360) + 'ms'; });
+  };
+  var save = function () {
+    var items = [].map.call(box.querySelectorAll('.chip:not(.chip-add)'), function (c) { return c.innerHTML; });
+    try { localStorage.setItem(KEY, JSON.stringify(items)); } catch (e) {}
+  };
+  var addBtn = document.createElement('button');
+  addBtn.type = 'button';
+  addBtn.className = 'chip chip-add';
+  addBtn.textContent = '＋';
+  addBtn.setAttribute('aria-label', '添加小标签');
+  box.appendChild(addBtn);
+  var editing = false;
+  var edit = function (chip) {
+    if (editing) return;
+    editing = true;
+    var input = document.createElement('input');
+    input.className = 'chip-input';
+    input.value = chip ? chip.textContent.trim() : '';
+    input.setAttribute('aria-label', '输入小标签文字');
+    input.placeholder = '比如：挠手掌心';
+    var del = document.createElement('button');
+    del.type = 'button';
+    del.className = 'chip-del';
+    del.textContent = '✕';
+    del.setAttribute('aria-label', '删除这个小标签');
+    if (chip) chip.replaceWith(input); else box.insertBefore(input, addBtn);
+    input.after(del);
+    input.focus();
+    var skipBlur = false;
+    var finish = function (keep) {
+      if (!editing) return;
+      editing = false;
+      var v = input.value.trim();
+      if (keep && v) input.replaceWith(makeChip(esc(v)));
+      del.remove();
+      if (input.parentNode) input.remove();
+      save(); setDelays();
+    };
+    input.addEventListener('keydown', function (e) { if (e.key === 'Enter') finish(true); });
+    input.addEventListener('blur', function () { if (!skipBlur) finish(true); });
+    del.addEventListener('pointerdown', function () { skipBlur = true; });
+    del.addEventListener('click', function () { skipBlur = true; finish(false); });
+  };
+  box.addEventListener('click', function (e) {
+    if (e.target.closest('.chip-add')) { edit(null); return; }
+    var c = e.target.closest('.chip');
+    if (c) edit(c);
+  });
+  var saved = null;
+  try { saved = JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) {}
+  if (Array.isArray(saved)) {
+    box.querySelectorAll('.chip').forEach(function (c) { if (!c.classList.contains('chip-add')) c.remove(); });
+    saved.forEach(function (html) { box.insertBefore(makeChip(html), addBtn); });
+  }
+  setDelays();
 })();
 </script>
 </body>
