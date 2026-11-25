@@ -135,19 +135,52 @@
     transition: max-height .6s cubic-bezier(0.16,1,0.3,1), opacity .5s ease .1s, transform .5s cubic-bezier(0.16,1,0.3,1); }
   .story.show { max-height: 200px; opacity: 1; transform: none; }
   .story p { margin-top: 14px; font-size: 17px; line-height: 1.9; color: var(--ink); }
+  /* 长信页:小信封 + 可滚动的信纸子页 */
+  .letter-scene { position: relative; margin: 16px auto 0; width: min(230px, 68%); }
+  .env-btn { display: block; width: 100%; background: none; border: none; padding: 0; cursor: pointer;
+    -webkit-tap-highlight-color: transparent; font-family: inherit; }
+  .env-btn:focus-visible { outline: 2px dashed rgba(109,90,138,.55); outline-offset: 6px; border-radius: 14px; }
+  .env2 { width: 100%; display: block; overflow: visible;
+    filter: drop-shadow(0 6px 14px rgba(109,90,138,.22)); }
+  .env2-flap { transform-box: view-box; transform-origin: 150px 50px;
+    transition: transform .65s cubic-bezier(0.16,1,0.3,1); }
+  .env2-seal { transform-box: view-box; transform-origin: 150px 130px;
+    transition: opacity .3s ease, transform .3s ease; }
+  .letter.open .env2-flap { transform: rotateX(180deg); }
+  .letter.open .env2-seal { opacity: 0; transform: scale(.7); }
+  .env-hint { display: block; margin-top: 10px; font-size: 15px; font-weight: 600;
+    letter-spacing: .12em; color: #6d5a8a; }
+  .petals { position: absolute; left: 50%; top: 45%; width: 0; height: 0; pointer-events: none; }
+  .petal { position: absolute; width: 26px; height: 26px; margin: -13px; opacity: 0; }
+  .petal svg { width: 100%; height: 100%; }
+  @keyframes petal-fly {
+    0% { opacity: 0; transform: translate(0,0) rotate(0) scale(.3); }
+    20% { opacity: 1; }
+    100% { opacity: 0; transform: translate(var(--x,0), var(--y,-60px)) rotate(var(--r,20deg)) scale(1); }
+  }
+  .letter.open .petal { animation: petal-fly .95s ease-out .12s both; }
+  .letter.open .petal:nth-child(2n) { animation-delay: .2s; }
+  .letter.open .petal:nth-child(3n) { animation-delay: .28s; }
+  .letter-sheet { position: fixed; left: 14px; right: 14px; top: 14px; bottom: 14px; z-index: 12;
+    background: #fffdf8; border: 1.5px dashed rgba(143,122,168,.4); border-radius: 22px;
+    box-shadow: 0 10px 30px rgba(109,90,138,.25);
+    opacity: 0; visibility: hidden; transform: translateY(24px) scale(.97); transform-origin: 50% 12%;
+    transition: opacity .5s ease .05s, transform .6s cubic-bezier(0.16,1,0.3,1) .05s, visibility 0s .65s;
+    overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 28px 22px 44px; }
+  .letter-sheet.open { opacity: 1; visibility: visible; transform: none;
+    transition: opacity .5s ease .3s, transform .6s cubic-bezier(0.16,1,0.3,1) .3s, visibility 0s .3s; }
+  .sheet-close { position: sticky; top: 0; float: right; width: 34px; height: 34px; border-radius: 999px;
+    border: none; background: rgba(109,90,138,.12); color: #6d5a8a; font-size: 15px; cursor: pointer; }
+  .sheet-close:focus-visible { outline: 2px dashed rgba(109,90,138,.55); outline-offset: 2px; }
+  .sheet-inner { clear: both; }
+  .sheet-head { font-family: 'Kaiti SC', 'STKaiti', 'KaiTi', '楷体', Georgia, serif;
+    font-size: 22px; font-weight: 700; color: #4f4066; letter-spacing: .2em; margin-bottom: 14px; }
+  .sheet-inner p { margin-bottom: 14px; line-height: 1.95; text-indent: 2em; }
+  .sheet-inner .placeholder { text-indent: 0; }
   .letter p { text-indent: 2em; margin-bottom: 12px; }
   .placeholder { color: var(--muted); }
   /* 挠手掌心：草甸绿按钮 */
-  .palm { display: inline-block; margin-top: 6px; border: none; background: #6d5a8a; color: var(--cloth);
-    border-radius: 999px; padding: 12px 32px; font-size: 15px; font-weight: 600; cursor: pointer;
-    font-family: inherit; -webkit-tap-highlight-color: transparent;
-    box-shadow: 0 4px 10px rgba(109,90,138,.25);
-    transition: transform .5s ease-in-out, box-shadow .5s ease-in-out; }
-  .palm:hover { transform: translateY(-2px) rotate(.8deg); box-shadow: 0 8px 20px rgba(109,90,138,.30); }
-  .palm:active { transform: rotate(0) scale(.97); box-shadow: 0 2px 6px rgba(109,90,138,.20); }
-  .palm-msg { display: none; margin-top: 10px; color: #75604a; font-size: 15px; }
-  .palm-msg.show { display: block; }
-  /* 愿望卡：点一下翻开 */
+    /* 愿望卡：点一下翻开 */
   .wish { text-align: center; cursor: pointer; -webkit-tap-highlight-color: transparent; }
   .wish .card { background: linear-gradient(135deg, #7a63a0, #54407a); color: var(--cloth);
     border-radius: 24px; padding: 40px 24px; min-height: 180px;
@@ -196,8 +229,11 @@
     .intro { background-color: var(--warm-yellow); }
   }
   @media (prefers-reduced-motion: reduce) {
-    .chip, .palm, section { transition: none; }
-    .chip:hover, .palm:hover, section:hover, .palm:active { transform: none; }
+    .chip, section { transition: none; }
+    .chip:hover, section:hover { transform: none; }
+    .env2-flap, .env2-seal { transition: none; }
+    .letter.open .petal { animation: none; }
+    .letter-sheet { transition: none; }
     .envelope, .intro-hint, .seal { animation: none; }
     /* 减弱动效:保留信封,点开后瞬时切换,只做 200ms 透明度过渡 */
     .intro.opening { transition: opacity .2s ease; }
@@ -667,10 +703,30 @@
       <use href="#fleurR" transform="translate(65,32) scale(.62)"/>
     </svg>
     <h2>💌 我写给你的长信</h2>
-    <p><span class="placeholder">（Hana 待填：告诉 Muse 几个想对她说的话，就能帮你写成信。
-    比如：异地这一年最想她的时刻、距离教会了你什么、下次见面最想一起做的事。）</span></p>
-    <button class="palm" onclick="var m=this.nextElementSibling; m.classList.toggle('show'); this.textContent = m.classList.contains('show') ? '🤲 再挠一下' : '🤲 挠挠手掌心';">🤲 挠挠手掌心</button>
-    <p class="palm-msg">痒痒的……最想你了。下次见面，先挠手掌心，再抱抱。</p>
+    <div class="letter-scene">
+      <button class="env-btn" type="button" aria-label="打开这封信" aria-expanded="false">
+        <svg class="env2" viewBox="0 0 300 210" aria-hidden="true">
+          <rect x="10" y="50" width="280" height="150" rx="12" fill="#fffdf8" stroke="rgba(143,122,168,.45)" stroke-width="2" stroke-dasharray="6 4"/>
+          <path d="M10,50 L150,150 L290,50 Z" class="env2-flap" fill="#f2ede2" stroke="rgba(143,122,168,.4)" stroke-width="2" stroke-dasharray="6 4"/>
+          <g class="env2-seal">
+            <circle cx="150" cy="130" r="20" fill="#d4a0a0" stroke="#a57070" stroke-width="1.5"/>
+            <circle cx="150" cy="130" r="15.5" fill="none" stroke="rgba(255,253,248,.55)" stroke-width="1.5" stroke-dasharray="3 3"/>
+            <path d="M150,124 c-4,-5.5 -11,-2 -11,3.5 c0,5.5 6.5,7.5 11,11 c4.5,-3.5 11,-5.5 11,-11 c0,-5.5 -7,-9 -11,-3.5 Z" fill="#fffdf8"/>
+          </g>
+        </svg>
+        <span class="env-hint">点开这封信</span>
+      </button>
+      <div class="petals" aria-hidden="true">
+        <span class="petal" style="--x:-70px;--y:-40px;--r:-30deg"><svg viewBox="-16 -18 32 36"><use href="#fleurP"/></svg></span>
+        <span class="petal" style="--x:-40px;--y:-72px;--r:-10deg"><svg viewBox="-16 -18 32 36"><use href="#fleurR"/></svg></span>
+        <span class="petal" style="--x:-5px;--y:-88px;--r:15deg"><svg viewBox="-16 -18 32 36"><use href="#daisy"/></svg></span>
+        <span class="petal" style="--x:42px;--y:-70px;--r:25deg"><svg viewBox="-16 -18 32 36"><use href="#fleurR"/></svg></span>
+        <span class="petal" style="--x:70px;--y:-38px;--r:35deg"><svg viewBox="-16 -18 32 36"><use href="#fleurP"/></svg></span>
+        <span class="petal" style="--x:-76px;--y:12px;--r:-40deg"><svg viewBox="-16 -18 32 36"><use href="#daisy"/></svg></span>
+        <span class="petal" style="--x:76px;--y:12px;--r:40deg"><svg viewBox="-16 -18 32 36"><use href="#fleurR"/></svg></span>
+        <span class="petal" style="--x:0px;--y:-98px;--r:0deg"><svg viewBox="-16 -18 32 36"><use href="#fleurP"/></svg></span>
+      </div>
+    </div>
   </section>
   </div>
 
@@ -725,6 +781,15 @@
   <div class="dots" id="dots"></div>
   <button class="deck-next" id="deckNext" type="button" aria-label="下一页"><svg class="sprig-ico" viewBox="-14 -14 28 28" aria-hidden="true"><use href="#leaf3d"/></svg>NEXT</button>
 </nav>
+    <div class="letter-sheet" role="dialog" aria-modal="true" aria-label="长信内容" tabindex="-1">
+      <button class="sheet-close" type="button" aria-label="收起信纸">✕</button>
+      <div class="sheet-inner">
+        <p class="sheet-head">致 老婆</p>
+        <p class="placeholder">（Hana 待填：在这里写你的长信——想写多长都行，信纸会自己滚动。
+        比如：异地这一年最想她的时刻、距离教会了你什么、下次见面最想一起做的事。）</p>
+      </div>
+    </div>
+
 <script>
 (function () {
   var intro = document.getElementById('intro');
@@ -829,6 +894,35 @@
   var box = document.querySelector('.chips');
   if (!box) return;
   var KEY = 'likes-chips-v1';
+  /* Supabase 云端存储:注册 supabase.com 建好表后,把下面两项填上,标签即全设备共享 */
+  var SB_URL = ''; /* 形如 https://abcdxyz.supabase.co */
+  var SB_KEY = ''; /* anon public key(公开可用的那个) */
+  var remote = !!(SB_URL && SB_KEY);
+  var sbHeaders = function () {
+    return { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json' };
+  };
+  var loadRemote = function () {
+    if (!remote) return;
+    fetch(SB_URL + '/rest/v1/likes?select=text&order=id.asc',
+      { headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY } })
+      .then(function (r) { return r.ok ? r.json() : []; })
+      .then(function (rows) {
+        if (!rows.length) return;
+        box.querySelectorAll('.chip').forEach(function (c) { if (!c.classList.contains('chip-add')) c.remove(); });
+        rows.forEach(function (row) { box.insertBefore(makeChip(esc(String(row.text))), addBtn); });
+        setDelays();
+      })
+      .catch(function () {});
+  };
+  var pushRemote = function (items) {
+    if (!remote) return;
+    fetch(SB_URL + '/rest/v1/likes?id=gte.0', { method: 'DELETE', headers: sbHeaders() })
+      .then(function () {
+        return fetch(SB_URL + '/rest/v1/likes', { method: 'POST', headers: sbHeaders(),
+          body: JSON.stringify(items.map(function (t) { return { text: t }; })) });
+      })
+      .catch(function () {});
+  };
   var esc = function (s) { return s.replace(/[<>&]/g, function (c) { return { '<': '&lt;', '>': '&gt;', '&': '&amp;' }[c]; }); };
   var makeChip = function (html) {
     var s = document.createElement('span');
@@ -843,6 +937,7 @@
   var save = function () {
     var items = [].map.call(box.querySelectorAll('.chip:not(.chip-add)'), function (c) { return c.innerHTML; });
     try { localStorage.setItem(KEY, JSON.stringify(items)); } catch (e) {}
+    pushRemote(items.map(function (h) { var d = document.createElement('div'); d.innerHTML = h; return d.textContent.trim(); }));
   };
   var addBtn = document.createElement('button');
   addBtn.type = 'button';
@@ -894,7 +989,35 @@
     saved.forEach(function (html) { box.insertBefore(makeChip(html), addBtn); });
   }
   setDelays();
+  loadRemote();
+})();
+(function () {
+  /* 长信:打开信封 -> 信纸子页(可滚动),关闭恢复 */
+  var sec = document.querySelector('section.letter');
+  if (!sec) return;
+  var btn = sec.querySelector('.env-btn');
+  var sheet = document.querySelector('.letter-sheet');
+  var closeBtn = document.querySelector('.sheet-close');
+  var open = function () {
+    sec.classList.add('open');
+    sheet.classList.add('open');
+    btn.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+    sheet.focus();
+  };
+  var close = function () {
+    sec.classList.remove('open');
+    sheet.classList.remove('open');
+    btn.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  };
+  btn.addEventListener('click', open);
+  closeBtn.addEventListener('click', close);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && sec.classList.contains('open')) close();
+  });
 })();
 </script>
+
 </body>
 </html>
