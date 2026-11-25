@@ -204,7 +204,12 @@
   .intro[hidden] { display: none; }
   .intro-open { background: none; border: none; padding: 24px; cursor: pointer;
     font-family: inherit; -webkit-tap-highlight-color: transparent; border-radius: 24px; }
+  .intro-open { position: relative; }
   .intro-open:focus-visible { outline: 2px dashed rgba(90,143,90,.55); outline-offset: 8px; }
+  .intro-halo { position: absolute; left: 50%; top: 45%; width: 300px; height: 300px; margin: -150px;
+    border-radius: 50%; pointer-events: none; opacity: 0;
+    background: radial-gradient(circle, rgba(245,215,95,.55), rgba(245,215,95,0) 62%); }
+  .intro-petals { position: absolute; left: 50%; top: 46%; width: 0; height: 0; pointer-events: none; z-index: 3; }
   .envelope { width: min(78vw, 300px); display: block; overflow: visible;
     filter: drop-shadow(0 8px 20px rgba(90,143,90,.25));
     animation: rise .55s cubic-bezier(0.16,1,0.3,1) both; }
@@ -212,15 +217,22 @@
     margin: 0 0 64px; animation: rise .5s cubic-bezier(0.16,1,0.3,1) .22s both; }
   .flap, .letter, .seal { transform-box: view-box; }
   .flap { transform-origin: 150px 62px; }
+  .letter { transform-origin: 150px 160px; }
   .seal { transform-origin: 150px 150px; animation: breathe 2.2s ease-in-out 1s 4 alternate; }
   @keyframes breathe { from { transform: scale(1); } to { transform: scale(1.06); } }
-  .intro.opening { pointer-events: none; opacity: 0; transition: opacity .6s ease .95s; }
+  .intro.opening { pointer-events: none; opacity: 0; transition: opacity .9s ease 1.85s; }
   .intro.opening .envelope, .intro.opening .intro-hint, .intro.opening .seal { animation: none; }
-  .intro.opening .seal { opacity: 0; transform: scale(.75); transition: opacity .25s ease, transform .25s ease; }
+  .intro.opening .seal { opacity: 0; transform: scale(.7) rotate(-12deg); transition: opacity .45s ease, transform .45s ease; }
   .intro.opening .flap { transform: rotateX(180deg); opacity: 0; /* 翻起后淡出,让信纸穿过 */
-    transition: transform .7s cubic-bezier(0.16,1,0.3,1) .15s, opacity .25s ease .6s; }
-  .intro.opening .letter { transform: translateY(-100px);
-    transition: transform .55s cubic-bezier(0.16,1,0.3,1) .62s; }
+    transition: transform 1s cubic-bezier(0.16,1,0.3,1) .3s, opacity .5s ease 1s; }
+  .intro.opening .letter { transform: translateY(-130px) scale(1.12);
+    transition: transform .85s cubic-bezier(0.16,1,0.3,1) .75s; }
+  .intro.opening .intro-hint { opacity: 0; transition: opacity .4s ease; }
+  .intro.opening .intro-halo { opacity: 1; transform: scale(1.25);
+    transition: opacity .9s ease .6s, transform 1.3s ease .6s; }
+  .intro.opening .petal { animation: petal-fly 1.2s ease-out 1s both; }
+  .intro.opening .petal:nth-child(2n) { animation-delay: 1.12s; }
+  .intro.opening .petal:nth-child(3n) { animation-delay: 1.22s; }
   /* 揭幕由遮罩淡出承担,抬头内容不再单独入场 */
   @keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
   /* 深色模式:保持同一套暖黄,不做反转(显式浅色样式可阻止强制深色) */
@@ -232,7 +244,8 @@
     .chip, section { transition: none; }
     .chip:hover, section:hover { transform: none; }
     .env2-flap, .env2-seal { transition: none; }
-    .letter.open .petal { animation: none; }
+    .letter.open .petal, .intro.opening .petal { animation: none; }
+    .intro.opening .intro-halo { transition: none; }
     .letter-sheet { transition: none; }
     .envelope, .intro-hint, .seal { animation: none; }
     /* 减弱动效:保留信封,点开后瞬时切换,只做 200ms 透明度过渡 */
@@ -251,6 +264,19 @@
 <!-- 开场:拆信 -->
 <div class="intro" id="intro" hidden>
   <button class="intro-open" type="button" aria-label="拆开给老婆的生日信">
+    <div class="intro-halo" aria-hidden="true"></div>
+    <div class="intro-petals" aria-hidden="true">
+      <span class="petal" style="--x:-90px;--y:-60px;--r:-35deg"><svg viewBox="-16 -18 32 36"><use href="#fleurP"/></svg></span>
+      <span class="petal" style="--x:-55px;--y:-95px;--r:-12deg"><svg viewBox="-16 -18 32 36"><use href="#fleurR"/></svg></span>
+      <span class="petal" style="--x:-10px;--y:-115px;--r:10deg"><svg viewBox="-16 -18 32 36"><use href="#daisy"/></svg></span>
+      <span class="petal" style="--x:40px;--y:-100px;--r:22deg"><svg viewBox="-16 -18 32 36"><use href="#fleurR"/></svg></span>
+      <span class="petal" style="--x:85px;--y:-65px;--r:38deg"><svg viewBox="-16 -18 32 36"><use href="#fleurP"/></svg></span>
+      <span class="petal" style="--x:-105px;--y:-5px;--r:-48deg"><svg viewBox="-16 -18 32 36"><use href="#daisy"/></svg></span>
+      <span class="petal" style="--x:105px;--y:-5px;--r:48deg"><svg viewBox="-16 -18 32 36"><use href="#fleurR"/></svg></span>
+      <span class="petal" style="--x:-70px;--y:35px;--r:-60deg"><svg viewBox="-16 -18 32 36"><use href="#fleurP"/></svg></span>
+      <span class="petal" style="--x:70px;--y:35px;--r:60deg"><svg viewBox="-16 -18 32 36"><use href="#daisy"/></svg></span>
+      <span class="petal" style="--x:0px;--y:-125px;--r:0deg"><svg viewBox="-16 -18 32 36"><use href="#fleurP"/></svg></span>
+    </div>
     <svg class="envelope" viewBox="0 0 300 250" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <!-- 信纸(藏在信封里,拆开时升起) -->
       <g class="letter">
@@ -804,7 +830,7 @@
     intro.addEventListener('transitionend', function (e) {
       if (e.target === intro && e.propertyName === 'opacity') intro.remove(); /* 淡出结束当场移除,不留隐形窗口 */
     });
-    setTimeout(function () { if (intro.parentNode) intro.remove(); }, 2600); /* 兜底:transitionend 未触发时 */
+    setTimeout(function () { if (intro.parentNode) intro.remove(); }, 4200); /* 兜底:transitionend 未触发时 */
   };
   intro.addEventListener('click', open, { once: true });
   /* 不自动聚焦:避免开场就显示 focus-visible 轮廓;键盘用户 Tab 可达 */
