@@ -46,10 +46,10 @@
   /* 背景花园:页角花草,进入视野才轻轻摆动 */
   .bloom { position: absolute; width: 44px; height: 44px; opacity: .62; pointer-events: none;
     transform: rotate(var(--r, 0deg)); }
-  .slide.in .bloom { animation: sway 7s ease-in-out infinite alternate; animation-delay: var(--d, 0s); }
+  .slide.in .bloom { animation: sway 4.5s ease-in-out infinite alternate; animation-delay: var(--d, 0s); }
   @keyframes sway {
-    from { transform: rotate(calc(var(--r, 0deg) - 3deg)); }
-    to { transform: rotate(calc(var(--r, 0deg) + 3deg)); }
+    from { transform: rotate(calc(var(--r, 0deg) - 5deg)) translateY(0); }
+    to { transform: rotate(calc(var(--r, 0deg) + 5deg)) translateY(-4px); }
   }
   /* 底部分页点 + 下一页 */
   .deck-nav { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); z-index: 9;
