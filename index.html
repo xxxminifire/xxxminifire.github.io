@@ -139,6 +139,13 @@
   .story.show::-webkit-scrollbar { width: 5px; }
   .story.show::-webkit-scrollbar-thumb { background: rgba(109,90,138,.38); border-radius: 999px; }
   .story p { margin-top: 14px; font-size: 17px; line-height: 1.9; color: var(--ink); }
+  /* 那一天的故事:展开后留在固定导航上方,按钮与正文留出呼吸间距 */
+  .slide-story { padding-bottom: 104px; }
+  .slide-story .story-btn { margin-top: 18px; }
+  .slide-story .story.show { margin-top: 16px;
+    max-height: max(96px, calc(100vh - 405px));
+    max-height: max(96px, calc(100svh - 405px)); }
+  .slide-story .story p { margin-top: 0; }
   /* 长信页:小信封 + 可滚动的信纸子页 */
   .letter-scene { position: relative; margin: 16px auto 0; width: min(230px, 68%); }
   .env-btn { display: block; width: 100%; background: none; border: none; padding: 0; cursor: pointer;
@@ -618,7 +625,7 @@
   </div>
   </div>
 
-  <div class="slide">
+  <div class="slide slide-story">
   <svg class="bloom" style="left:10px;top:5%;width:44px;height:44px;--r:5deg;--d:-2.5s" viewBox="-22 -26 44 52" aria-hidden="true"><use href="#lavsp"/></svg>
   <svg class="bloom" style="left:56px;top:11%;width:30px;height:30px;opacity:.55;--r:-6deg;--d:-1s" viewBox="-22 -26 44 52" aria-hidden="true"><use href="#lavsp"/></svg>
   <svg class="bloom" style="right:12px;top:6%;width:44px;height:44px;--r:-7deg;--d:-3.5s" viewBox="-22 -26 44 52" aria-hidden="true"><use href="#daisy"/></svg>
