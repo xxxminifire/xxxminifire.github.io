@@ -133,7 +133,11 @@
   .story-btn:focus-visible { outline: 2px dashed rgba(109,90,138,.55); outline-offset: 3px; }
   .story { max-height: 0; opacity: 0; transform: translateY(8px); overflow: hidden;
     transition: max-height .6s cubic-bezier(0.16,1,0.3,1), opacity .5s ease .1s, transform .5s cubic-bezier(0.16,1,0.3,1); }
-  .story.show { max-height: 200px; opacity: 1; transform: none; }
+  .story.show { max-height: 60vh; max-height: 60svh; opacity: 1; transform: none;
+    overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin; scrollbar-color: rgba(109,90,138,.38) transparent; }
+  .story.show::-webkit-scrollbar { width: 5px; }
+  .story.show::-webkit-scrollbar-thumb { background: rgba(109,90,138,.38); border-radius: 999px; }
   .story p { margin-top: 14px; font-size: 17px; line-height: 1.9; color: var(--ink); }
   /* 长信页:小信封 + 可滚动的信纸子页 */
   .letter-scene { position: relative; margin: 16px auto 0; width: min(230px, 68%); }
@@ -656,7 +660,7 @@
     <button class="story-btn" type="button" aria-expanded="false"
       onclick="var m=this.nextElementSibling; var o=m.classList.toggle('show'); this.setAttribute('aria-expanded', o);">🕯️ 点开那一天的故事</button>
     <div class="story">
-      <p>那一天我们都是守夜人，在同一个时间不同空间下奇妙的相遇。</p>
+      <p>那一天我们都是守夜人，在同一个时间不同空间下奇妙的相遇~我觉得缘分很奇妙,刚好那天我晚睡,然后老婆那天睡不着,在凌晨四点的时候,我们展开了第一次对话,在这里我要感谢上天给我这个缘分,让我遇到了这么好的老婆.那天有两个人加了老婆,但是老婆最终选择了我,说实话我觉得这就是奇妙的缘分,不敢想如果选择另一个人的话,会让我的人生留下太大的遗憾,结局是美好的,那天加上之后,我和老婆就开始了打电话,那时候我还不知道要和老婆说什么,我记得我说的第一句话是"那就不说话我们睡觉么?"老婆那天应该是说好,然后老婆就很快睡去了~那天老婆肯定给失眠折磨的很痛苦,所以现在庆幸,我第一天就可以给老婆安心的感觉,让老婆可以舒舒服服的睡着,这可能就是冥冥之中我们互相吸引的地方,可以让对方舒服,写到这里不得不感慨,我爱你老婆!</p>
     </div>
   </section>
   </div>
