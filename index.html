@@ -12,6 +12,11 @@
     --warm-yellow: #f8ecca; --meadow: #5a8f5a; --meadow-deep: #477547; --cloth: #faf6f0; --lighter-cloth: #fffdf8;
     --timber: #8b7355; --rose-deep: #b07575; --ink: #3d3a34; --muted: #645f55;
   }
+  /* 想对你说:本地子集字体,手写正文 + 毛笔落款,不依赖网络 */
+  @font-face { font-family: 'WenKai Heart'; src: url('assets/fonts/wenkai-heart.woff2') format('woff2');
+    font-weight: 400; font-style: normal; font-display: swap; }
+  @font-face { font-family: 'Brush Heart'; src: url('assets/fonts/brush-heart.woff2') format('woff2');
+    font-weight: 400; font-style: normal; font-display: swap; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { background: #f8ecca; }
   html, body { scroll-snap-type: y mandatory; }
@@ -122,6 +127,34 @@
   .cd .num { display: block; font-size: 23px; font-weight: 700; color: #4f4066; line-height: 1.2;
     font-variant-numeric: tabular-nums; }
   .cd .lbl { display: block; font-size: 12px; color: var(--muted); margin-top: 2px; }
+  /* 在一起的日子:想把这句话轻轻放到她面前 */
+  .vow { margin-top: 18px; padding-top: 16px; border-top: 1px dashed rgba(143,122,168,.35); }
+  .vow-label { color: #6d5a8a; font-size: 13px; letter-spacing: .18em; margin-bottom: 6px;
+    font-family: 'WenKai Heart', 'Kaiti SC', 'STKaiti', 'KaiTi', '楷体', Georgia, serif; }
+  .vow-text { margin-top: 8px; color: #453d38; font-size: clamp(17px, 4.5vw, 20px); line-height: 1.85;
+    letter-spacing: .015em; text-wrap: pretty;
+    font-family: 'WenKai Heart', 'LXGW WenKai TC', 'Kaiti SC', 'STKaiti', 'KaiTi', '楷体', Georgia, serif; }
+  .vow-sign { display: block; text-align: right; margin-top: 8px; color: #6d5a8a;
+    font-size: clamp(22px, 5.6vw, 26px); line-height: 1.5; letter-spacing: .04em;
+    font-family: 'Brush Heart', 'Ma Shan Zheng', 'Kaiti SC', 'STKaiti', 'KaiTi', '楷体', serif; }
+  @media (max-height: 700px), (max-width: 360px) {
+    .slide-anniv { padding-bottom: 80px; }
+    .slide-anniv section { padding: 20px 18px; }
+    .slide-anniv section::before { left: 20px; right: 20px; top: 10px; }
+    .slide-anniv h2 { font-size: 17px; margin-bottom: 4px; padding-right: 60px; }
+    .slide-anniv h2 span { font-size: 12px; margin-top: 2px; }
+    .slide-anniv .date { font-size: 19px; }
+    .slide-anniv .note { font-size: 12px; line-height: 1.55; margin-top: 2px; }
+    .slide-anniv .anniv { margin-top: 8px; font-size: 13px; }
+    .slide-anniv .cd { gap: 6px; margin-top: 8px; }
+    .slide-anniv .cd .unit { border-radius: 12px; padding: 6px 2px 5px; }
+    .slide-anniv .cd .num { font-size: 18px; }
+    .slide-anniv .cd .lbl { font-size: 11px; margin-top: 0; }
+    .slide-anniv .vow { margin-top: 10px; padding-top: 10px; }
+    .slide-anniv .vow-label { font-size: 12px; margin-bottom: 3px; }
+    .slide-anniv .vow-text { font-size: 15px; line-height: 1.62; letter-spacing: 0; margin-top: 5px; }
+    .slide-anniv .vow-sign { font-size: 20px; line-height: 1.35; margin-top: 4px; }
+  }
   /* 认识的那一天:薰衣草色信笺 */
     .story-btn { display: inline-block; margin-top: 10px; border: none; background: #6d5a8a; color: var(--cloth);
     border-radius: 999px; padding: 10px 24px; font-size: 15px; font-weight: 600; cursor: pointer;
@@ -672,7 +705,7 @@
   </section>
   </div>
 
-  <div class="slide">
+  <div class="slide slide-anniv">
   <svg class="bloom" style="left:10px;top:5%;width:46px;height:46px;--r:-5deg;--d:-3s" viewBox="-22 -26 44 52" aria-hidden="true"><use href="#pinwheel"/></svg>
   <svg class="bloom" style="left:58px;top:11%;width:30px;height:30px;opacity:.5;--r:6deg;--d:-1.5s" viewBox="-22 -26 44 52" aria-hidden="true"><use href="#daisy"/></svg>
   <svg class="bloom" style="right:12px;top:6%;width:48px;height:48px;--r:6deg;--d:-1s" viewBox="-22 -26 44 52" aria-hidden="true"><use href="#sunflower"/></svg>
@@ -697,6 +730,10 @@
       <div class="unit"><span class="num" id="cd-h">—</span><span class="lbl">时</span></div>
       <div class="unit"><span class="num" id="cd-m">—</span><span class="lbl">分</span></div>
       <div class="unit"><span class="num" id="cd-s">—</span><span class="lbl">秒</span></div>
+    </div>
+    <div class="vow">
+      <div class="vow-label">想对你说</div>
+      <p class="vow-text">往后的日子,我依旧会做到爱着老婆,保护着老婆,给老婆温暖,让老婆安心,然后我们携手度过每一个春夏秋冬,<span class="vow-sign">我爱你老婆!</span></p>
     </div>
   </section>
   </div>
