@@ -478,10 +478,12 @@
     background-size: 280% 100%; background-position: 170% 0; opacity: 0;
     transition: background-position .75s cubic-bezier(.16,1,.3,1), opacity .4s ease;
   }
-  .deck-next:hover::after, .chip:hover::after, .chip-add:hover::after, .chip-del:hover::after,
-  .story-btn:hover::after, .sheet-close:hover::after, .sheet-close--bottom:hover::after,
-  .bday-btn:hover:not(:disabled)::after, .intro-hint:hover::after {
-    background-position: -70% 0; opacity: .88;
+  @media (hover: hover) {
+    .deck-next:hover::after, .chip:hover::after, .chip-add:hover::after, .chip-del:hover::after,
+    .story-btn:hover::after, .sheet-close:hover::after, .sheet-close--bottom:hover::after,
+    .bday-btn:hover:not(:disabled)::after, .intro-hint:hover::after {
+      background-position: -70% 0; opacity: .88;
+    }
   }
   .deck-next:active, .chip:active, .chip-add:active, .chip-del:active, .story-btn:active,
   .sheet-close:active, .sheet-close--bottom:active, .bday-btn:not(:disabled):active { transform: scale(.97); }
@@ -499,6 +501,73 @@
       transform: none; }
     .deck-next:active, .chip:active, .chip-add:active, .chip-del:active, .story-btn:active,
     .sheet-close:active, .sheet-close--bottom:active, .bday-btn:not(:disabled):active { transform: none; }
+  }
+  /* 移动端液态玻璃:手指落点变高光中心,按压收缩,松手散出一圈光晕 */
+  .deck-next, .chip, .chip-add, .chip-del, .story-btn,
+  .sheet-close, .sheet-close--bottom, .bday-btn, .intro-hint {
+    --glass-x: 50%; --glass-y: 50%;
+    -webkit-tap-highlight-color: transparent;
+  }
+  /* 触点高光必须锚在按钮自身:顶部关闭键保持 sticky,其余改为定位上下文 */
+  .deck-next, .chip, .chip-add, .chip-del, .story-btn,
+  .sheet-close--bottom, .bday-btn, .intro-hint { position: relative; }
+  .deck-next::before, .chip::before, .chip-add::before, .chip-del::before,
+  .story-btn::before, .sheet-close::before, .sheet-close--bottom::before,
+  .bday-btn::before, .intro-hint::before {
+    content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit;
+    pointer-events: none; opacity: 0; transform: scale(.94);
+    background: radial-gradient(95% 95% at var(--glass-x) var(--glass-y),
+      rgba(255,255,255,.96) 0%, rgba(230,216,249,.72) 20%, rgba(163,135,205,.26) 42%, transparent 64%);
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.80), inset 0 2px 12px rgba(143,122,168,.20);
+    transition: opacity .2s ease, transform .4s cubic-bezier(.16,1,.3,1);
+  }
+  .glass-touched::before { opacity: 1; transform: scale(1); }
+  .glass-release::before { animation: glass-caustic .6s cubic-bezier(.16,1,.3,1) both; }
+  @keyframes glass-caustic {
+    from { opacity: .92; transform: scale(.94); }
+    to   { opacity: 0; transform: scale(1.32); }
+  }
+  /* 触屏没有 hover:手指按住时立即反馈,不被残留的 hover 抬升抵消 */
+  @media (hover: none) {
+    .deck-next:hover, .chip:hover, .chip-add:hover, .chip-del:hover,
+    .story-btn:hover, .sheet-close:hover, .sheet-close--bottom:hover,
+    .bday-btn:hover:not(:disabled), .intro-hint:hover { transform: none; }
+  }
+  .deck-next.glass-touched, .chip.glass-touched, .chip-add.glass-touched,
+  .chip-del.glass-touched, .story-btn.glass-touched, .sheet-close.glass-touched,
+  .sheet-close--bottom.glass-touched, .bday-btn.glass-touched, .intro-hint.glass-touched,
+  .bday-btn.glass-touched:not(:disabled) {
+    transform: scale(.945);
+    transition: transform .18s cubic-bezier(.2,.9,.3,1.25), box-shadow .25s ease;
+  }
+  /* 静置时也有一束极慢的光掠过,让玻璃在手机上不是死板的贴图 */
+  @media (hover: none) {
+    .deck-next::after, .chip::after, .chip-add::after, .chip-del::after, .story-btn::after,
+    .sheet-close::after, .sheet-close--bottom::after, .bday-btn::after, .intro-hint::after {
+      opacity: .16; animation: glass-idle 13s ease-in-out infinite;
+    }
+    .deck-next::after, .story-btn::after { animation-delay: -3s; }
+    .chip:nth-child(3n)::after { animation-delay: -5s; }
+    .chip:nth-child(3n+1)::after { animation-delay: -9s; }
+    .bday-btn:nth-child(2)::after { animation-delay: -7s; }
+    @keyframes glass-idle {
+      0%, 100% { background-position: 170% 0; }
+      50% { background-position: -70% 0; }
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .glass-release::before { animation: none; opacity: 0; }
+    .deck-next::before, .chip::before, .chip-add::before, .chip-del::before,
+    .story-btn::before, .sheet-close::before, .sheet-close--bottom::before,
+    .bday-btn::before, .intro-hint::before { transition: none; }
+    .deck-next::after, .chip::after, .chip-add::after, .chip-del::after, .story-btn::after,
+    .sheet-close::after, .sheet-close--bottom::after, .bday-btn::after, .intro-hint::after {
+      animation: none !important; opacity: 0 !important;
+    }
+    .deck-next.glass-touched, .chip.glass-touched, .chip-add.glass-touched,
+    .chip-del.glass-touched, .story-btn.glass-touched, .sheet-close.glass-touched,
+    .sheet-close--bottom.glass-touched, .bday-btn.glass-touched, .intro-hint.glass-touched {
+      transform: none; }
   }
   @media (max-width: 420px) {
     .letter-sheet { left: 9px; right: 9px; top: 9px; bottom: 9px; padding: 18px 14px 30px; }
@@ -1617,6 +1686,76 @@
     againBtn.hidden = true;
     setDim(true);
   });
+})();
+</script>
+
+<script>
+(function () {
+  /* 移动端液态玻璃:触点驱动高光,按住收缩,松手留一圈扩散的光 */
+  var GLASS = '.deck-next, .chip, .chip-add, .chip-del, .story-btn, .sheet-close, .sheet-close--bottom, .bday-btn, .intro-hint';
+  var active = [];
+  function glassIn(node) {
+    if (!node || !node.closest) return [];
+    var host = node.closest(GLASS);
+    if (host) return [host];
+    var btn = node.closest('button');
+    if (!btn || btn.disabled || btn.hidden) return [];
+    return [].slice.call(btn.querySelectorAll(GLASS));
+  }
+  function moveLight(el, x, y) {
+    var r = el.getBoundingClientRect();
+    if (!r.width || !r.height) return;
+    var px = Math.max(0, Math.min(1, (x - r.left) / r.width));
+    var py = Math.max(0, Math.min(1, (y - r.top) / r.height));
+    el.style.setProperty('--glass-x', (px * 100).toFixed(1) + '%');
+    el.style.setProperty('--glass-y', (py * 100).toFixed(1) + '%');
+  }
+  function press(node, x, y) {
+    active = glassIn(node);
+    if (!active.length) return;
+    active.forEach(function (el) {
+      el.classList.remove('glass-release');
+      moveLight(el, x, y);
+      el.classList.add('glass-touched');
+    });
+  }
+  function move(x, y) {
+    active.forEach(function (el) { moveLight(el, x, y); });
+  }
+  function release() {
+    active.forEach(function (el) {
+      el.classList.remove('glass-touched');
+      el.classList.add('glass-release');
+      clearTimeout(el._glassTimer);
+      el._glassTimer = setTimeout(function () { el.classList.remove('glass-release'); }, 620);
+    });
+    active = [];
+  }
+  if (window.PointerEvent) {
+    document.addEventListener('pointerdown', function (e) {
+      press(e.target, e.clientX, e.clientY);
+    }, { passive: true });
+    document.addEventListener('pointermove', function (e) {
+      if (active.length) move(e.clientX, e.clientY);
+    }, { passive: true });
+    document.addEventListener('pointerup', release, { passive: true });
+    document.addEventListener('pointercancel', release, { passive: true });
+  } else {
+    document.addEventListener('touchstart', function (e) {
+      if (!e.touches.length) return;
+      press(e.target, e.touches[0].clientX, e.touches[0].clientY);
+    }, { passive: true });
+    document.addEventListener('touchmove', function (e) {
+      if (active.length && e.touches.length) move(e.touches[0].clientX, e.touches[0].clientY);
+    }, { passive: true });
+    document.addEventListener('touchend', release, { passive: true });
+    document.addEventListener('touchcancel', release, { passive: true });
+    document.addEventListener('mousedown', function (e) {
+      press(e.target, e.clientX, e.clientY);
+    });
+    document.addEventListener('mousemove', function (e) { if (active.length) move(e.clientX, e.clientY); });
+    document.addEventListener('mouseup', release);
+  }
 })();
 </script>
 
