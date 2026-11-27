@@ -357,6 +357,18 @@
     88%  { opacity: 1; }
     100% { opacity: 0; transform: translate3d(var(--drift), 112vh, 0) rotate(var(--r2)); }
   }
+  /* 关灯吹蜡烛:蜡烛亮着时房间暗下,吹灭瞬间灯亮回来 */
+  .birthday-dim { position: fixed; inset: 0; z-index: 2; pointer-events: none;
+    opacity: 0; visibility: hidden;
+    background: radial-gradient(ellipse 42vmin 34vmin at var(--cx, 50%) var(--cy, 45%),
+      rgba(42,34,56,0) 0%, rgba(42,34,56,.10) 42%, rgba(42,34,56,.42) 78%, rgba(42,34,56,.56) 100%);
+    transition: opacity .55s ease, visibility 0s linear .55s; }
+  .birthday-dim.on { opacity: 1; visibility: visible; transition: opacity 1s ease; }
+  .slide-birthday section:hover { transform: none; }
+  .slide-birthday.dimmed .cake-art { filter: drop-shadow(0 0 14px rgba(246,183,60,.42)); }
+  .slide-birthday.dimmed .candle-glow { fill: rgba(246,183,60,.3); }
+  .birthday-status, .birthday-pop, .birthday-actions { position: relative; z-index: 3; }
+
   @media (max-width: 420px) {
     .slide-birthday { padding: 20px 0 112px; }
     .slide-birthday section { padding: 22px 16px 16px; }
@@ -380,6 +392,7 @@
     .cake-art.blown .smoke { opacity: .5; }
     .birthday-status, .birthday-pop, .bday-btn, .cake-art .flame { transition: none !important; }
     .bday-btn:hover:not(:disabled) { transform: none; }
+    .birthday-dim, .birthday-dim.on { transition: none; }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -981,6 +994,7 @@
     </div>
   </section>
   </div>
+  <div class="birthday-dim" id="birthdayDim" aria-hidden="true"></div>
 
   <div class="slide">
   <svg class="bloom" style="left:10px;top:5%;width:44px;height:44px;--r:6deg;--d:-3s" viewBox="-22 -26 44 52" aria-hidden="true"><use href="#daisy"/></svg>
@@ -1298,6 +1312,30 @@
   var status = slide.querySelector('#bdayStatus');
   var pop = slide.querySelector('#bdayPop');
   if (!cake || !wishBtn || !blowBtn || !againBtn) return;
+  var dim = document.getElementById('birthdayDim');
+  var inView = false;
+  var placeGlow = function () {
+    if (!dim) return;
+    var r = cake.getBoundingClientRect();
+    dim.style.setProperty('--cx', Math.round(r.left + r.width / 2) + 'px');
+    dim.style.setProperty('--cy', Math.round(r.top + r.height * .55) + 'px');
+  };
+  var setDim = function (on) {
+    if (!dim) return;
+    var active = !!on && inView && state !== 'blown';
+    dim.classList.toggle('on', active);
+    slide.classList.toggle('dimmed', active);
+    if (active) placeGlow();
+  };
+  if (dim && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { inView = e.isIntersecting; setDim(inView); });
+    }, { threshold: .45 }).observe(slide);
+  }
+  window.addEventListener('scroll', function () {
+    if (dim && dim.classList.contains('on')) placeGlow();
+  }, { passive: true });
+  window.addEventListener('resize', placeGlow);
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   var state = 'ready', timers = [], wishNodes = [], confettiLayer = null;
   var rnd = function (a, b) { return a + Math.random() * (b - a); };
@@ -1390,6 +1428,7 @@
     state = 'blown';
     blowBtn.disabled = true;
     cake.classList.add('blown');
+    setDim(false);
     later(function () {
       pop.textContent = '🎉 生日快乐！';
       pop.classList.add('show');
@@ -1408,6 +1447,7 @@
     wishBtn.disabled = false;
     blowBtn.disabled = true;
     againBtn.hidden = true;
+    setDim(true);
   });
 })();
 </script>
