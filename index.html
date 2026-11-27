@@ -17,6 +17,9 @@
     font-weight: 400; font-style: normal; font-display: swap; }
   @font-face { font-family: 'Brush Heart'; src: url('assets/fonts/brush-heart.woff2') format('woff2');
     font-weight: 400; font-style: normal; font-display: swap; }
+  /* 长信:按全文字符裁剪的楷体子集,离线可读、不依赖 CDN */
+  @font-face { font-family: 'Letter WenKai'; src: url('assets/fonts/letter-wenkai.woff2') format('woff2');
+    font-weight: 400; font-style: normal; font-display: swap; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { background: #f8ecca; }
   html, body { scroll-snap-type: y mandatory; }
@@ -205,24 +208,55 @@
   .letter.open .petal { animation: petal-fly .95s ease-out .12s both; }
   .letter.open .petal:nth-child(2n) { animation-delay: .2s; }
   .letter.open .petal:nth-child(3n) { animation-delay: .28s; }
+  /* 长信子页:微微泛黄、边缘氧化的旧书纸,横线像练习簿一样托住每一行字 */
   .letter-sheet { position: fixed; left: 14px; right: 14px; top: 14px; bottom: 14px; z-index: 12;
-    background: #fffdf8; border: 1.5px dashed rgba(143,122,168,.4); border-radius: 22px;
-    box-shadow: 0 10px 30px rgba(109,90,138,.25);
+    background-color: #f5e7c4;
+    background-image:
+      radial-gradient(ellipse 75% 42% at 14% 5%, rgba(255,251,235,.92), transparent 72%),
+      radial-gradient(ellipse 62% 38% at 92% 94%, rgba(201,162,100,.26), transparent 70%),
+      linear-gradient(180deg, #fbf2dc 0%, #f5e5be 60%, #eedaa8 100%);
+    border: 1px solid rgba(126,98,62,.42); border-radius: 14px;
+    box-shadow: 0 18px 42px rgba(60,42,24,.30), inset 0 0 0 6px rgba(255,248,224,.42);
     opacity: 0; visibility: hidden; transform: translateY(24px) scale(.97); transform-origin: 50% 12%;
     transition: opacity .5s ease .05s, transform .6s cubic-bezier(0.16,1,0.3,1) .05s, visibility 0s .65s;
-    overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 28px 22px 44px; }
+    overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 20px 20px 36px; }
+  .letter-sheet::before { content: ""; position: absolute; inset: 6px; pointer-events: none; border-radius: 9px;
+    background: radial-gradient(circle at 7% 24%, rgba(160,116,60,.10), transparent 26%),
+      radial-gradient(circle at 95% 72%, rgba(160,116,60,.09), transparent 28%); }
   .letter-sheet.open { opacity: 1; visibility: visible; transform: none;
     transition: opacity .5s ease .3s, transform .6s cubic-bezier(0.16,1,0.3,1) .3s, visibility 0s .3s; }
-  .sheet-close { position: sticky; top: 0; float: right; width: 34px; height: 34px; border-radius: 999px;
-    border: none; background: rgba(109,90,138,.12); color: #6d5a8a; font-size: 15px; cursor: pointer; }
-  .sheet-close:focus-visible { outline: 2px dashed rgba(109,90,138,.55); outline-offset: 2px; }
-  .sheet-inner { clear: both; }
-  .sheet-head { font-family: 'Kaiti SC', 'STKaiti', 'KaiTi', '楷体', Georgia, serif;
-    font-size: 22px; font-weight: 700; color: #4f4066; letter-spacing: .2em; margin-bottom: 14px; }
-  .sheet-inner p { margin-bottom: 14px; line-height: 1.95; text-indent: 2em; }
-  .sheet-inner .placeholder { text-indent: 0; }
+  .sheet-close { position: sticky; top: 0; float: right; width: 36px; height: 36px; border-radius: 999px;
+    border: 1px solid rgba(126,98,62,.30); background: #f8eed3; color: #6b503c;
+    box-shadow: 0 2px 6px rgba(60,42,24,.18); font-size: 15px; cursor: pointer; }
+  .sheet-close:focus-visible { outline: 2px solid rgba(109,81,48,.65); outline-offset: 2px; }
+  .sheet-inner { clear: both; position: relative; z-index: 1; }
+  .sheet-head { font-family: 'Letter WenKai', 'Kaiti SC', 'STKaiti', 'KaiTi', '楷体', Georgia, serif;
+    font-size: 23px; font-weight: 400; color: #6d4f3a; letter-spacing: .26em; text-align: center;
+    margin: 2px 0 4px; }
+  .sheet-head::after { content: ""; display: block; width: 62px; height: 1px; margin: 8px auto 0;
+    background: rgba(126,98,62,.38); }
+  .paper-flora { display: flex; align-items: center; justify-content: center; gap: 12px;
+    height: 40px; margin: 0 0 8px; pointer-events: none; }
+  .paper-flora--foot { height: 34px; margin: 12px 0 0; }
+  .paper-flora svg { width: 32px; height: 36px; overflow: visible;
+    animation: paper-sway var(--dur,5s) ease-in-out var(--delay,0s) infinite alternate; }
+  .paper-flora svg:nth-child(2) { width: 25px; height: 29px; }
+  @keyframes paper-sway {
+    from { transform: translateY(2px) rotate(-4deg); }
+    to { transform: translateY(-5px) rotate(5deg); }
+  }
+  .sheet-lines { --rule: 34px; position: relative;
+    background-image: linear-gradient(to bottom, transparent calc(var(--rule) - 1px),
+      rgba(139,108,64,.22) calc(var(--rule) - 1px), rgba(139,108,64,.22) var(--rule));
+    background-size: 100% var(--rule);
+    font-family: 'Letter WenKai', 'Kaiti SC', 'STKaiti', 'KaiTi', '楷体', Georgia, serif;
+    font-size: 15.5px; line-height: var(--rule); letter-spacing: .02em; color: #453522; }
+  .sheet-lines p { margin: 0; text-indent: 2em; text-wrap: pretty; }
+  .sheet-lines p + p { margin-top: var(--rule); }
+  .sheet-lines .vow-sign { margin-top: 2px; color: #6d5a8a;
+    font-family: 'Brush Heart', 'Ma Shan Zheng', 'Kaiti SC', 'STKaiti', 'KaiTi', '楷体', serif;
+    font-size: clamp(22px, 5.6vw, 26px); line-height: 1.5; }
   .letter p { text-indent: 2em; margin-bottom: 12px; }
-  .placeholder { color: var(--muted); }
   /* 挠手掌心：草甸绿按钮 */
     /* 愿望卡：点一下翻开 */
   .wish { text-align: center; cursor: pointer; -webkit-tap-highlight-color: transparent; }
@@ -370,6 +404,10 @@
   .birthday-status, .birthday-pop, .birthday-actions { position: relative; z-index: 3; }
 
   @media (max-width: 420px) {
+    .letter-sheet { left: 9px; right: 9px; top: 9px; bottom: 9px; padding: 18px 14px 30px; }
+    .sheet-lines { --rule: 32px; font-size: 15px; }
+    .paper-flora { height: 34px; gap: 9px; }
+    .paper-flora svg { width: 27px; height: 31px; }
     .slide-birthday { padding: 20px 0 112px; }
     .slide-birthday section { padding: 22px 16px 16px; }
     .birthday-stage { width: min(280px, 84%); }
@@ -400,6 +438,7 @@
     .chip:hover, section:hover { transform: none; }
     .env2-flap, .env2-seal { transition: none; }
     .letter.open .petal, .intro.opening .petal { animation: none; }
+    .paper-flora svg { animation: none; }
     .intro.opening .intro-halo { transition: none; }
     .letter-sheet { transition: none; }
     .envelope, .intro-hint, .seal { animation: none; }
@@ -1051,8 +1090,23 @@
       <button class="sheet-close" type="button" aria-label="收起信纸">✕</button>
       <div class="sheet-inner">
         <p class="sheet-head">致 老婆</p>
-        <p class="placeholder">（Hana 待填：在这里写你的长信——想写多长都行，信纸会自己滚动。
-        比如：异地这一年最想她的时刻、距离教会了你什么、下次见面最想一起做的事。）</p>
+        <div class="paper-flora" aria-hidden="true">
+          <svg viewBox="-16 -18 32 36" style="--delay:-.4s;--dur:5.4s"><use href="#fleurP"/></svg>
+          <svg viewBox="-22 -26 44 52" style="--delay:-1.7s;--dur:6.2s"><use href="#daisy"/></svg>
+          <svg viewBox="-16 -18 32 36" style="--delay:-2.8s;--dur:4.8s"><use href="#fleurR"/></svg>
+        </div>
+        <div class="sheet-lines">
+        <p>老婆,见字如故,当你打开这封信的时候,就证明我们在一起度过了老婆的第一个生日,首先我想说我真的好爱好爱你老婆!在这里我送出给老婆的生日祝福:祝老婆在往后的日子里也会天天开心,一直都是那么的无忧无虑,身体一直健健康康,每天的心情都十分美好,被幸福感包裹着~这应该是我第一次写信,感觉还是有些奇妙的hhh,可能写的不好,希望老婆不要介意~</p>
+        <p>老婆一直都不肯让我送实体的礼物,我知道老婆是不想我花钱,知道老婆是为了我着想,所以我想说,这就是老婆的特别,这就是为什么我那么爱老婆,你对我的爱是没有掺杂一点杂质的,非常的存粹,让我静下来微微回味,嘴角都会不由自主微微上扬,是幸福的笑容,这种回忆,这种感受,我觉得是生命中最宝贵的财富了,可能有些人赚了大钱有了大量的财富,可能有些人天生就过的富足很幸运,但是我觉得,有了老婆,我就是世界上最幸福的那个男人,没有之一,老婆的爱无时无刻都在包裹着我,给我无与伦比的温暖,我爱你老婆!</p>
+        <p>所以这几天我奇思妙想,就想利用下我的专业知识,给老婆做一个网页出来,给老婆一个小小的惊喜,希望老婆会喜欢~</p>
+        <p>在没遇见老婆之前,我有一个感受就是,我再也不会寻找到我内心中那种憧憬的爱情了,可能是有了一段不美好的经历,还有网络上的言论,让我不再相信世界上有真正存粹的爱情,但老婆出现了,老婆就这样轻轻的出现了,从这一时刻开始,我们的时空交会了起来,老婆一开始给我的感觉就是很舒服的感觉,不会要求我做什么,也不会索取什么,并不会对我奇怪的作息,对我洗澡的拖延,去评论什么,而是理解我,而是会第二天早上如果我睡的早一点醒来的话,关心我有没有睡好.老婆就是如此的温柔,这种关心能感受到是发自内心的,那时候我就觉得老婆真的是好特别.老婆一开始就对我赋有好感,这我能很清晰的感受出来,再到我们逐渐了解彼此,再到我们相爱,我觉得这一切好奇妙,人生有多少个这么美好的瞬间呢?或许会一辈子都遇不到,但是给我遇到了,我就要好好的去珍惜,去爱着这么好的老婆,感谢老婆的信任和托付~</p>
+        <p>我和老婆大多数时候都是非常开心快乐的,是以前没有过的开心和幸福,偶尔也会有些意见不和的情况,但是我觉得根本不足以影响到我们的感情~我还记得我们第一次意见不和的时候,我让老婆伤心了,我让老婆掉眼泪了,我还记得我那时候的感受,我感觉到我伤害了老婆,我让这么好的老婆因为我而伤心,这是我最不愿发生的事情,所以今后不论怎么样,我的第一原则永远都是老婆跟着我是幸福快乐无忧无虑的,就够了~那天我记得老婆问我:老公,你有想过我们会有以后吗?现在我可以很肯定,很坚定,只有一个答案的回答:我们会有,而且是永远都在一起,而且还会很幸福!</p>
+        <p>我十分的相信,我们的爱可以跨越时间,跨越距离,我们的爱可以打败太多太多的困难,最终走向在一起幸福的日子~老婆,遇到你,和你相爱是我人生中最美妙的体验,我相信,我们接下来还会走过无数个幸福的瞬间,会有无数个美好的画面,让我们去回忆,让我们去感动,我也会全新全意的爱着老婆,给老婆温暖,让老婆感受被爱的感觉,让老婆不再落泪而是嘴角一直微笑着~最后我想说生日快乐老婆~这是我陪你度过的第一个生日,将来,我要陪你走过往后的所有生日,给老婆惊喜,<span class="vow-sign">我爱你老婆!</span></p>
+        </div>
+        <div class="paper-flora paper-flora--foot" aria-hidden="true">
+          <svg viewBox="-22 -26 44 52" style="--delay:-1.2s;--dur:6.6s"><use href="#lavsp"/></svg>
+          <svg viewBox="-16 -18 32 36" style="--delay:-3.1s;--dur:5.1s"><use href="#fleurP"/></svg>
+        </div>
       </div>
     </div>
 
