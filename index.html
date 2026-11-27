@@ -219,15 +219,32 @@
       radial-gradient(ellipse 62% 38% at 92% 94%, rgba(201,162,100,.26), transparent 70%),
       linear-gradient(180deg, #fbf2dc 0%, #f5e5be 60%, #eedaa8 100%);
     border: 1px solid rgba(126,98,62,.42); border-radius: 14px;
-    box-shadow: 0 18px 42px rgba(60,42,24,.30), inset 0 0 0 6px rgba(255,248,224,.42);
-    opacity: 0; visibility: hidden; transform: translateY(24px) scale(.97); transform-origin: 50% 12%;
-    transition: opacity .5s ease .05s, transform .6s cubic-bezier(0.16,1,0.3,1) .05s, visibility 0s .65s;
+    /* 纸卷:由上缘展开,合上时缓缓卷回顶部;投影跟随裁切边缘,像纸被卷起 */
+    filter: drop-shadow(0 11px 20px rgba(60,42,24,.26));
+    opacity: 0; visibility: hidden; transform: translateY(-10px);
+    clip-path: inset(0 0 100% 0 round 14px);
+    transition: clip-path 1s cubic-bezier(.22,.61,.36,1),
+      transform 1s cubic-bezier(.22,.61,.36,1),
+      opacity 0s linear .92s, visibility 0s linear 1.02s;
     overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; padding: 20px 20px 36px; }
   .letter-sheet::before { content: ""; position: absolute; inset: 6px; pointer-events: none; border-radius: 9px;
     background: radial-gradient(circle at 7% 24%, rgba(160,116,60,.10), transparent 26%),
       radial-gradient(circle at 95% 72%, rgba(160,116,60,.09), transparent 28%); }
   .letter-sheet.open { opacity: 1; visibility: visible; transform: none;
-    transition: opacity .5s ease .3s, transform .6s cubic-bezier(0.16,1,0.3,1) .3s, visibility 0s .3s; }
+    clip-path: inset(0 0 0 0 round 14px);
+    transition: clip-path .72s cubic-bezier(.16,1,.3,1),
+      transform .72s cubic-bezier(.16,1,.3,1),
+      opacity 0s, visibility 0s; }
+  /* 展开边缘的一根暖色卷轴杆,跟着纸面滑到底,不拦截点击 */
+  .letter-roll { position: fixed; left: 14px; right: 14px; top: 14px; bottom: 14px; z-index: 13;
+    pointer-events: none; opacity: 0; transform: translateY(-100%);
+    transition: transform 1s cubic-bezier(.22,.61,.36,1), opacity 0s linear .92s; }
+  .letter-roll span { position: absolute; left: 0; right: 0; bottom: 0; height: 7px;
+    border-radius: 0 0 8px 8px;
+    background: linear-gradient(180deg, rgba(255,251,232,.96) 0%, rgba(198,157,96,.92) 48%, rgba(126,88,50,.82) 100%);
+    box-shadow: 0 5px 12px rgba(60,42,24,.26); }
+  .letter-sheet.open + .letter-roll { opacity: 1; transform: translateY(0);
+    transition: transform .72s cubic-bezier(.16,1,.3,1), opacity 0s; }
   .sheet-close { position: sticky; top: 0; float: right; z-index: 5; width: 36px; height: 36px; border-radius: 999px;
     border: 1px solid rgba(126,98,62,.30); background: #f8eed3; color: #6b503c;
     box-shadow: 0 2px 6px rgba(60,42,24,.18); font-size: 15px; cursor: pointer; }
@@ -421,6 +438,7 @@
 
   @media (max-width: 420px) {
     .letter-sheet { left: 9px; right: 9px; top: 9px; bottom: 9px; padding: 18px 14px 30px; }
+    .letter-roll { left: 9px; right: 9px; top: 9px; bottom: 9px; }
     .sheet-lines { --rule: 32px; font-size: 15px; }
     .paper-flora { height: 34px; gap: 9px; }
     .paper-flora svg { width: 27px; height: 31px; }
@@ -457,7 +475,9 @@
     .letter.open .petal, .intro.opening .petal { animation: none; }
     .paper-flora svg, .garland-bloom { animation: none; }
     .intro.opening .intro-halo { transition: none; }
-    .letter-sheet { transition: none; }
+    .letter-sheet, .letter-sheet.open { clip-path: none !important; transform: none !important;
+      filter: none; transition: opacity .2s ease, visibility 0s linear .2s !important; }
+    .letter-roll { display: none; }
     .envelope, .intro-hint, .seal { animation: none; }
     /* 减弱动效:保留信封,点开后瞬时切换,只做 200ms 透明度过渡 */
     .intro.opening { transition: opacity .2s ease; }
@@ -1138,6 +1158,7 @@
         </button>
       </div>
     </div>
+    <div class="letter-roll" aria-hidden="true"><span></span></div>
 
 <script>
 (function () {
