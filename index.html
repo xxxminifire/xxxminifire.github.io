@@ -284,6 +284,104 @@
     html, body { background-color: var(--warm-yellow); color: var(--ink); }
     .intro { background-color: var(--warm-yellow); }
   }
+
+  /* 她的生日:三层蛋糕 + 许愿吹蜡烛的小仪式 */
+  .slide-birthday { padding: 30px 0 120px; }
+  .slide-birthday section { padding: 24px 22px 20px; }
+  .slide-birthday section::before { left: 22px; right: 22px; top: 11px; }
+  .slide-birthday h2 { margin-bottom: 2px; }
+  .slide-birthday .date { font-size: 19px; line-height: 1.5; }
+  .slide-birthday .note { font-size: 13px; line-height: 1.6; margin-top: 2px; }
+  .birthday-stage { position: relative; width: min(324px, 88%); margin: 2px auto 0; }
+  .cake-art { display: block; position: relative; z-index: 1; width: 100%; height: auto; overflow: visible; }
+  .cake-art .candle-glow { fill: rgba(246,183,60,.14); }
+  .cake-art .flame { transform-box: fill-box; transform-origin: 50% 100%;
+    animation: flame-flicker 1.15s ease-in-out infinite alternate;
+    animation-delay: var(--delay, 0s);
+    transition: opacity .2s ease, transform .2s ease; }
+  @keyframes flame-flicker {
+    0%   { transform: scale(.94, .95) rotate(-4deg); opacity: .9; }
+    45%  { transform: scale(1.06, 1.12) rotate(2deg); opacity: 1; }
+    100% { transform: scale(.96, 1.03) rotate(5deg); opacity: .93; }
+  }
+  .cake-art.blown .flame { animation: none; opacity: 0; transform: scale(.18) translateY(6px); }
+  .cake-art.blown .candle-glow { opacity: 0; transition: opacity .3s ease; }
+  .cake-art .smoke { opacity: 0; fill: none; stroke: #9b8aa8; stroke-width: 2.4; stroke-linecap: round;
+    transform-box: fill-box; transform-origin: 50% 100%; }
+  .cake-art.blown .smoke { animation: smoke-rise 1.5s ease-out var(--sd, 0s) both; }
+  @keyframes smoke-rise {
+    0%   { opacity: 0; transform: translateY(0) scaleX(.7); }
+    18%  { opacity: .62; }
+    100% { opacity: 0; transform: translateY(-36px) scaleX(1.4); }
+  }
+  .wish-particles { position: absolute; inset: 0; z-index: 3; pointer-events: none; overflow: visible; }
+  .wish-particle { position: absolute; left: var(--x); top: var(--y); width: var(--s); height: var(--s);
+    color: var(--c); opacity: 0; animation: wish-float var(--dur) ease-out var(--delay) forwards; }
+  .wish-particle svg { display: block; width: 100%; height: 100%; }
+  @keyframes wish-float {
+    0%   { opacity: 0; transform: translate(0, 0) scale(.6) rotate(-12deg); }
+    20%  { opacity: 1; }
+    100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(1.12) rotate(var(--rot)); }
+  }
+  .birthday-status { min-height: 25px; text-align: center; font-size: 15px; letter-spacing: .06em;
+    color: #6d5a8a; font-family: 'Kaiti SC', 'STKaiti', 'KaiTi', '楷体', Georgia, serif;
+    opacity: 0; transform: translateY(5px); transition: opacity .35s ease, transform .35s ease; }
+  .birthday-status.show { opacity: 1; transform: none; }
+  .birthday-pop { min-height: 34px; text-align: center; font-size: 22px; font-weight: 700;
+    color: var(--rose-deep); letter-spacing: .08em;
+    font-family: 'WenKai Heart', 'Kaiti SC', 'STKaiti', 'KaiTi', '楷体', Georgia, serif;
+    text-shadow: 0 2px 10px rgba(255,250,240,.95);
+    opacity: 0; transform: scale(.72) translateY(10px);
+    transition: opacity .45s ease, transform .6s cubic-bezier(.16,1,.3,1); }
+  .birthday-pop.show { opacity: 1; transform: none; }
+  .birthday-actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 9px; margin-top: 4px; }
+  .bday-btn { font-family: 'Kaiti SC', 'STKaiti', 'KaiTi', '楷体', Georgia, serif;
+    font-size: 14px; letter-spacing: .06em; line-height: 1.4;
+    padding: 8px 15px; border-radius: 999px; cursor: pointer;
+    border: 1px solid rgba(109,90,138,.4); background: #fffaf0; color: #5b4a76;
+    box-shadow: 0 2px 6px rgba(109,90,138,.12);
+    transition: transform .25s ease, box-shadow .25s ease, opacity .25s ease; }
+  .bday-btn.primary { background: #6d5a8a; color: #fffaf0; border-color: #6d5a8a; }
+  .bday-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 14px rgba(109,90,138,.24); }
+  .bday-btn:focus-visible { outline: 2px dashed rgba(90,143,90,.6); outline-offset: 2px; }
+  .bday-btn:disabled { opacity: .4; cursor: not-allowed; box-shadow: none; }
+  .bday-btn[hidden] { display: none; }
+  .confetti-layer { position: fixed; inset: 0; z-index: 30; pointer-events: none; overflow: hidden; }
+  .confetti { position: absolute; top: -14vh; left: var(--x); width: var(--w); height: var(--h);
+    color: var(--c); opacity: 0; animation: confetti-fall var(--dur) linear var(--delay) forwards; }
+  .confetti.ribbon { background: var(--c); border-radius: 2px; }
+  .confetti svg { display: block; width: 100%; height: 100%; }
+  @keyframes confetti-fall {
+    0%   { opacity: 0; transform: translate3d(0, -8vh, 0) rotate(var(--r)); }
+    8%   { opacity: 1; }
+    88%  { opacity: 1; }
+    100% { opacity: 0; transform: translate3d(var(--drift), 112vh, 0) rotate(var(--r2)); }
+  }
+  @media (max-width: 420px) {
+    .slide-birthday { padding: 20px 0 112px; }
+    .slide-birthday section { padding: 22px 16px 16px; }
+    .birthday-stage { width: min(280px, 84%); }
+    .slide-birthday .note { font-size: 12px; }
+    .birthday-pop { font-size: 19px; }
+    .birthday-status { font-size: 14px; }
+    .bday-btn { font-size: 13px; padding: 7px 11px; }
+  }
+  @media (max-height: 640px) {
+    .slide-birthday { padding: 14px 0 108px; }
+    .slide-birthday section { padding: 20px 16px 14px; }
+    .birthday-stage { width: min(236px, 74%); }
+    .slide-birthday .date { font-size: 17px; }
+    .slide-birthday .note { font-size: 12px; line-height: 1.45; }
+    .birthday-pop { min-height: 28px; font-size: 18px; }
+    .bday-btn { padding: 6px 10px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cake-art .flame, .cake-art.blown .smoke, .wish-particle, .confetti { animation: none !important; }
+    .cake-art.blown .smoke { opacity: .5; }
+    .birthday-status, .birthday-pop, .bday-btn, .cake-art .flame { transition: none !important; }
+    .bday-btn:hover:not(:disabled) { transform: none; }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .chip, section { transition: none; }
     .chip:hover, section:hover { transform: none; }
@@ -782,7 +880,7 @@
   </section>
   </div>
 
-<div class="slide">
+<div class="slide slide-birthday">
   <svg class="bloom" style="left:10px;top:5%;width:48px;height:48px;--r:-7deg;--d:-2s" viewBox="-22 -26 44 52" aria-hidden="true"><use href="#sunflower"/></svg>
   <svg class="bloom" style="left:60px;top:11%;width:30px;height:30px;opacity:.5;--r:5deg;--d:-3s" viewBox="-22 -26 44 52" aria-hidden="true"><use href="#daisy"/></svg>
   <svg class="bloom" style="right:12px;top:6%;width:44px;height:44px;--r:5deg;--d:-4s" viewBox="-22 -26 44 52" aria-hidden="true"><use href="#pinwheel"/></svg>
@@ -801,6 +899,86 @@
     <h2>🎂 她的生日 <span>今天</span></h2>
     <div class="date">____月____日</div>
     <p class="note">异地也没关系，0 点的祝福准时到，生日这一天，分三次想你：早上、中午、睡前。</p>
+    <div class="birthday-stage">
+      <div class="wish-particles" id="wishParticles" aria-hidden="true"></div>
+      <svg class="cake-art" id="cakeArt" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg"
+           role="img" aria-label="粉、黄、紫三层生日蛋糕，上面插着五支点燃的蜡烛">
+        <ellipse cx="150" cy="183" rx="112" ry="8" fill="rgba(109,90,138,.14)"/>
+        <path d="M26 171 Q150 191 274 171 Q258 184 150 185 Q42 184 26 171 Z" fill="#e6dcef" stroke="#a892c2" stroke-width="1.5"/>
+        <path d="M30 172 Q150 186 270 172" fill="none" stroke="#fffaf0" stroke-width="2" opacity=".9"/>
+        <rect x="48" y="124" width="204" height="48" rx="11" fill="#b7a2d1" stroke="#8f7aa8" stroke-width="2"/>
+        <path d="M48 125 q10.2 14 20.4 0 q10.2 14 20.4 0 q10.2 14 20.4 0 q10.2 14 20.4 0 q10.2 14 20.4 0 q10.2 14 20.4 0 q10.2 14 20.4 0 q10.2 14 20.4 0 q10.2 14 20.4 0 q10.2 14 20.4 0 q10.2 14 20.4 0 L48 125 Z" fill="#fff6ea" opacity=".95"/>
+        <path d="M66 151 l8 -3 M104 159 l8 -3 M137 147 l8 -3 M172 160 l8 -3 M207 150 l8 -3 M232 159 l8 -3" stroke="#fff8ec" stroke-width="3" stroke-linecap="round" opacity=".85"/>
+        <rect x="58" y="88" width="184" height="42" rx="10" fill="#f2d38c" stroke="#c8a465" stroke-width="2"/>
+        <path d="M58 89 q10.2 13 20.4 0 q10.2 13 20.4 0 q10.2 13 20.4 0 q10.2 13 20.4 0 q10.2 13 20.4 0 q10.2 13 20.4 0 q10.2 13 20.4 0 q10.2 13 20.4 0 q10.2 13 20.4 0 L58 89 Z" fill="#fff8ec" opacity=".96"/>
+        <path d="M74 112 l8 -3 M110 119 l8 -3 M149 110 l8 -3 M188 119 l8 -3 M222 111 l8 -3" stroke="#b98f68" stroke-width="2.4" stroke-linecap="round" opacity=".55"/>
+        <rect x="70" y="54" width="160" height="38" rx="10" fill="#e9b7bb" stroke="#c68d94" stroke-width="2"/>
+        <path d="M70 55 q10 12 20 0 q10 12 20 0 q10 12 20 0 q10 12 20 0 q10 12 20 0 q10 12 20 0 q10 12 20 0 q10 12 20 0 L70 55 Z" fill="#fff7ee" opacity=".96"/>
+        <path d="M83 78 l7 -3 M119 83 l7 -3 M157 76 l7 -3 M197 82 l7 -3" stroke="#fff8ec" stroke-width="2.6" stroke-linecap="round" opacity=".9"/>
+      <g class="candle" transform="translate(92,0)">
+        <g class="smoke" style="--sd:0.00s"><path d="M0 18 C-6 10 6 7 0 -3"/><path d="M5 20 C11 13 3 8 9 0" opacity=".55"/></g>
+        <ellipse class="candle-glow" cx="0" cy="13" rx="9" ry="14"/>
+        <rect x="-3.6" y="26" width="7.2" height="29" rx="3.2" fill="#fdf1cf" stroke="#b99a6a" stroke-width="1.3"/>
+        <path d="M-3 34 l6 -5 M-3 44 l6 -5" stroke="#dfaab2" stroke-width="2" stroke-linecap="round"/>
+        <path d="M0 26 L0 22" stroke="#6d5a8a" stroke-width="1.5" stroke-linecap="round"/>
+        <g class="flame" style="--delay:-.12s">
+          <path d="M0 22 C-6 17 -5 10 0 3 C5 10 6 17 0 22 Z" fill="#f3a83b"/>
+          <path d="M0 19 C-3 15 -2.5 11 0 7 C2.5 11 3 15 0 19 Z" fill="#fff0b0"/>
+        </g>
+      </g>
+      <g class="candle" transform="translate(121,0)">
+        <g class="smoke" style="--sd:0.11s"><path d="M0 18 C-6 10 6 7 0 -3"/><path d="M5 20 C11 13 3 8 9 0" opacity=".55"/></g>
+        <ellipse class="candle-glow" cx="0" cy="13" rx="9" ry="14"/>
+        <rect x="-3.6" y="26" width="7.2" height="29" rx="3.2" fill="#f8dfe0" stroke="#b99a6a" stroke-width="1.3"/>
+        <path d="M-3 34 l6 -5 M-3 44 l6 -5" stroke="#dfaab2" stroke-width="2" stroke-linecap="round"/>
+        <path d="M0 26 L0 22" stroke="#6d5a8a" stroke-width="1.5" stroke-linecap="round"/>
+        <g class="flame" style="--delay:-.47s">
+          <path d="M0 22 C-6 17 -5 10 0 3 C5 10 6 17 0 22 Z" fill="#f3a83b"/>
+          <path d="M0 19 C-3 15 -2.5 11 0 7 C2.5 11 3 15 0 19 Z" fill="#fff0b0"/>
+        </g>
+      </g>
+      <g class="candle" transform="translate(150,0)">
+        <g class="smoke" style="--sd:0.22s"><path d="M0 18 C-6 10 6 7 0 -3"/><path d="M5 20 C11 13 3 8 9 0" opacity=".55"/></g>
+        <ellipse class="candle-glow" cx="0" cy="13" rx="9" ry="14"/>
+        <rect x="-3.6" y="26" width="7.2" height="29" rx="3.2" fill="#fdf1cf" stroke="#b99a6a" stroke-width="1.3"/>
+        <path d="M-3 34 l6 -5 M-3 44 l6 -5" stroke="#dfaab2" stroke-width="2" stroke-linecap="round"/>
+        <path d="M0 26 L0 22" stroke="#6d5a8a" stroke-width="1.5" stroke-linecap="round"/>
+        <g class="flame" style="--delay:-.8s">
+          <path d="M0 22 C-6 17 -5 10 0 3 C5 10 6 17 0 22 Z" fill="#f3a83b"/>
+          <path d="M0 19 C-3 15 -2.5 11 0 7 C2.5 11 3 15 0 19 Z" fill="#fff0b0"/>
+        </g>
+      </g>
+      <g class="candle" transform="translate(179,0)">
+        <g class="smoke" style="--sd:0.33s"><path d="M0 18 C-6 10 6 7 0 -3"/><path d="M5 20 C11 13 3 8 9 0" opacity=".55"/></g>
+        <ellipse class="candle-glow" cx="0" cy="13" rx="9" ry="14"/>
+        <rect x="-3.6" y="26" width="7.2" height="29" rx="3.2" fill="#f8dfe0" stroke="#b99a6a" stroke-width="1.3"/>
+        <path d="M-3 34 l6 -5 M-3 44 l6 -5" stroke="#dfaab2" stroke-width="2" stroke-linecap="round"/>
+        <path d="M0 26 L0 22" stroke="#6d5a8a" stroke-width="1.5" stroke-linecap="round"/>
+        <g class="flame" style="--delay:-.29s">
+          <path d="M0 22 C-6 17 -5 10 0 3 C5 10 6 17 0 22 Z" fill="#f3a83b"/>
+          <path d="M0 19 C-3 15 -2.5 11 0 7 C2.5 11 3 15 0 19 Z" fill="#fff0b0"/>
+        </g>
+      </g>
+      <g class="candle" transform="translate(208,0)">
+        <g class="smoke" style="--sd:0.44s"><path d="M0 18 C-6 10 6 7 0 -3"/><path d="M5 20 C11 13 3 8 9 0" opacity=".55"/></g>
+        <ellipse class="candle-glow" cx="0" cy="13" rx="9" ry="14"/>
+        <rect x="-3.6" y="26" width="7.2" height="29" rx="3.2" fill="#fdf1cf" stroke="#b99a6a" stroke-width="1.3"/>
+        <path d="M-3 34 l6 -5 M-3 44 l6 -5" stroke="#dfaab2" stroke-width="2" stroke-linecap="round"/>
+        <path d="M0 26 L0 22" stroke="#6d5a8a" stroke-width="1.5" stroke-linecap="round"/>
+        <g class="flame" style="--delay:-.63s">
+          <path d="M0 22 C-6 17 -5 10 0 3 C5 10 6 17 0 22 Z" fill="#f3a83b"/>
+          <path d="M0 19 C-3 15 -2.5 11 0 7 C2.5 11 3 15 0 19 Z" fill="#fff0b0"/>
+        </g>
+      </g>
+      </svg>
+    </div>
+    <div class="birthday-status" id="bdayStatus" role="status" aria-live="polite"></div>
+    <div class="birthday-pop" id="bdayPop" aria-live="polite"></div>
+    <div class="birthday-actions" role="group" aria-label="生日仪式">
+      <button class="bday-btn primary" id="bdayWish" type="button">许个愿</button>
+      <button class="bday-btn" id="bdayBlow" type="button" disabled>吹灭蜡烛</button>
+      <button class="bday-btn" id="bdayAgain" type="button" hidden>再来一次</button>
+    </div>
   </section>
   </div>
 
@@ -1105,6 +1283,131 @@
   closeBtn.addEventListener('click', close);
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' && sec.classList.contains('open')) close();
+  });
+})();
+
+(function () {
+  /* 她的生日:许愿 -> 吹蜡烛 -> 庆祝 -> 再来一次 */
+  var slide = document.querySelector('.slide-birthday');
+  if (!slide) return;
+  var cake = slide.querySelector('#cakeArt');
+  var wishBox = slide.querySelector('#wishParticles');
+  var wishBtn = slide.querySelector('#bdayWish');
+  var blowBtn = slide.querySelector('#bdayBlow');
+  var againBtn = slide.querySelector('#bdayAgain');
+  var status = slide.querySelector('#bdayStatus');
+  var pop = slide.querySelector('#bdayPop');
+  if (!cake || !wishBtn || !blowBtn || !againBtn) return;
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var state = 'ready', timers = [], wishNodes = [], confettiLayer = null;
+  var rnd = function (a, b) { return a + Math.random() * (b - a); };
+  var later = function (fn, ms) { timers.push(setTimeout(fn, ms)); };
+  var star = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5 L14.6 9.4 L21.5 12 L14.6 14.6 L12 21.5 L9.4 14.6 L2.5 12 L9.4 9.4 Z" fill="currentColor"/></svg>';
+  var heart = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21 C-2 12 4 3 9 6 C11 7.5 12 9.5 12 9.5 C12 9.5 13 7.5 15 6 C20 3 26 12 12 21 Z" fill="currentColor"/></svg>';
+  var gift = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="9" width="18" height="12" rx="2" fill="currentColor"/><rect x="2" y="6" width="20" height="4" rx="1.5" fill="currentColor" opacity=".85"/><path d="M12 9 L12 6 M12 6 C9 1 5 3 7 5.5 C8.4 6.8 12 6 12 6 M12 6 C15 1 19 3 17 5.5 C15.6 6.8 12 6 12 6" stroke="#fff6e8" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>';
+  var clearWish = function () {
+    wishNodes.forEach(function (n) { if (n.parentNode) n.remove(); });
+    wishNodes = [];
+  };
+  var clearFx = function () {
+    timers.forEach(clearTimeout);
+    timers = [];
+    clearWish();
+    if (confettiLayer) { confettiLayer.remove(); confettiLayer = null; }
+  };
+  function spawnWish() {
+    clearWish();
+    if (reduce) return;
+    var colors = ['#e3a9b2', '#f0c46e', '#a98bc6', '#fff1c9'];
+    for (var i = 0; i < 16; i++) {
+      var p = document.createElement('span');
+      p.className = 'wish-particle';
+      p.innerHTML = i % 3 === 0 ? heart : star;
+      p.style.setProperty('--x', rnd(28, 72) + '%');
+      p.style.setProperty('--y', rnd(0, 16) + '%');
+      p.style.setProperty('--s', rnd(11, 19) + 'px');
+      p.style.setProperty('--c', colors[i % colors.length]);
+      p.style.setProperty('--dx', rnd(-48, 48) + 'px');
+      p.style.setProperty('--dy', rnd(-128, -78) + 'px');
+      p.style.setProperty('--rot', rnd(-70, 70) + 'deg');
+      p.style.setProperty('--dur', rnd(1.5, 2.3) + 's');
+      p.style.setProperty('--delay', rnd(0, .35) + 's');
+      wishBox.appendChild(p);
+      wishNodes.push(p);
+    }
+    later(clearWish, 2700);
+  }
+  function spawnConfetti() {
+    if (confettiLayer) confettiLayer.remove();
+    if (reduce) return;
+    var layer = document.createElement('div');
+    layer.className = 'confetti-layer';
+    layer.setAttribute('aria-hidden', 'true');
+    var ribbons = ['#e8aab4', '#f2cf82', '#a98cc7', '#a8c8a8', '#fdf4d7'];
+    var icons = ['#d9a2ad', '#9b83bd', '#e8c26d'];
+    for (var i = 0; i < 76; i++) {
+      var c = document.createElement('span');
+      var kind = i % 10;
+      if (kind < 6) {
+        c.className = 'confetti ribbon';
+      } else if (kind < 8) {
+        c.className = 'confetti';
+        c.innerHTML = heart;
+      } else if (kind === 8) {
+        c.className = 'confetti';
+        c.innerHTML = gift;
+      } else {
+        c.className = 'confetti';
+        c.innerHTML = star;
+      }
+      var icon = kind >= 6;
+      c.style.setProperty('--x', rnd(0, 100) + '%');
+      c.style.setProperty('--w', (icon ? rnd(13, 21) : rnd(5, 9)) + 'px');
+      c.style.setProperty('--h', (icon ? rnd(13, 21) : rnd(12, 20)) + 'px');
+      c.style.setProperty('--c', icon ? icons[i % icons.length] : ribbons[i % ribbons.length]);
+      c.style.setProperty('--r', rnd(-180, 180) + 'deg');
+      c.style.setProperty('--r2', rnd(360, 900) + 'deg');
+      c.style.setProperty('--drift', rnd(-90, 90) + 'px');
+      c.style.setProperty('--dur', rnd(2.6, 4.2) + 's');
+      c.style.setProperty('--delay', rnd(0, 1.3) + 's');
+      layer.appendChild(c);
+    }
+    document.body.appendChild(layer);
+    confettiLayer = layer;
+    later(function () { layer.remove(); if (confettiLayer === layer) confettiLayer = null; }, 5800);
+  }
+  wishBtn.addEventListener('click', function () {
+    if (state !== 'ready') return;
+    state = 'wished';
+    wishBtn.disabled = true;
+    blowBtn.disabled = false;
+    status.textContent = '愿望已经藏进心里了';
+    status.classList.add('show');
+    spawnWish();
+  });
+  blowBtn.addEventListener('click', function () {
+    if (state !== 'wished') return;
+    state = 'blown';
+    blowBtn.disabled = true;
+    cake.classList.add('blown');
+    later(function () {
+      pop.textContent = '🎉 生日快乐！';
+      pop.classList.add('show');
+      againBtn.hidden = false;
+      spawnConfetti();
+    }, 500);
+  });
+  againBtn.addEventListener('click', function () {
+    clearFx();
+    state = 'ready';
+    cake.classList.remove('blown');
+    status.textContent = '';
+    status.classList.remove('show');
+    pop.textContent = '';
+    pop.classList.remove('show');
+    wishBtn.disabled = false;
+    blowBtn.disabled = true;
+    againBtn.hidden = true;
   });
 })();
 </script>
