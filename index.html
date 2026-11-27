@@ -219,16 +219,23 @@
     box-shadow: 0 18px 42px rgba(60,42,24,.30), inset 0 0 0 6px rgba(255,248,224,.42);
     opacity: 0; visibility: hidden; transform: translateY(24px) scale(.97); transform-origin: 50% 12%;
     transition: opacity .5s ease .05s, transform .6s cubic-bezier(0.16,1,0.3,1) .05s, visibility 0s .65s;
-    overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 20px 20px 36px; }
+    overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; padding: 20px 20px 36px; }
   .letter-sheet::before { content: ""; position: absolute; inset: 6px; pointer-events: none; border-radius: 9px;
     background: radial-gradient(circle at 7% 24%, rgba(160,116,60,.10), transparent 26%),
       radial-gradient(circle at 95% 72%, rgba(160,116,60,.09), transparent 28%); }
   .letter-sheet.open { opacity: 1; visibility: visible; transform: none;
     transition: opacity .5s ease .3s, transform .6s cubic-bezier(0.16,1,0.3,1) .3s, visibility 0s .3s; }
-  .sheet-close { position: sticky; top: 0; float: right; width: 36px; height: 36px; border-radius: 999px;
+  .sheet-close { position: sticky; top: 0; float: right; z-index: 5; width: 36px; height: 36px; border-radius: 999px;
     border: 1px solid rgba(126,98,62,.30); background: #f8eed3; color: #6b503c;
     box-shadow: 0 2px 6px rgba(60,42,24,.18); font-size: 15px; cursor: pointer; }
   .sheet-close:focus-visible { outline: 2px solid rgba(109,81,48,.65); outline-offset: 2px; }
+  .sheet-close--bottom { position: static; float: none; display: inline-flex; align-items: center; justify-content: center;
+    gap: 8px; width: auto; height: auto; margin: 10px auto 0; padding: 9px 22px; border-radius: 999px;
+    border: 1px solid rgba(109,90,138,.22); background: #6d5a8a; color: #fffdf8;
+    box-shadow: 0 3px 9px rgba(109,90,138,.24); font-family: 'Letter WenKai', 'Kaiti SC', 'STKaiti', 'KaiTi', '楷体', serif;
+    font-size: 15px; letter-spacing: .12em; line-height: 1.4; }
+  .sheet-close--bottom .sprig-ico { width: 16px; height: 16px; }
+  .sheet-close--bottom:hover { transform: translateY(-1px); box-shadow: 0 5px 12px rgba(109,90,138,.28); }
   .sheet-inner { clear: both; position: relative; z-index: 1; }
   .sheet-head { font-family: 'Letter WenKai', 'Kaiti SC', 'STKaiti', 'KaiTi', '楷体', Georgia, serif;
     font-size: 23px; font-weight: 400; color: #6d4f3a; letter-spacing: .26em; text-align: center;
@@ -237,10 +244,14 @@
     background: rgba(126,98,62,.38); }
   .paper-flora { display: flex; align-items: center; justify-content: center; gap: 12px;
     height: 40px; margin: 0 0 8px; pointer-events: none; }
-  .paper-flora--foot { height: 34px; margin: 12px 0 0; }
   .paper-flora svg { width: 32px; height: 36px; overflow: visible;
     animation: paper-sway var(--dur,5s) ease-in-out var(--delay,0s) infinite alternate; }
   .paper-flora svg:nth-child(2) { width: 25px; height: 29px; }
+  /* 信末花带:像愿望卡页那样排成一整行,每朵各自轻轻摇曳 */
+  .paper-garland { display: block; width: 100%; height: auto; margin: 14px 0 2px; overflow: hidden; }
+  .garland-stem { fill: none; stroke: #9bb99b; stroke-width: 3; stroke-linecap: round; }
+  .garland-bloom { transform-box: fill-box; transform-origin: 50% 100%;
+    animation: paper-sway var(--dur,5s) ease-in-out var(--delay,0s) infinite alternate; }
   @keyframes paper-sway {
     from { transform: translateY(2px) rotate(-4deg); }
     to { transform: translateY(-5px) rotate(5deg); }
@@ -438,7 +449,7 @@
     .chip:hover, section:hover { transform: none; }
     .env2-flap, .env2-seal { transition: none; }
     .letter.open .petal, .intro.opening .petal { animation: none; }
-    .paper-flora svg { animation: none; }
+    .paper-flora svg, .garland-bloom { animation: none; }
     .intro.opening .intro-halo { transition: none; }
     .letter-sheet { transition: none; }
     .envelope, .intro-hint, .seal { animation: none; }
@@ -1103,10 +1114,22 @@
         <p>我和老婆大多数时候都是非常开心快乐的,是以前没有过的开心和幸福,偶尔也会有些意见不和的情况,但是我觉得根本不足以影响到我们的感情~我还记得我们第一次意见不和的时候,我让老婆伤心了,我让老婆掉眼泪了,我还记得我那时候的感受,我感觉到我伤害了老婆,我让这么好的老婆因为我而伤心,这是我最不愿发生的事情,所以今后不论怎么样,我的第一原则永远都是老婆跟着我是幸福快乐无忧无虑的,就够了~那天我记得老婆问我:老公,你有想过我们会有以后吗?现在我可以很肯定,很坚定,只有一个答案的回答:我们会有,而且是永远都在一起,而且还会很幸福!</p>
         <p>我十分的相信,我们的爱可以跨越时间,跨越距离,我们的爱可以打败太多太多的困难,最终走向在一起幸福的日子~老婆,遇到你,和你相爱是我人生中最美妙的体验,我相信,我们接下来还会走过无数个幸福的瞬间,会有无数个美好的画面,让我们去回忆,让我们去感动,我也会全新全意的爱着老婆,给老婆温暖,让老婆感受被爱的感觉,让老婆不再落泪而是嘴角一直微笑着~最后我想说生日快乐老婆~这是我陪你度过的第一个生日,将来,我要陪你走过往后的所有生日,给老婆惊喜,<span class="vow-sign">我爱你老婆!</span></p>
         </div>
-        <div class="paper-flora paper-flora--foot" aria-hidden="true">
-          <svg viewBox="-22 -26 44 52" style="--delay:-1.2s;--dur:6.6s"><use href="#lavsp"/></svg>
-          <svg viewBox="-16 -18 32 36" style="--delay:-3.1s;--dur:5.1s"><use href="#fleurP"/></svg>
-        </div>
+        <svg class="paper-garland" viewBox="0 0 640 104" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path class="garland-stem" d="M0,66 C110,44 210,80 320,60 C430,40 530,78 640,58"/>
+          <g transform="translate(110,62) rotate(-25)"><use href="#leaf3d"/></g>
+          <g transform="translate(540,60) scale(-1,1) rotate(-25)"><use href="#leaf3d"/></g>
+          <g transform="translate(62,28)"><g class="garland-bloom" style="--delay:-.3s;--dur:5.2s"><use href="#fleurR"/></g></g>
+          <g transform="translate(142,46) scale(.9)"><g class="garland-bloom" style="--delay:-1.4s;--dur:6.1s"><use href="#daisy"/></g></g>
+          <g transform="translate(222,24) rotate(-8)"><g class="garland-bloom" style="--delay:-2.2s;--dur:5.6s"><use href="#lavender"/></g></g>
+          <g transform="translate(306,54) scale(.85)"><g class="garland-bloom" style="--delay:-3.4s;--dur:6.6s"><use href="#peach"/></g></g>
+          <g transform="translate(374,22)"><g class="garland-bloom" style="--delay:-.9s;--dur:5.9s"><use href="#fleurP"/></g></g>
+          <g transform="translate(455,52) scale(.85)"><g class="garland-bloom" style="--delay:-2.7s;--dur:6.3s"><use href="#mango"/></g></g>
+          <g transform="translate(532,24) rotate(8)"><g class="garland-bloom" style="--delay:-1.8s;--dur:5.4s"><use href="#lavsp"/></g></g>
+          <g transform="translate(606,44) scale(.85)"><g class="garland-bloom" style="--delay:-4.1s;--dur:6.8s"><use href="#daisy"/></g></g>
+        </svg>
+        <button class="sheet-close sheet-close--bottom" type="button" aria-label="合上这封信">
+          <svg class="sprig-ico" viewBox="-14 -14 28 28" aria-hidden="true"><use href="#leaf3d"/></svg>合上这封信
+        </button>
       </div>
     </div>
 
@@ -1317,7 +1340,7 @@
   if (!sec) return;
   var btn = sec.querySelector('.env-btn');
   var sheet = document.querySelector('.letter-sheet');
-  var closeBtn = document.querySelector('.sheet-close');
+  var closeBtns = document.querySelectorAll('.sheet-close');
   var root = document.documentElement;
   var savedY = 0;
   var focusTimer;
@@ -1348,7 +1371,7 @@
     btn.focus({ preventScroll: true });
   };
   btn.addEventListener('click', open);
-  closeBtn.addEventListener('click', close);
+  closeBtns.forEach(function (b) { b.addEventListener('click', close); });
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' && sec.classList.contains('open')) close();
   });
