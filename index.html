@@ -470,15 +470,6 @@
     box-shadow: 0 6px 18px rgba(77,58,112,.28), inset 0 1px 0 rgba(255,255,255,.55),
       inset 0 -1px 0 rgba(255,255,255,.14);
   }
-  /* 信封按钮本身保持透明,只加一块玻璃托底,不遮住插画 */
-  .env-btn { position: relative; isolation: isolate; }
-  .env-btn::before { content: ""; position: absolute; inset: 16% 4% 5%; z-index: -1;
-    border-radius: 22px; pointer-events: none;
-    background: linear-gradient(135deg, rgba(255,253,248,.78), rgba(238,232,247,.58));
-    border: 1px solid rgba(255,255,255,.62);
-    -webkit-backdrop-filter: blur(10px) saturate(150%);
-    backdrop-filter: blur(10px) saturate(150%);
-    box-shadow: 0 6px 16px rgba(109,90,138,.14), inset 0 1px 0 rgba(255,255,255,.85); }
   /* 掠过的高光:背景位置移动,不位移伪元素,避免裁切嵌套按钮的焦点圈 */
   .deck-next::after, .chip::after, .chip-add::after, .chip-del::after, .story-btn::after,
   .sheet-close::after, .sheet-close--bottom::after, .bday-btn::after, .intro-hint::after {
@@ -495,7 +486,7 @@
   .deck-next:active, .chip:active, .chip-add:active, .chip-del:active, .story-btn:active,
   .sheet-close:active, .sheet-close--bottom:active, .bday-btn:not(:disabled):active { transform: scale(.97); }
   @supports not ((-webkit-backdrop-filter: blur(4px)) or (backdrop-filter: blur(4px))) {
-    .chip, .bday-btn:not(.primary), .chip-add, .chip-del, .sheet-close, .intro-hint, .env-btn::before {
+    .chip, .bday-btn:not(.primary), .chip-add, .chip-del, .sheet-close, .intro-hint {
       background: rgba(248,244,236,.96); }
     .deck-next, .sheet-close--bottom, .bday-btn.primary, .story-btn { background: #6d5a8a; }
   }
