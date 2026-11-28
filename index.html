@@ -48,8 +48,8 @@
   .slide-likes.in .likes h2 { animation: slide-in .55s cubic-bezier(0.16,1,0.3,1) backwards; }
   .slide-likes.in .chip { animation: slide-in .5s cubic-bezier(0.16,1,0.3,1) backwards; }
   /* 她喜欢的小世界:两角的小照片(拍立得相框,手放的轻微倾斜) */
-  .world-gif { position: absolute; top: 18px; width: 104px; height: 104px;
-    padding: 7px; background: #fffdf8; border-radius: 14px;
+  .world-gif { position: absolute; top: 18px; width: 120px; height: 120px;
+    padding: 8px; background: #fffdf8; border-radius: 16px;
     box-shadow: 0 6px 16px rgba(109,90,138,.20); opacity: .96;
     filter: sepia(.12) saturate(.95); }
   .gif-tl { left: 8px; transform: rotate(-4deg); }
@@ -589,16 +589,20 @@
     .sheet-lines { --rule: 32px; font-size: 15px; }
     .paper-flora { height: 34px; gap: 9px; }
     .paper-flora svg { width: 27px; height: 31px; }
-    /* 手机:小猫固定在顶部两角,标题落在它们下方的安全区,标签自然平铺 */
-    .slide-likes { padding-top: 84px; }
-    .world-gif { top: 12px; width: 76px; height: 76px; padding: 5px; border-radius: 12px; }
+    /* 手机:小猫放大固定在顶部两角,标签放大铺满原本的留白,标题仍在安全区 */
+    .slide-likes { padding-top: 126px; }
+    .world-gif { top: 12px; width: 104px; height: 104px; padding: 6px; border-radius: 14px; }
     .gif-tl { left: 6px; }
     .gif-tr { right: 6px; }
-    .likes h2 { font-size: clamp(18px, 5.6vw, 23px); gap: 6px; letter-spacing: .06em; }
-    .likes h2 .fx { width: 18px; height: 20px; }
-    .chips { gap: 7px; }
-    .chip { padding: 6px 11px; font-size: 13px; letter-spacing: .03em; }
-    .likes-final { font-size: clamp(27px, 8vw, 34px); margin-top: 12px; }
+    .likes h2 { font-size: clamp(19px, 6vw, 24px); gap: 6px; letter-spacing: .06em; }
+    .likes h2 .fx { width: 20px; height: 22px; }
+    .chips { gap: 9px; }
+    .chip { padding: 9px 15px; font-size: 15px; letter-spacing: .04em; }
+    .likes-final { font-size: clamp(29px, 8.6vw, 38px); margin-top: 14px; }
+    .slide-likes > .bloom:nth-of-type(1) { bottom: 110px !important; }
+    .slide-likes > .bloom:nth-of-type(2) { bottom: 128px !important; }
+    .slide-likes > .bloom:nth-of-type(3) { bottom: 116px !important; }
+    .slide-likes > .bloom:nth-of-type(4) { bottom: 136px !important; }
     .slide-birthday { padding: 20px 0 112px; }
     .slide-birthday section { padding: 22px 16px 16px; }
     .birthday-stage { width: min(280px, 84%); }
@@ -609,25 +613,26 @@
     .bday-btn { font-size: 15px; padding: 10px 18px; min-height: 46px; }
   }
   @media (max-width: 360px) {
-    .slide-likes { padding-top: 70px; }
-    /* 窄屏:装饰花下移到艺术字下方,不压标签行 */
-    .slide-likes > .bloom:nth-of-type(1) { bottom: 75px !important; }
-    .slide-likes > .bloom:nth-of-type(2) { bottom: 95px !important; }
-    .slide-likes > .bloom:nth-of-type(3) { bottom: 82px !important; }
-    .slide-likes > .bloom:nth-of-type(4) { bottom: 92px !important; }
-    .world-gif { top: 4px; width: 58px; height: 58px; padding: 4px; border-radius: 9px; }
+    .slide-likes { padding-top: 94px; padding-bottom: 84px; }
+    /* 窄屏:装饰花放在艺术字下方,不压标签行 */
+    .slide-likes > .bloom:nth-of-type(1) { bottom: 55px !important; }
+    .slide-likes > .bloom:nth-of-type(2) { bottom: 70px !important; }
+    .slide-likes > .bloom:nth-of-type(3) { bottom: 60px !important; }
+    .slide-likes > .bloom:nth-of-type(4) { bottom: 72px !important; }
+    .world-gif { top: 4px; width: 76px; height: 76px; padding: 5px; border-radius: 11px; }
     .gif-tl { left: 2px; }
     .gif-tr { right: 2px; }
-    .likes h2 { font-size: 18px; gap: 5px; letter-spacing: .04em; }
-    .likes h2 .fx { width: 16px; height: 18px; }
-    .chips { gap: 6px; }
-    .chip { padding: 5px 8px; font-size: 12px; }
+    .likes h2 { font-size: 19px; gap: 5px; letter-spacing: .03em; }
+    .likes h2 .fx { width: 18px; height: 20px; }
+    .chips { gap: 7px; }
+    .chip { padding: 6px 9px; font-size: 13px; }
+    .likes-final { font-size: 29px; margin-top: 10px; }
   }
   @media (max-height: 640px) {
     .likes h2 { margin-bottom: 8px; }
-    .chips { gap: 6px; }
-    .chip { padding: 5px 9px; font-size: 12px; }
-    .likes-final { font-size: 27px; margin-top: 8px; }
+    .chips { gap: 7px; }
+    .chip { padding: 6px 9px; font-size: 13px; }
+    .likes-final { font-size: 29px; margin-top: 10px; }
     .slide-birthday { padding: 14px 0 108px; }
     .slide-birthday section { padding: 20px 16px 14px; }
     .birthday-stage { width: min(236px, 74%); }
@@ -635,6 +640,20 @@
     .slide-birthday .note { font-size: 13px; line-height: 1.5; }
     .birthday-pop { min-height: 28px; font-size: 18px; }
     .bday-btn { padding: 8px 16px; min-height: 42px; }
+  }
+  /* 中等高度手机:再收紧一档,让艺术字完整落在固定导航之上 */
+  @media (min-width: 361px) and (max-width: 420px) and (max-height: 720px) {
+    .slide-likes { padding-top: 112px; padding-bottom: 82px; }
+    .world-gif { width: 96px; height: 96px; }
+    .likes h2 { font-size: clamp(18px, 5.4vw, 22px); }
+    .likes h2 .fx { width: 18px; height: 20px; }
+    .chips { gap: 8px; }
+    .chip { padding: 7px 12px; font-size: 14px; }
+    .likes-final { font-size: clamp(27px, 8vw, 34px); margin-top: 10px; }
+    .slide-likes > .bloom:nth-of-type(1) { bottom: 76px !important; }
+    .slide-likes > .bloom:nth-of-type(2) { bottom: 90px !important; }
+    .slide-likes > .bloom:nth-of-type(3) { bottom: 82px !important; }
+    .slide-likes > .bloom:nth-of-type(4) { bottom: 96px !important; }
   }
   @media (prefers-reduced-motion: reduce) {
     .cake-art .flame, .cake-art.blown .smoke, .wish-particle, .confetti { animation: none !important; }
