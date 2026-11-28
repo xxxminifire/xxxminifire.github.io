@@ -1934,7 +1934,7 @@
   }
 })();
 (function () {
-  /* 生日背景音乐:原创音乐盒旋律,拆信手势解锁音频;进入生日页轻播,离开静音,可一键开关 */
+  /* 生日背景音乐:《生日快乐》音乐盒旋律,拆信手势解锁音频;进入生日页轻播,离开静音,可一键开关 */
   var slide = document.querySelector('.slide-birthday');
   var btn = document.getElementById('bdayMusic');
   if (!slide || !btn) return;
@@ -1944,12 +1944,14 @@
   var wanted = true, visible = false, playing = false;
   var ctx = null, master = null, timer = null, nextTime = 0, step = 0;
   try { if (localStorage.getItem(WANT_KEY) === 'off') wanted = false; } catch (e) {}
-  /* 五声音阶原创小旋律,32 个八分音符循环;不用外链音频,离线也能播 */
-  var MELODY = [76,79,84,79, 76,74,72,74, 76,79,81,79, 76,72,74,0,
-                72,76,79,76, 74,76,79,81, 79,76,74,72, 74,0,0,0];
-  var BASS = [48,0,0,0, 55,0,0,0, 48,0,0,0, 55,0,0,0,
-              48,0,0,0, 55,0,0,0, 48,0,0,0, 55,0,0,0];
-  var STEP = 0.38;
+  /* 《生日快乐》四句旋律的音乐盒版: [音高, 时值(八分音符数), 低音],不用外链音频,离线也能播 */
+  var TUNE = [
+    [67,1,48], [67,1,0],  [69,2,0],  [67,2,0],  [72,2,43], [71,4,0],
+    [67,1,48], [67,1,0],  [69,2,0],  [67,2,0],  [74,2,43], [72,4,0],
+    [67,1,48], [67,1,0],  [79,2,0],  [76,2,43], [72,2,0],  [71,2,48], [69,4,0],
+    [65,1,41], [65,1,0],  [64,2,48], [60,2,0],  [62,2,43], [60,4,48]
+  ];
+  var STEP = 0.2;
   var midi = function (n) { return 440 * Math.pow(2, (n - 69) / 12); };
   var ensure = function () {
     if (ctx) return ctx;
@@ -1981,14 +1983,12 @@
   var schedule = function () {
     if (!ctx || !playing) return;
     while (nextTime < ctx.currentTime + 0.7) {
-      var n = MELODY[step % MELODY.length];
-      if (n) {
-        tone(midi(n), nextTime, 0.85, 0.055, 'triangle');
-        tone(midi(n + 12), nextTime, 0.4, 0.012, 'sine');
-      }
-      var b = BASS[step % BASS.length];
-      if (b) tone(midi(b), nextTime, 2.2, 0.019, 'sine');
-      nextTime += STEP;
+      var ev = TUNE[step % TUNE.length];
+      var dur = ev[1] * STEP;
+      tone(midi(ev[0]), nextTime, dur * 0.9, 0.055, 'triangle');
+      tone(midi(ev[0] + 12), nextTime, Math.min(dur * 0.6, 0.35), 0.012, 'sine');
+      if (ev[2]) tone(midi(ev[2]), nextTime, Math.max(0.9, dur * 2.2), 0.019, 'sine');
+      nextTime += dur;
       step++;
     }
   };
