@@ -102,8 +102,6 @@
     font-family: 'Kaiti SC', 'STKaiti', 'KaiTi', '楷体', Georgia, serif;
     box-shadow: 0 2px 6px rgba(109,90,138,.14); cursor: pointer;
     transition: transform .5s ease-in-out, box-shadow .5s ease-in-out; }
-  .chip-add { background: transparent; border: 1.5px dashed rgba(109,90,138,.45); color: #6d5a8a;
-    font-size: 18px; line-height: 1; padding: 9px 14px; }
   .chip-input { font: inherit; font-family: inherit; font-size: 15px; color: #453d38;
     background: #fffdf8; border: 1.5px solid #6d5a8a; border-radius: 999px;
     padding: 7px 14px; width: 8.5em; outline: none; }
@@ -119,7 +117,7 @@
   .chip-cat:first-child { margin-top: 0; }
   .chip-cat::before, .chip-cat::after { content: ""; width: 22px; height: 1px;
     background: rgba(109,90,138,.30); }
-  .likes-final { margin-top: 18px; font-family: 'Brush Heart', 'WenKai Heart',
+  .likes-final { margin-top: 18px; font-family: 'Letter WenKai',
     'Kaiti SC', 'STKaiti', 'KaiTi', '楷体', Georgia, serif;
     font-size: clamp(30px, 7.6vw, 44px); line-height: 1.2; color: #8e607f;
     letter-spacing: .08em; text-shadow: 0 2px 0 rgba(255,253,248,.92),
@@ -458,7 +456,7 @@
   .birthday-status, .birthday-pop, .birthday-actions { position: relative; z-index: 3; }
 
   /* 液态玻璃按钮:半透明材质 + 内高光 + 掠过的水光,所有控件统一触感 */
-  .deck-next, .chip, .chip-add, .chip-del, .story-btn,
+  .deck-next, .chip, .chip-del, .story-btn,
   .sheet-close, .sheet-close--bottom, .bday-btn, .intro-hint {
     isolation: isolate;
     -webkit-backdrop-filter: blur(12px) saturate(150%);
@@ -471,8 +469,6 @@
     box-shadow: 0 5px 14px rgba(109,90,138,.16), inset 0 1px 0 rgba(255,255,255,.90),
       inset 0 -1px 0 rgba(143,122,168,.10);
   }
-  .chip-add { background: linear-gradient(135deg, rgba(255,253,248,.74), rgba(238,232,247,.54));
-    border: 1.5px dashed rgba(109,90,138,.48); }
   .chip-del { background: linear-gradient(135deg, rgba(255,253,248,.88), rgba(228,219,240,.72));
     border: 1px solid rgba(255,255,255,.55);
     box-shadow: inset 0 1px 0 rgba(255,255,255,.8), 0 2px 6px rgba(109,90,138,.12); }
@@ -492,7 +488,7 @@
       inset 0 -1px 0 rgba(255,255,255,.14);
   }
   /* 掠过的高光:背景位置移动,不位移伪元素,避免裁切嵌套按钮的焦点圈 */
-  .deck-next::after, .chip::after, .chip-add::after, .chip-del::after, .story-btn::after,
+  .deck-next::after, .chip::after, .chip-del::after, .story-btn::after,
   .sheet-close::after, .sheet-close--bottom::after, .bday-btn::after, .intro-hint::after {
     content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
     background: linear-gradient(105deg, transparent 26%, rgba(255,255,255,.62) 48%, transparent 70%);
@@ -500,39 +496,39 @@
     transition: background-position .75s cubic-bezier(.16,1,.3,1), opacity .4s ease;
   }
   @media (hover: hover) {
-    .deck-next:hover::after, .chip:hover::after, .chip-add:hover::after, .chip-del:hover::after,
+    .deck-next:hover::after, .chip:hover::after, .chip-del:hover::after,
     .story-btn:hover::after, .sheet-close:hover::after, .sheet-close--bottom:hover::after,
     .bday-btn:hover:not(:disabled)::after, .intro-hint:hover::after {
       background-position: -70% 0; opacity: .88;
     }
   }
-  .deck-next:active, .chip:active, .chip-add:active, .chip-del:active, .story-btn:active,
+  .deck-next:active, .chip:active, .chip-del:active, .story-btn:active,
   .sheet-close:active, .sheet-close--bottom:active, .bday-btn:not(:disabled):active { transform: scale(.97); }
   @supports not ((-webkit-backdrop-filter: blur(4px)) or (backdrop-filter: blur(4px))) {
-    .chip, .bday-btn:not(.primary), .chip-add, .chip-del, .sheet-close, .intro-hint {
+    .chip, .bday-btn:not(.primary), .chip-del, .sheet-close, .intro-hint {
       background: rgba(248,244,236,.96); }
     .deck-next, .sheet-close--bottom, .bday-btn.primary, .story-btn { background: #6d5a8a; }
   }
   @media (prefers-reduced-motion: reduce) {
-    .deck-next::after, .chip::after, .chip-add::after, .chip-del::after, .story-btn::after,
+    .deck-next::after, .chip::after, .chip-del::after, .story-btn::after,
     .sheet-close::after, .sheet-close--bottom::after, .bday-btn::after, .intro-hint::after {
       transition: none; opacity: 0; }
-    .deck-next:hover, .chip:hover, .chip-add:hover, .chip-del:hover, .story-btn:hover,
+    .deck-next:hover, .chip:hover, .chip-del:hover, .story-btn:hover,
     .sheet-close:hover, .sheet-close--bottom:hover, .bday-btn:hover:not(:disabled), .intro-hint:hover {
       transform: none; }
-    .deck-next:active, .chip:active, .chip-add:active, .chip-del:active, .story-btn:active,
+    .deck-next:active, .chip:active, .chip-del:active, .story-btn:active,
     .sheet-close:active, .sheet-close--bottom:active, .bday-btn:not(:disabled):active { transform: none; }
   }
   /* 移动端液态玻璃:手指落点变高光中心,按压收缩,松手散出一圈光晕 */
-  .deck-next, .chip, .chip-add, .chip-del, .story-btn,
+  .deck-next, .chip, .chip-del, .story-btn,
   .sheet-close, .sheet-close--bottom, .bday-btn, .intro-hint {
     --glass-x: 50%; --glass-y: 50%;
     -webkit-tap-highlight-color: transparent;
   }
   /* 触点高光必须锚在按钮自身:顶部关闭键保持 sticky,其余改为定位上下文 */
-  .deck-next, .chip, .chip-add, .chip-del, .story-btn,
+  .deck-next, .chip, .chip-del, .story-btn,
   .sheet-close--bottom, .bday-btn, .intro-hint { position: relative; }
-  .deck-next::before, .chip::before, .chip-add::before, .chip-del::before,
+  .deck-next::before, .chip::before, .chip-del::before,
   .story-btn::before, .sheet-close::before, .sheet-close--bottom::before,
   .bday-btn::before, .intro-hint::before {
     content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit;
@@ -550,11 +546,11 @@
   }
   /* 触屏没有 hover:手指按住时立即反馈,不被残留的 hover 抬升抵消 */
   @media (hover: none) {
-    .deck-next:hover, .chip:hover, .chip-add:hover, .chip-del:hover,
+    .deck-next:hover, .chip:hover, .chip-del:hover,
     .story-btn:hover, .sheet-close:hover, .sheet-close--bottom:hover,
     .bday-btn:hover:not(:disabled), .intro-hint:hover { transform: none; }
   }
-  .deck-next.glass-touched, .chip.glass-touched, .chip-add.glass-touched,
+  .deck-next.glass-touched, .chip.glass-touched,
   .chip-del.glass-touched, .story-btn.glass-touched, .sheet-close.glass-touched,
   .sheet-close--bottom.glass-touched, .bday-btn.glass-touched, .intro-hint.glass-touched,
   .bday-btn.glass-touched:not(:disabled) {
@@ -563,7 +559,7 @@
   }
   /* 静置时也有一束极慢的光掠过,让玻璃在手机上不是死板的贴图 */
   @media (hover: none) {
-    .deck-next::after, .chip::after, .chip-add::after, .chip-del::after, .story-btn::after,
+    .deck-next::after, .chip::after, .chip-del::after, .story-btn::after,
     .sheet-close::after, .sheet-close--bottom::after, .bday-btn::after, .intro-hint::after {
       opacity: .16; animation: glass-idle 13s ease-in-out infinite;
     }
@@ -578,14 +574,14 @@
   }
   @media (prefers-reduced-motion: reduce) {
     .glass-release::before { animation: none; opacity: 0; }
-    .deck-next::before, .chip::before, .chip-add::before, .chip-del::before,
+    .deck-next::before, .chip::before, .chip-del::before,
     .story-btn::before, .sheet-close::before, .sheet-close--bottom::before,
     .bday-btn::before, .intro-hint::before { transition: none; }
-    .deck-next::after, .chip::after, .chip-add::after, .chip-del::after, .story-btn::after,
+    .deck-next::after, .chip::after, .chip-del::after, .story-btn::after,
     .sheet-close::after, .sheet-close--bottom::after, .bday-btn::after, .intro-hint::after {
       animation: none !important; opacity: 0 !important;
     }
-    .deck-next.glass-touched, .chip.glass-touched, .chip-add.glass-touched,
+    .deck-next.glass-touched, .chip.glass-touched,
     .chip-del.glass-touched, .story-btn.glass-touched, .sheet-close.glass-touched,
     .sheet-close--bottom.glass-touched, .bday-btn.glass-touched, .intro-hint.glass-touched {
       transform: none; }
@@ -598,7 +594,6 @@
     .paper-flora svg { width: 27px; height: 31px; }
     .chips { gap: 7px; }
     .chip { padding: 6px 11px; font-size: 13px; letter-spacing: .03em; }
-    .chip-add { padding: 6px 11px; font-size: 16px; }
     .chip-cat { font-size: 11px; letter-spacing: .18em; margin: 6px 0 0; }
     .chip-cat::before, .chip-cat::after { width: 14px; }
     .likes-final { font-size: clamp(27px, 8vw, 34px); margin-top: 12px; }
@@ -622,7 +617,6 @@
     .likes h2 { font-size: 22px; margin-bottom: 8px; }
     .chips { gap: 6px; }
     .chip { padding: 5px 9px; font-size: 12px; }
-    .chip-add { padding: 5px 9px; font-size: 15px; }
     .chip-cat { font-size: 11px; letter-spacing: .14em; margin: 4px 0 0; }
     .likes-final { font-size: 27px; margin-top: 8px; }
     .slide-birthday { padding: 14px 0 108px; }
@@ -1511,16 +1505,8 @@
     s.setAttribute('aria-label', '编辑标签：' + norm(html));
     return s;
   };
-  var addBtn = document.createElement('button');
-  addBtn.type = 'button';
-  addBtn.className = 'chip chip-add';
-  addBtn.textContent = '＋';
-  addBtn.setAttribute('aria-label', '添加小标签');
-  box.appendChild(addBtn);
   var render = function (items) {
-    box.querySelectorAll('.chip, .chip-cat').forEach(function (n) {
-      if (n !== addBtn) n.remove();
-    });
+    box.querySelectorAll('.chip, .chip-cat').forEach(function (n) { n.remove(); });
     var lastCat = '';
     items.forEach(function (it) {
       var cat = it.cat || inferCat(it.html);
@@ -1528,16 +1514,16 @@
         var label = document.createElement('span');
         label.className = 'chip-cat';
         label.textContent = cat;
-        box.insertBefore(label, addBtn);
+        box.appendChild(label);
         lastCat = cat;
       }
-      box.insertBefore(makeChip(it.html, cat), addBtn);
+      box.appendChild(makeChip(it.html, cat));
     });
   };
   var collect = function () {
     var items = [];
     [].forEach.call(box.childNodes, function (n) {
-      if (n === addBtn || n.nodeType !== 1 || !n.classList.contains('chip')) return;
+      if (n.nodeType !== 1 || !n.classList.contains('chip')) return;
       items.push({ html: n.innerHTML, cat: n.dataset.cat || inferCat(n.innerHTML) });
     });
     return items;
@@ -1620,7 +1606,7 @@
     del.textContent = '✕';
     del.setAttribute('aria-label', '删除这个小标签');
     var oldCat = chip ? chip.dataset.cat : '';
-    if (chip) chip.replaceWith(input); else box.insertBefore(input, addBtn);
+    chip.replaceWith(input);
     input.after(del);
     input.focus();
     var skipBlur = false;
@@ -1640,12 +1626,11 @@
     del.addEventListener('click', function () { skipBlur = true; finish(false); });
   };
   box.addEventListener('click', function (e) {
-    if (e.target.closest('.chip-add')) { edit(null); return; }
     var c = e.target.closest('.chip');
     if (c) edit(c);
   });
   box.addEventListener('keydown', function (e) {
-    var c = e.target.closest && e.target.closest('.chip:not(.chip-add)');
+    var c = e.target.closest && e.target.closest('.chip');
     if (c && (e.key === 'Enter' || e.key === ' ')) {
       e.preventDefault();
       edit(c);
@@ -1877,7 +1862,7 @@
 <script>
 (function () {
   /* 移动端液态玻璃:触点驱动高光,按住收缩,松手留一圈扩散的光 */
-  var GLASS = '.deck-next, .chip, .chip-add, .chip-del, .story-btn, .sheet-close, .sheet-close--bottom, .bday-btn, .intro-hint';
+  var GLASS = '.deck-next, .chip, .chip-del, .story-btn, .sheet-close, .sheet-close--bottom, .bday-btn, .intro-hint';
   var active = [];
   function glassIn(node) {
     if (!node || !node.closest) return [];
