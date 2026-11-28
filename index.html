@@ -47,7 +47,6 @@
   .slide-likes.in > .likes { animation: none; }
   .slide-likes.in .likes h2 { animation: slide-in .55s cubic-bezier(0.16,1,0.3,1) backwards; }
   .slide-likes.in .chip { animation: slide-in .5s cubic-bezier(0.16,1,0.3,1) backwards; }
-  .slide-likes.in .chip-cat { animation: slide-in .45s cubic-bezier(0.16,1,0.3,1) backwards; }
   /* 她喜欢的小世界:两角的小照片(拍立得相框,手放的轻微倾斜) */
   .world-gif { position: absolute; top: 18px; width: 104px; height: 104px;
     padding: 7px; background: #fffdf8; border-radius: 14px;
@@ -110,13 +109,6 @@
   .chip:hover { transform: translateY(-2px) rotate(.8deg); box-shadow: 0 8px 20px rgba(109,90,138,.28); }
   .chip b { color: #6d5a8a; font-weight: 600; }
   .chip:focus-visible { outline: 2px dashed rgba(90,143,90,.62); outline-offset: 2px; }
-  /* 小世界:按类别分行,标签自己成为一行的小标题 */
-  .chip-cat { flex: 0 0 100%; display: flex; align-items: center; justify-content: center; gap: 10px;
-    margin: 9px 0 2px; color: #6d5a8a; font-size: 12px; letter-spacing: .26em;
-    font-family: 'Kaiti SC', 'STKaiti', 'KaiTi', '楷体', Georgia, serif; }
-  .chip-cat:first-child { margin-top: 0; }
-  .chip-cat::before, .chip-cat::after { content: ""; width: 22px; height: 1px;
-    background: rgba(109,90,138,.30); }
   .likes-final { margin-top: 18px; font-family: 'Letter WenKai',
     'Kaiti SC', 'STKaiti', 'KaiTi', '楷体', Georgia, serif;
     font-size: clamp(30px, 7.6vw, 44px); line-height: 1.2; color: #8e607f;
@@ -597,10 +589,15 @@
     .sheet-lines { --rule: 32px; font-size: 15px; }
     .paper-flora { height: 34px; gap: 9px; }
     .paper-flora svg { width: 27px; height: 31px; }
+    /* 手机:小猫固定在顶部两角,标题落在它们下方的安全区,标签自然平铺 */
+    .slide-likes { padding-top: 84px; }
+    .world-gif { top: 12px; width: 76px; height: 76px; padding: 5px; border-radius: 12px; }
+    .gif-tl { left: 6px; }
+    .gif-tr { right: 6px; }
+    .likes h2 { font-size: clamp(18px, 5.6vw, 23px); gap: 6px; letter-spacing: .06em; }
+    .likes h2 .fx { width: 18px; height: 20px; }
     .chips { gap: 7px; }
     .chip { padding: 6px 11px; font-size: 13px; letter-spacing: .03em; }
-    .chip-cat { font-size: 11px; letter-spacing: .18em; margin: 6px 0 0; }
-    .chip-cat::before, .chip-cat::after { width: 14px; }
     .likes-final { font-size: clamp(27px, 8vw, 34px); margin-top: 12px; }
     .slide-birthday { padding: 20px 0 112px; }
     .slide-birthday section { padding: 22px 16px 16px; }
@@ -612,17 +609,24 @@
     .bday-btn { font-size: 15px; padding: 10px 18px; min-height: 46px; }
   }
   @media (max-width: 360px) {
-    .world-gif { top: 4px; width: 60px; height: 60px; padding: 4px; border-radius: 9px; }
+    .slide-likes { padding-top: 70px; }
+    /* 窄屏:装饰花下移到艺术字下方,不压标签行 */
+    .slide-likes > .bloom:nth-of-type(1) { bottom: 75px !important; }
+    .slide-likes > .bloom:nth-of-type(2) { bottom: 95px !important; }
+    .slide-likes > .bloom:nth-of-type(3) { bottom: 82px !important; }
+    .slide-likes > .bloom:nth-of-type(4) { bottom: 92px !important; }
+    .world-gif { top: 4px; width: 58px; height: 58px; padding: 4px; border-radius: 9px; }
     .gif-tl { left: 2px; }
     .gif-tr { right: 2px; }
-    .likes h2 { font-size: 18px; gap: 5px; letter-spacing: .06em; }
+    .likes h2 { font-size: 18px; gap: 5px; letter-spacing: .04em; }
     .likes h2 .fx { width: 16px; height: 18px; }
+    .chips { gap: 6px; }
+    .chip { padding: 5px 8px; font-size: 12px; }
   }
   @media (max-height: 640px) {
-    .likes h2 { font-size: 22px; margin-bottom: 8px; }
+    .likes h2 { margin-bottom: 8px; }
     .chips { gap: 6px; }
     .chip { padding: 5px 9px; font-size: 12px; }
-    .chip-cat { font-size: 11px; letter-spacing: .14em; margin: 4px 0 0; }
     .likes-final { font-size: 27px; margin-top: 8px; }
     .slide-birthday { padding: 14px 0 108px; }
     .slide-birthday section { padding: 20px 16px 14px; }
@@ -999,13 +1003,10 @@
   <div class="likes">
     <h2><svg class="fx" viewBox="-16 -18 32 36" aria-hidden="true"><use href="#fleurP"/></svg>老婆喜欢的小世界<svg class="fx" viewBox="-16 -18 32 36" aria-hidden="true"><use href="#fleurR"/></svg></h2>
     <div class="chips">
-      <span class="chip-cat">亲密互动</span>
       <span class="chip">💋 咬老公</span>
       <span class="chip">🖐️ 挠手掌心</span>
-      <span class="chip-cat">偏爱氛围</span>
       <span class="chip">🎨 淡色调</span>
       <span class="chip">☀️ 温暖的太阳</span>
-      <span class="chip-cat">水果甜点</span>
       <span class="chip">🍑 桃子</span>
       <span class="chip">🍉 西瓜</span>
       <span class="chip">🥭 芒果</span>
@@ -1015,7 +1016,6 @@
       <span class="chip">🍡 糖葫芦</span>
       <span class="chip">🍮 软软糯糯的食物</span>
       <span class="chip">🥚 咸鸭蛋</span>
-      <span class="chip-cat">暖心日常</span>
       <span class="chip">🧸 玩偶</span>
       <span class="chip">🍗 鸡汤</span>
       <span class="chip">🥟 船歌饺子</span>
@@ -1443,33 +1443,32 @@
   setInterval(tick, 1000);
 })();
 (function () {
-  /* 小标签在线增删改:＋ 添加,点标签改字(回车保存),✕ 删除;按类别排序并保存在本机浏览器 */
+  /* 小标签:点标签改字(回车保存),✕ 删除;按页面顺序平铺并保存在本机浏览器 */
   var box = document.querySelector('.chips');
   if (!box) return;
   var KEY = 'likes-chips-v2';
   var OLD_KEY = 'likes-chips-v1';
-  var CATS = ['亲密互动', '偏爱氛围', '水果甜点', '暖心日常', '我的私藏'];
   var DEFAULTS = [
-    { html: '💋 咬老公', cat: '亲密互动' },
-    { html: '🖐️ 挠手掌心', cat: '亲密互动' },
-    { html: '🎨 淡色调', cat: '偏爱氛围' },
-    { html: '☀️ 温暖的太阳', cat: '偏爱氛围' },
-    { html: '🍑 桃子', cat: '水果甜点' },
-    { html: '🍉 西瓜', cat: '水果甜点' },
-    { html: '🥭 芒果', cat: '水果甜点' },
-    { html: '<b>🥥 榴莲</b>', cat: '水果甜点' },
-    { html: '🍍 菠萝', cat: '水果甜点' },
-    { html: '🌰 龙眼', cat: '水果甜点' },
-    { html: '🍡 糖葫芦', cat: '水果甜点' },
-    { html: '🍮 软软糯糯的食物', cat: '水果甜点' },
-    { html: '🥚 咸鸭蛋', cat: '水果甜点' },
-    { html: '🧸 玩偶', cat: '暖心日常' },
-    { html: '🍗 鸡汤', cat: '暖心日常' },
-    { html: '🥟 船歌饺子', cat: '暖心日常' },
-    { html: '🍜 酸辣粉 · 细米线', cat: '暖心日常' },
-    { html: '🍲 抄手', cat: '暖心日常' },
-    { html: '🥚 鸡蛋', cat: '暖心日常' },
-    { html: '🥬 青菜', cat: '暖心日常' }
+    '💋 咬老公',
+    '🖐️ 挠手掌心',
+    '🎨 淡色调',
+    '☀️ 温暖的太阳',
+    '🍑 桃子',
+    '🍉 西瓜',
+    '🥭 芒果',
+    '<b>🥥 榴莲</b>',
+    '🍍 菠萝',
+    '🌰 龙眼',
+    '🍡 糖葫芦',
+    '🍮 软软糯糯的食物',
+    '🥚 咸鸭蛋',
+    '🧸 玩偶',
+    '🍗 鸡汤',
+    '🥟 船歌饺子',
+    '🍜 酸辣粉 · 细米线',
+    '🍲 抄手',
+    '🥚 鸡蛋',
+    '🥬 青菜'
   ];
   var REQUIRED = ['🖐️ 挠手掌心', '🍮 软软糯糯的食物', '🥚 咸鸭蛋', '🎨 淡色调', '☀️ 温暖的太阳'];
   /* Supabase 云端存储:注册 supabase.com 建好表后,把下面两项填上,标签即全设备共享 */
@@ -1485,75 +1484,37 @@
     d.innerHTML = html;
     return (d.textContent || '').replace(/\s+/g, '').replace(/\uFE0F/g, '');
   };
-  var CAT_BY_TEXT = {};
-  DEFAULTS.forEach(function (x) { CAT_BY_TEXT[norm(x.html)] = x.cat; });
-  var inferCat = function (html) {
-    var t = norm(html);
-    if (CAT_BY_TEXT[t]) return CAT_BY_TEXT[t];
-    if (/老公|抱|亲|挠|亲密/.test(t)) return '亲密互动';
-    if (/色调|太阳|阳光|氛围|温柔/.test(t)) return '偏爱氛围';
-    if (/桃|瓜|果|榴莲|菠萝|龙眼|糖葫芦|饺子|鸡汤|粉|米线|抄手|鸡蛋|鸭蛋|青菜|食物|糯|甜/.test(t)) return '水果甜点';
-    if (/玩偶|猫|花|书|音乐|旅行/.test(t)) return '暖心日常';
-    return '我的私藏';
-  };
-  var catIndex = function (cat) {
-    var i = CATS.indexOf(cat);
-    return i < 0 ? CATS.length - 1 : i;
-  };
-  var makeChip = function (html, cat) {
+  var makeChip = function (html) {
     var s = document.createElement('span');
     s.className = 'chip';
     s.innerHTML = html;
-    s.dataset.cat = cat || inferCat(html);
     s.tabIndex = 0;
     s.setAttribute('role', 'button');
     s.setAttribute('aria-label', '编辑标签：' + norm(html));
     return s;
   };
   var render = function (items) {
-    box.querySelectorAll('.chip, .chip-cat').forEach(function (n) { n.remove(); });
-    var lastCat = '';
-    items.forEach(function (it) {
-      var cat = it.cat || inferCat(it.html);
-      if (cat !== lastCat) {
-        var label = document.createElement('span');
-        label.className = 'chip-cat';
-        label.textContent = cat;
-        box.appendChild(label);
-        lastCat = cat;
-      }
-      box.appendChild(makeChip(it.html, cat));
-    });
+    box.querySelectorAll('.chip').forEach(function (n) { n.remove(); });
+    items.forEach(function (html) { box.appendChild(makeChip(html)); });
   };
   var collect = function () {
-    var items = [];
-    [].forEach.call(box.childNodes, function (n) {
-      if (n.nodeType !== 1 || !n.classList.contains('chip')) return;
-      items.push({ html: n.innerHTML, cat: n.dataset.cat || inferCat(n.innerHTML) });
-    });
-    return items;
-  };
-  var sortItems = function (items) {
-    return items.map(function (it, i) { return { it: it, i: i }; }).sort(function (a, b) {
-      return catIndex(a.it.cat) - catIndex(b.it.cat) || a.i - b.i;
-    }).map(function (x) { return x.it; });
+    return [].map.call(box.querySelectorAll('.chip'), function (n) { return n.innerHTML; });
   };
   var mergeRequired = function (items) {
     var seen = {};
-    items.forEach(function (it) { seen[norm(it.html)] = true; });
+    items.forEach(function (h) { seen[norm(h)] = true; });
     DEFAULTS.forEach(function (d) {
-      var key = norm(d.html);
-      if (REQUIRED.indexOf(d.html) >= 0 && !seen[key]) {
-        items.push({ html: d.html, cat: d.cat });
+      var key = norm(d);
+      if (REQUIRED.indexOf(d) >= 0 && !seen[key]) {
+        items.push(d);
         seen[key] = true;
       }
     });
-    return sortItems(items);
+    return items;
   };
   var setDelays = function () {
-    var i = 0;
-    box.querySelectorAll('.chip, .chip-cat').forEach(function (c) {
-      c.style.animationDelay = Math.min(i++ * 28, 420) + 'ms';
+    box.querySelectorAll('.chip').forEach(function (c, i) {
+      c.style.animationDelay = Math.min(i * 28, 420) + 'ms';
     });
   };
   var pushRemote = function (items) {
@@ -1561,9 +1522,9 @@
     fetch(SB_URL + '/rest/v1/likes?id=gte.0', { method: 'DELETE', headers: sbHeaders() })
       .then(function () {
         return fetch(SB_URL + '/rest/v1/likes', { method: 'POST', headers: sbHeaders(),
-          body: JSON.stringify(items.map(function (it) {
+          body: JSON.stringify(items.map(function (html) {
             var d = document.createElement('div');
-            d.innerHTML = it.html;
+            d.innerHTML = html;
             return { text: d.textContent.trim() };
           })) });
       })
@@ -1587,11 +1548,7 @@
       .then(function (r) { return r.ok ? r.json() : []; })
       .then(function (rows) {
         if (!rows.length) return;
-        var items = rows.map(function (row) {
-          var h = esc(String(row.text));
-          return { html: h, cat: inferCat(h) };
-        });
-        render(mergeRequired(items));
+        render(mergeRequired(rows.map(function (row) { return esc(String(row.text)); })));
         setDelays();
       })
       .catch(function () {});
@@ -1610,7 +1567,6 @@
     del.className = 'chip-del';
     del.textContent = '✕';
     del.setAttribute('aria-label', '删除这个小标签');
-    var oldCat = chip ? chip.dataset.cat : '';
     chip.replaceWith(input);
     input.after(del);
     input.focus();
@@ -1619,8 +1575,7 @@
       if (!editing) return;
       editing = false;
       var v = input.value.trim();
-      var cat = oldCat || inferCat(v);
-      if (keep && v) input.replaceWith(makeChip(esc(v), cat));
+      if (keep && v) input.replaceWith(makeChip(esc(v)));
       del.remove();
       if (input.parentNode) input.remove();
       commit();
@@ -1645,24 +1600,17 @@
   try {
     var saved = JSON.parse(localStorage.getItem(KEY) || 'null');
     if (Array.isArray(saved)) {
+      /* 兼容旧格式:[{html, cat}] 直接读 html,顺序保持不变 */
       initial = saved.map(function (x) {
-        if (x && typeof x === 'object' && typeof x.html === 'string') {
-          return { html: x.html, cat: x.cat || inferCat(x.html) };
-        }
-        var h = String(x);
-        return { html: h, cat: inferCat(h) };
+        if (x && typeof x === 'object' && typeof x.html === 'string') return x.html;
+        return String(x);
       });
     }
   } catch (e) {}
   if (!initial) {
     try {
       var old = JSON.parse(localStorage.getItem(OLD_KEY) || 'null');
-      if (Array.isArray(old)) {
-        initial = old.map(function (h) {
-          h = String(h);
-          return { html: h, cat: inferCat(h) };
-        });
-      }
+      if (Array.isArray(old)) initial = old.map(function (h) { return String(h); });
     } catch (e) {}
   }
   render(mergeRequired(initial || DEFAULTS.slice()));
